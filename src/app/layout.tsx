@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import { Open_Sans } from "next/font/google";
+import { Archivo } from "next/font/google";
+
+import React from "react";
+import Navbar from "@/components/Header/Navbar";
+
+import Footer from "@/components/Footer/Footer";
 import ConfigureAmplifyClientSide from "./amplify-cognito-config";
-import AppWrapper from "./appWrapper";
 
 //👇 Configure our font object
-const openSans = Open_Sans({
+const archivo = Archivo({
 	subsets: ["latin"],
 	display: "swap",
 });
 
 export const metadata: Metadata = {
-	title: "Compound This",
+	title: "CThis",
 	description: "create and track stock portfolio ",
 };
 
@@ -22,10 +26,21 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={openSans.className}>
+		<html lang="en" className={archivo.className}>
 			<body className="flex flex-col relative text-sm  font-light">
 				<ConfigureAmplifyClientSide />
-				<AppWrapper>{children}</AppWrapper>
+
+				<header className="fixed z-10 top-0 w-full ">
+					<Navbar />
+				</header>
+
+				<main
+					role="main"
+					className="flex flex-1 mt-12 min-h-[calc(100vh-73.5px)] "
+				>
+					{children}
+				</main>
+				<Footer />
 			</body>
 		</html>
 	);

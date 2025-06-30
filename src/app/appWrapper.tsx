@@ -14,7 +14,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
 			<main
 				role="main"
-				className="flex flex-1 mt-16 min-h-[calc(100vh-73.5px)] "
+				className="flex flex-1 mt-12 min-h-[calc(100vh-73.5px)] "
 			>
 				{children}
 			</main>
