@@ -21,7 +21,7 @@ const Navbar = () => {
 							href="/auth/login"
 							className="bg-white text-black rounded-md w-full px-6 py-2 "
 						>
-							Sign in
+							Login
 						</Link>
 					</div>
 				</div>

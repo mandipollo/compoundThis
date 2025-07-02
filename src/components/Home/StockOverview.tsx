@@ -2,6 +2,7 @@ import { ChartArea } from "lucide-react";
 import React from "react";
 import { ChartAreaDefault } from "./ChartHome";
 import StockFundamentalOverview from "../stock/StockFundamentalOverview";
+import { NewsCarousel } from "./NewsCarousel";
 
 const StockOverview = () => {
 	return (
@@ -14,6 +15,10 @@ const StockOverview = () => {
 						<div className=" border-gray-400 border-[0.5px] rounded-xl shadow-md ">
 							<StockFundamentalOverview />
 						</div>
+					</div>
+					<div className="flex flex-col gap-4 w-full h-full">
+						<span>TOP NEWS</span>
+						<NewsCarousel />
 					</div>
 					<div className="flex w-full flex-col gap-4  h-full">
 						<h4 className="text-3xl "> About</h4>

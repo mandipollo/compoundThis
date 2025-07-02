@@ -1,92 +1,88 @@
 "use client";
 
 //
-import { Button } from "../ui/button";
 import { handleSignin } from "@/libs/cognitoActions";
 import Link from "next/link";
 import React, { useActionState } from "react";
-import { Input } from "../ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "../ui/form";
-
-const formSchema = z.object({
-	email: z.string().min(2, {
-		message: "Username must be at least 2 characters.",
-	}),
-	password: z.string().min(4, {
-		message: "Password must be at least 4 characters",
-	}),
-});
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Login = () => {
-	// 1. Define your form.
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-		},
-	});
-
-	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
-	}
 	const [state, action, pending] = useActionState(handleSignin, undefined);
+	console.log(state);
 
 	return (
-		<Form {...form}>
-			<form
-				className="grid grid-cols-1 gap-2 rounded-md shadow-xl p-4"
-				action={action}
-			>
-				<div className="flex flex-col gap-2">
-					<label htmlFor="email">Email</label>
-					<Input
-						name="email"
-						placeholder="Enter your email address"
-						type="email"
-					></Input>
-				</div>
-				{state?.errors?.email && (
-					<p className="text-red-500">{state.errors.email}</p>
-				)}
-				<div className="flex flex-col gap-2">
-					<label htmlFor="password">Password</label>
-					<Input
-						name="password"
-						placeholder="Enter password"
-						className="border p-2 rounded-md"
-						type="password"
-					></Input>
-				</div>
-				{state?.errors?.password && (
-					<p className="text-red-500">{state.errors.password}</p>
-				)}
-
-				<Button aria-disabled={pending} type="submit">
-					SIGN IN
+		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
+			<CardHeader>
+				<CardTitle>Login to your account</CardTitle>
+				<CardDescription>
+					Enter your email below to login to your account
+				</CardDescription>
+				<CardAction>
+					<Link href={"/auth/signup"}>
+						<Button variant="link">SIGN Up</Button>
+					</Link>
+				</CardAction>
+			</CardHeader>
+			<CardContent>
+				<form action={action}>
+					<div className="flex flex-col gap-2">
+						<div className="grid gap-2">
+							<Label htmlFor="email">Email</Label>
+							<Input
+								name="email"
+								id="email"
+								type="email"
+								placeholder="m@example.com"
+								required
+							/>
+							<div className="text-red-600 flex flex-col text-xs">
+								{state?.errors?.email?.map(err => (
+									<span>{err}</span>
+								))}
+							</div>
+						</div>
+						<div className="grid gap-2">
+							<div className="flex items-center">
+								<Label htmlFor="password">Password</Label>
+								<a
+									href="#"
+									className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+								>
+									Forgot your password?
+								</a>
+							</div>
+							<div className="text-red-600 flex flex-col text-xs">
+								{state?.errors?.password?.map(err => (
+									<span>{err}</span>
+								))}
+							</div>
+							<Input name="password" id="password" type="password" required />
+							<span className="text-xs text-red-600">{state?.message}</span>
+						</div>
+						<Button disabled={pending} type="submit" className="w-full">
+							Login
+						</Button>
+					</div>
+				</form>
+			</CardContent>
+			<CardFooter className="flex-col gap-2">
+				<Button variant="outline" className="w-full">
+					Login with Google
 				</Button>
-
-				<div className="flex flex-row space-x-2 justify-center">
-					<p>Don&apos;t have an account?</p>
-					<Link href={"/auth/signup"}>Sign Up</Link>
-				</div>
-			</form>
-		</Form>
+			</CardFooter>
+		</Card>
 	);
 };
 

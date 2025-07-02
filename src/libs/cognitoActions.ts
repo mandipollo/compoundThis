@@ -45,7 +45,7 @@ export async function handleSignUp(state: FormState, formData: FormData) {
 		redirect("/auth/confirmEmail");
 	} catch (error) {
 		const errorMessage = getErrorMessage(error);
-		return { ...state, message: errorMessage };
+		return { error: {}, message: errorMessage };
 	}
 }
 
@@ -78,7 +78,10 @@ export async function handleConfirmSignUp(prevState: any, formData: FormData) {
 	redirect("/auth/login");
 }
 
-export async function handleSignin(state: FormState, formData: FormData) {
+export async function handleSignin(
+	state: FormState,
+	formData: FormData
+): Promise<FormState | undefined> {
 	let redirectLink = "/dashboard";
 
 	// Validate form fields
@@ -94,7 +97,7 @@ export async function handleSignin(state: FormState, formData: FormData) {
 		};
 	}
 	try {
-		const { nextStep, isSignedIn } = await signIn({
+		const { nextStep } = await signIn({
 			username: String(formData.get("email")),
 			password: String(formData.get("password")),
 		});
@@ -104,12 +107,11 @@ export async function handleSignin(state: FormState, formData: FormData) {
 			});
 			redirectLink = "/auth/confirmEmail";
 		}
+		redirect(redirectLink);
 	} catch (error) {
 		const errorMessage = getErrorMessage(error);
-		return { ...state, message: errorMessage };
+		return { errors: {}, message: errorMessage };
 	}
-
-	redirect(redirectLink);
 }
 
 export async function handleSignout() {

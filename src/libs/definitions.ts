@@ -5,8 +5,8 @@ export const LoginFormSchema = z.object({
 	password: z
 		.string()
 		.min(8, { message: "Atleast 8 characters long" })
-		.regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-		.regex(/[0-9]/, { message: "Contain at least one number." })
+		.regex(/[a-zA-Z]/, { message: "Contains at least one letter." })
+		.regex(/[0-9]/, { message: "Contains at least one number." })
 		.trim(),
 });
 
@@ -20,10 +20,10 @@ export const SignupFormSchema = z.object({
 		.string()
 		.regex(/^(?=.*[A-Z]).{8,}$/, {
 			message:
-				"Contain at least one uppercase letter and have a minimum length of 8 characters.",
+				"Contains at least one uppercase letter and have a minimum length of 8 characters.",
 		})
-		.regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-		.regex(/[0-9]/, { message: "Contain at least one number." })
+		.regex(/[a-zA-Z]/, { message: "Contains at least one letter." })
+		.regex(/[0-9]/, { message: "Contains at least one number." })
 		.trim(),
 });
 

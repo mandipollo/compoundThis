@@ -1,6 +1,10 @@
 import Image from "next/image";
 import React from "react";
 
+//TODO:
+//implement search for investment instruments
+// context overlay box
+// navigate link to invesment instruments
 const SearchBar = () => {
 	return (
 		<div className="flex flex-row relative h-10 px-2 max-w-96 w-full">
