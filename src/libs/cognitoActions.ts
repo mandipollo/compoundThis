@@ -5,6 +5,10 @@ import {
 	signOut,
 	confirmSignUp,
 	resendSignUpCode,
+	resetPassword,
+	confirmResetPassword,
+	type ConfirmResetPasswordInput,
+	type ResetPasswordOutput,
 } from "aws-amplify/auth";
 import {
 	SignupFormSchema,
@@ -121,4 +125,54 @@ export async function handleSignout() {
 		return error;
 	}
 	redirect("/auth/login");
+}
+
+// Send confirmation code to user's email
+export async function handleForgotPassword(prevState: any, formData: FormData) {
+	const username = formData.get("username")?.toString();
+	if (!username) {
+		return;
+	}
+	try {
+		const output = await resetPassword({ username });
+		const { nextStep } = output;
+
+		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+			return {
+				success: true,
+				message: `A confirmation code has been sent to your ${
+					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
+				}.`,
+			};
+		}
+		redirect("/auth/newPassword");
+	} catch (err) {
+		const errorMessage = getErrorMessage(err);
+		return { message: errorMessage };
+	}
+}
+
+export async function handleConfirmResetPassword(
+	prevState: any,
+	formData: FormData
+) {
+	const username = formData.get("username")?.toString();
+	const confirmationCode = formData.get("confirmationCode")?.toString();
+	const newPassword = formData.get("newPassword")?.toString();
+
+	if (!username || !confirmationCode || !newPassword) {
+		return { message: "All fields are required." };
+	}
+
+	try {
+		await confirmResetPassword({
+			username,
+			confirmationCode,
+			newPassword,
+		} as ConfirmResetPasswordInput);
+		return { message: "Password reset successful. You can now log in." };
+	} catch (error) {
+		const errorMessage = getErrorMessage(error);
+		return { message: errorMessage };
+	}
 }

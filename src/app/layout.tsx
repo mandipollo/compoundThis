@@ -29,11 +29,9 @@ export default function RootLayout({
 		<html lang="en" className={archivo.className}>
 			<body className="flex flex-col relative text-sm  font-light">
 				<ConfigureAmplifyClientSide />
-
 				<header className="fixed z-10 top-0 w-full ">
 					<Navbar />
 				</header>
-
 				<main
 					role="main"
 					className="flex flex-1 mt-12 min-h-[calc(100vh-73.5px)] "
