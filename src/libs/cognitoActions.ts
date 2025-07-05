@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import {
 	signUp,
 	signIn,
-	signOut,
 	confirmSignUp,
 	resendSignUpCode,
 	resetPassword,
@@ -10,6 +9,8 @@ import {
 	type ConfirmResetPasswordInput,
 	type ResetPasswordOutput,
 } from "aws-amplify/auth";
+
+// zod schema
 import {
 	SignupFormSchema,
 	FormState,
@@ -17,40 +18,115 @@ import {
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
 
-export async function handleSignUp(state: FormState, formData: FormData) {
-	try {
-		// Validate form fields
-		const validatedFields = SignupFormSchema.safeParse({
-			name: formData.get("name"),
-			email: formData.get("email"),
-			password: formData.get("password"),
-		});
+// FIXME: fix redirects in function - issues try catch clause
 
-		// If any form fields are invalid, return early
-		if (!validatedFields.success) {
-			return {
-				errors: validatedFields.error.flatten().fieldErrors,
-			};
-		}
+export async function handleLogin(
+	state: FormState,
+	formData: FormData
+): Promise<FormState | undefined> {
+	// Validate form fields
+	const validatedFields = LoginFormSchema.safeParse({
+		email: formData.get("email"),
+		password: formData.get("password"),
+	});
 
-		const { isSignUpComplete, userId, nextStep } = await signUp({
-			username: String(formData.get("email")),
-			password: String(formData.get("password")),
-			options: {
-				userAttributes: {
-					email: String(formData.get("email")),
-					name: String(formData.get("name")),
-				},
-				autoSignIn: true,
-			},
-		});
-		// successful sign in
-
-		redirect("/auth/confirmEmail");
-	} catch (error) {
-		const errorMessage = getErrorMessage(error);
-		return { error: {}, message: errorMessage };
+	// If any form fields are invalid, return early
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
 	}
+	// Manually handle expected errors
+	const result = await signIn({
+		username: String(formData.get("email")),
+		password: String(formData.get("password")),
+	}).catch(err => {
+		if (err.name === "UserNotFoundException") {
+			return { error: "User does not exist." };
+		}
+		if (err.name === "NotAuthorizedException") {
+			return { error: "Incorrect email or password." };
+		}
+		if (err.name === "UserNotConfirmedException") {
+			return { error: "User not confirmed." };
+		}
+		return { error: "Something went wrong. Please try again." };
+	});
+
+	// If we got an error, return it
+	if ("error" in result) {
+		return { errors: {}, message: result.error };
+	}
+
+	const { nextStep, isSignedIn } = result;
+	// redirect unconfirmed user
+	if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
+		await resendSignUpCode({
+			username: String(formData.get("email")),
+		});
+		redirect("/auth/confirmEmail");
+	}
+	if (isSignedIn) {
+		redirect("/dashboard");
+	}
+	// default fallback
+	return { message: "Unable to login.Try again!" };
+}
+
+// user signs up -> send verification email
+export async function handleSignUp(state: FormState, formData: FormData) {
+	// Validate form fields
+	const validatedFields = SignupFormSchema.safeParse({
+		name: formData.get("name"),
+		email: formData.get("email"),
+		password: formData.get("password"),
+	});
+
+	// If any form fields are invalid, return early
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
+	}
+
+	// Manually handle expected errors
+	const result = await signUp({
+		username: String(formData.get("email")),
+		password: String(formData.get("password")),
+		options: {
+			userAttributes: {
+				email: String(formData.get("email")),
+				name: String(formData.get("name")),
+			},
+			autoSignIn: true,
+		},
+	}).catch(err => {
+		if (err.name === "UserNotFoundException") {
+			return { error: "User does not exist." };
+		}
+		if (err.name === "NotAuthorizedException") {
+			return { error: "Incorrect email or password." };
+		}
+		if (err.name === "UserNotConfirmedException") {
+			return { error: "User not confirmed." };
+		}
+		return { error: "Something went wrong. Please try again." };
+	});
+
+	// If we got an error, return it
+	if ("error" in result) {
+		return { errors: {}, message: result.error };
+	}
+
+	//next steps
+	const { isSignUpComplete, nextStep } = result;
+
+	// if signup complete direct to dashboard
+
+	if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
+		redirect("/auth/confirmEmail");
+	}
+	// successful sign in
 }
 
 export async function handleSendEmailVerificationCode(
@@ -70,6 +146,7 @@ export async function handleSendEmailVerificationCode(
 	return currentState;
 }
 
+// verify code sent to the email address
 export async function handleConfirmSignUp(prevState: any, formData: FormData) {
 	try {
 		const { isSignUpComplete, nextStep } = await confirmSignUp({
@@ -82,51 +159,8 @@ export async function handleConfirmSignUp(prevState: any, formData: FormData) {
 	redirect("/auth/login");
 }
 
-export async function handleSignin(
-	state: FormState,
-	formData: FormData
-): Promise<FormState | undefined> {
-	let redirectLink = "/dashboard";
-
-	// Validate form fields
-	const validatedFields = LoginFormSchema.safeParse({
-		email: formData.get("email"),
-		password: formData.get("password"),
-	});
-
-	// If any form fields are invalid, return early
-	if (!validatedFields.success) {
-		return {
-			errors: validatedFields.error.flatten().fieldErrors,
-		};
-	}
-	try {
-		const { nextStep } = await signIn({
-			username: String(formData.get("email")),
-			password: String(formData.get("password")),
-		});
-		if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
-			await resendSignUpCode({
-				username: String(formData.get("email")),
-			});
-			redirectLink = "/auth/confirmEmail";
-		}
-		redirect(redirectLink);
-	} catch (error) {
-		const errorMessage = getErrorMessage(error);
-		return { errors: {}, message: errorMessage };
-	}
-}
-
-export async function handleSignout() {
-	try {
-		await signOut();
-	} catch (error) {
-		return error;
-	}
-	redirect("/auth/login");
-}
-
+// TODO:
+// alert user code has been sent to the user's email
 // Send confirmation code to user's email
 export async function handleForgotPassword(prevState: any, formData: FormData) {
 	const username = formData.get("username")?.toString();
@@ -152,6 +186,9 @@ export async function handleForgotPassword(prevState: any, formData: FormData) {
 	}
 }
 
+//TODO:
+// retrieve username when directed from the resetpassword section
+// direct user to login when code is successfully accepted
 export async function handleConfirmResetPassword(
 	prevState: any,
 	formData: FormData

@@ -1,7 +1,7 @@
 "use client";
 
 //
-import { handleSignin } from "@/libs/cognitoActions";
+import { handleLogin } from "@/libs/cognitoActions";
 import Link from "next/link";
 import React, { useActionState } from "react";
 
@@ -18,9 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+//TODO: sync user online authentication state with client state
 const Login = () => {
-	const [state, action, pending] = useActionState(handleSignin, undefined);
-	console.log(state);
+	const [state, action, pending] = useActionState(handleLogin, undefined);
 
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
@@ -64,8 +64,8 @@ const Login = () => {
 								</Link>
 							</div>
 							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.password?.map(err => (
-									<span>{err}</span>
+								{state?.errors?.password?.map((err, index) => (
+									<span key={index}>{err}</span>
 								))}
 							</div>
 							<Input name="password" id="password" type="password" required />

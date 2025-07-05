@@ -24,7 +24,7 @@ export function NewsCarousel() {
 											src="/meta-zuck.jpeg"
 											fill
 											alt="meta zuch "
-											className=""
+											sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 										/>
 									</figure>
 									<span>CNBC</span>
