@@ -18,7 +18,7 @@ import {
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
 
-// FIXME: fix redirects in function - issues try catch clause
+// server redirect faulty on try catch blocks
 
 export async function handleLogin(
 	state: FormState,
@@ -34,9 +34,10 @@ export async function handleLogin(
 	if (!validatedFields.success) {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
+			success: false,
 		};
 	}
-	// Manually handle expected errors
+	//  handle expected errors
 	const result = await signIn({
 		username: String(formData.get("email")),
 		password: String(formData.get("password")),
@@ -53,9 +54,9 @@ export async function handleLogin(
 		return { error: "Something went wrong. Please try again." };
 	});
 
-	// If we got an error, return it
+	// return error
 	if ("error" in result) {
-		return { errors: {}, message: result.error };
+		return { errors: {}, message: result.error, success: false };
 	}
 
 	const { nextStep, isSignedIn } = result;
@@ -67,12 +68,13 @@ export async function handleLogin(
 		redirect("/auth/confirmEmail");
 	}
 	if (isSignedIn) {
-		redirect("/dashboard");
+		return { success: true };
 	}
 	// default fallback
-	return { message: "Unable to login.Try again!" };
+	return { message: "Unable to login.Try again!", success: false };
 }
 
+//FIXME: handle sign up exceptions
 // user signs up -> send verification email
 export async function handleSignUp(state: FormState, formData: FormData) {
 	// Validate form fields
@@ -104,6 +106,7 @@ export async function handleSignUp(state: FormState, formData: FormData) {
 		if (err.name === "UserNotFoundException") {
 			return { error: "User does not exist." };
 		}
+
 		if (err.name === "NotAuthorizedException") {
 			return { error: "Incorrect email or password." };
 		}

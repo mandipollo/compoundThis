@@ -2,20 +2,19 @@
 
 import Link from "next/link";
 import DropdownUser from "./DropdownUser";
-
-import React, { useEffect } from "react";
+import React from "react";
 import { useUserStore } from "@/store/userStore";
-
-//TODO: display user name when active
-//TODO: dropdown menu with navigation and user signout
+import { Button } from "../ui/button";
 
 const Navbar = () => {
-	const { name, isAuthenticated, fetchUser } = useUserStore();
-	useEffect(() => {
-		fetchUser();
-	}, []);
+	const { name, isAuthenticated } = useUserStore();
+
 	return (
-		<nav className="flex flex-col w-full bg-primary text-white">
+		<nav
+			role="navigation"
+			aria-label="Main Navigation"
+			className="flex flex-col w-full bg-primary text-white"
+		>
 			<div className="flex flex-row p-2 items-center justify-between w-full gap-2">
 				<Link href={"/"} className="flex items-center px-4">
 					<span className="text-xl ">CThis</span>
@@ -29,18 +28,14 @@ const Navbar = () => {
 						<li>Products</li>
 					</ul>
 					{isAuthenticated ? (
-						<div className="flex flex-row ">
-							<DropdownUser username={name} />
-						</div>
+						<DropdownUser username={name} />
 					) : (
-						<div className="flex flex-row ">
-							<Link
-								href="/auth/login"
-								className="bg-white text-black rounded-md w-full px-6 py-2 "
-							>
-								Login
-							</Link>
-						</div>
+						<Link
+							href="/auth/login"
+							className="bg-white text-black rounded-md w-full px-6 py-2 "
+						>
+							Login
+						</Link>
 					)}
 				</div>
 			</div>

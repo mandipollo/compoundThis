@@ -40,11 +40,11 @@ const Signup = () => {
 								placeholder="josh"
 								required
 							/>
-							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.name?.map(err => (
-									<span>{err}</span>
-								))}
-							</div>
+							{state?.errors.name && (
+								<div className="text-red-600 flex flex-col text-xs">
+									<span>{state?.errors.name}</span>
+								</div>
+							)}
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="email">Email</Label>

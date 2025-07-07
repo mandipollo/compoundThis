@@ -35,5 +35,6 @@ export type FormState =
 				password?: string[];
 			};
 			message?: string;
+			success: boolean;
 	  }
 	| undefined;

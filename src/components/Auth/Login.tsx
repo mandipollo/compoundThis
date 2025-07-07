@@ -3,8 +3,8 @@
 //
 import { handleLogin } from "@/libs/cognitoActions";
 import Link from "next/link";
-import React, { useActionState } from "react";
-
+import React, { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -17,11 +17,26 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUserStore } from "@/store/userStore";
 
 //TODO: sync user online authentication state with client state
 const Login = () => {
+	const router = useRouter();
 	const [state, action, pending] = useActionState(handleLogin, undefined);
 
+	// sync user state to zustand when log in is successful
+	const { fetchUser } = useUserStore();
+	useEffect(() => {
+		if (state?.success) {
+			console.log(state.success);
+
+			const syncUser = async () => {
+				await fetchUser();
+				router.push("/dashboard");
+			};
+			syncUser();
+		}
+	}, [state?.success]);
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
 			<CardHeader>
@@ -31,7 +46,7 @@ const Login = () => {
 				</CardDescription>
 				<CardAction>
 					<Link href={"/auth/signup"}>
-						<Button variant="link">SIGN Up</Button>
+						<Button variant="link">SIGN UP</Button>
 					</Link>
 				</CardAction>
 			</CardHeader>
