@@ -1,7 +1,7 @@
 import { ChartArea } from "lucide-react";
 import React from "react";
 import { ChartAreaDefault } from "./ChartHome";
-import StockFundamentalOverview from "../stock/StockFundamentalOverview";
+import StockFundamentalOverview from "../Stock/StockFundamentalOverview";
 import { NewsCarousel } from "./NewsCarousel";
 
 const StockOverview = () => {

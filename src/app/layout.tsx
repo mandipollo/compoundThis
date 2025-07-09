@@ -4,7 +4,7 @@ import "./globals.css";
 import { Archivo } from "next/font/google";
 
 import React from "react";
-import Navbar from "@/components/Header/Navbar";
+import Navbar from "@/components/Layout/header/Navbar";
 
 import Footer from "@/components/Footer/Footer";
 import ConfigureAmplifyClientSide from "./amplify-cognito-config";
@@ -27,15 +27,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className={archivo.className}>
-			<body className="flex flex-col w-full relative text-sm  font-light">
+			<body className="flex flex-col w-full relative text-sm font-light">
 				<ConfigureAmplifyClientSide />
 				<header className="fixed z-10 top-0 w-full ">
 					<Navbar />
 				</header>
-				<main
-					role="main"
-					className="flex flex-1 mt-12 min-h-[calc(100vh-73.5px)] "
-				>
+				<main role="main" className="flex flex-1 min-h-screen flex-row ">
 					{children}
 				</main>
 				<Footer />

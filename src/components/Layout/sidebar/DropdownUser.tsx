@@ -7,7 +7,10 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserStore } from "@/store/userStore";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { SidebarMenuButton } from "../../ui/sidebar";
+import { ChevronUp, User2 } from "lucide-react";
 
 const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const { signOutUser } = useUserStore();
@@ -17,13 +20,25 @@ const DropdownUser = ({ username }: { username: string | undefined }) => {
 	};
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="py-2 px-6 rounded-md outline-none bg-white text-black hover:bg-gray-200 ">
-				{username}
+			<DropdownMenuTrigger
+				asChild
+				className="py-2 px-6 rounded-md outline-none bg-white text-black hover:bg-gray-200 "
+			>
+				<SidebarMenuButton>
+					<User2 /> {username}
+					<ChevronUp className="ml-auto" />
+				</SidebarMenuButton>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="mr-0 p-2">
+
+			<DropdownMenuContent
+				side="top"
+				className="w-[--radix-popper-anchor-width]"
+			>
 				<DropdownMenuLabel>My Account</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem>Dashboard</DropdownMenuItem>
+				<DropdownMenuItem>
+					<Link href={"/dashboard"}>Dashboard</Link>
+				</DropdownMenuItem>
 				<DropdownMenuItem>Billing</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleSignout}>Logout</DropdownMenuItem>
 			</DropdownMenuContent>

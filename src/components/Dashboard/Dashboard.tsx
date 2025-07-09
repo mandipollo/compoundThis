@@ -1,11 +1,7 @@
 import React from "react";
 
 const Dashboard = () => {
-	return (
-		<div>
-			<h1>Dashboard</h1>
-		</div>
-	);
+	return <section className="flex flex-col w-full h-full "></section>;
 };
 
 export default Dashboard;

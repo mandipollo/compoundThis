@@ -1,9 +1,16 @@
-import Link from "next/link";
+"use client";
+
+import { useUserStore } from "@/store/userStore";
 import React from "react";
-import Image from "next/image";
+
 const Footer = () => {
+	const { isAuthenticated } = useUserStore();
 	return (
-		<footer className="flex flex-col text-xs bg-primary items-center ">
+		<footer
+			className={`${
+				isAuthenticated ? "hidden" : "flex flex-col"
+			}  text-xs bg-primary items-center`}
+		>
 			<div className="flex flex-row gap-10 py-10 text-gray-300 w-full max-w-5xl">
 				<ul className="flex flex-col gap-1 ">
 					<li className="text-white">Popular Quotes</li>

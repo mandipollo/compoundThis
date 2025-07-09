@@ -32,7 +32,7 @@ const Login = () => {
 
 			const syncUser = async () => {
 				await fetchUser();
-				router.push("/dashboard");
+				router.push("/user");
 			};
 			syncUser();
 		}
