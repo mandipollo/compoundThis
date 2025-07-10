@@ -1,6 +1,6 @@
 import React from "react";
 import VideoBG from "./VideoBG";
-import SearchBar from "../Search/SearchBar";
+import SearchBar from "../Layout/search/SearchBar";
 
 const Hero = () => {
 	return (

@@ -9,8 +9,7 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-
-export function NewsCarousel() {
+const NewsCarousel = () => {
 	return (
 		<Carousel className="w-full ">
 			<CarouselContent>
@@ -42,4 +41,6 @@ export function NewsCarousel() {
 			<CarouselNext />
 		</Carousel>
 	);
-}
+};
+
+export default NewsCarousel;
