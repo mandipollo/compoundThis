@@ -1,51 +1,21 @@
 import { vi, describe, it, expect } from "vitest";
 
-let resendMock: ReturnType<typeof vi.fn>;
-let redirectMock: ReturnType<typeof vi.fn>;
+// setup mocks
+vi.mock("aws-amplify/auth", () => ({
+	signIn: vi.fn(),
+	resendSignUpCode: vi.fn(),
+}));
 
-import { beforeEach } from "node:test";
+vi.mock("next/navigation", () => ({
+	redirect: vi.fn(),
+}));
+import { signIn, resendSignUpCode } from "aws-amplify/auth";
+import { redirect } from "next/navigation";
+const { handleLogin } = await vi.importActual<
+	typeof import("@/libs/cognitoActions")
+>("@/libs/cognitoActions");
+
 describe("handleLogin", () => {
-	beforeEach(() => {
-		vi.resetAllMocks();
-
-		// setup mocks
-
-		vi.mock("aws-amplify/auth", () => ({
-			signIn: vi.fn(),
-		}));
-
-		vi.mock("@/libs/cognitoActions", async () => {
-			const actual = await vi.importActual<
-				typeof import("@/libs/cognitoActions")
-			>("@/libs/cognitoActions");
-			const localResendMock = vi.fn();
-			resendMock = localResendMock;
-			return {
-				...actual,
-				resendSignUpCode: localResendMock,
-			};
-		});
-
-		vi.mock("next/navigation", async () => {
-			const actual = await vi.importActual<typeof import("next/navigation")>(
-				"next/navigation"
-			);
-
-			const localRedirectMock = vi.fn();
-			redirectMock = localRedirectMock;
-			return {
-				...actual,
-				redirect: localRedirectMock,
-			};
-		});
-	});
-
-	const { handleLogin } = await vi.importActual<
-		typeof import("@/libs/cognitoActions")
-	>("@/libs/cognitoActions");
-	const { signIn } = await vi.importActual<typeof import("aws-amplify/auth")>(
-		"aws-amplify/auth"
-	);
 	it("returns error on invalid input", async () => {
 		const formData = new FormData();
 		formData.set("email", "");
@@ -110,7 +80,8 @@ describe("handleLogin", () => {
 
 		const result = await handleLogin(undefined, formData);
 
-		expect(resendMock).toBeCalledWith({ email: "mandip@gmail.com" });
+		expect(resendSignUpCode).toBeCalledWith({ username: "mandip@gmail.com" });
+		expect(redirect).toBeCalledWith("/auth/confirmEmail");
 	});
 
 	//
