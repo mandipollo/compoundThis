@@ -18,7 +18,7 @@ import {
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
 
-// server redirect faulty on try catch blocks
+// server redirect faults on try catch blocks
 
 export async function handleLogin(
 	state: FormState,
@@ -61,7 +61,7 @@ export async function handleLogin(
 
 	const { nextStep, isSignedIn } = result;
 	// redirect unconfirmed user
-	if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
+	if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
 		await resendSignUpCode({
 			username: String(formData.get("email")),
 		});
