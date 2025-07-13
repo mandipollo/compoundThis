@@ -18,11 +18,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/userStore";
+import { error } from "console";
 
-//TODO: sync user online authentication state with client state
+import { FormState } from "@/libs/definitions";
+
+const initialState: FormState = {
+	errors: { name: [], email: [], password: [] },
+	message: undefined,
+	success: false,
+};
+
 const Login = () => {
 	const router = useRouter();
-	const [state, action, pending] = useActionState(handleLogin, undefined);
+	const [state, action, pending] = useActionState(handleLogin, initialState);
 
 	// sync user state to zustand when log in is successful
 	const { fetchUser } = useUserStore();

@@ -14,9 +14,15 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { Label } from "@/components/ui/label";
+import { FormState } from "@/libs/definitions";
 
+const initialState: FormState = {
+	errors: { name: [], email: [], password: [] },
+	message: undefined,
+	success: false,
+};
 const Signup = () => {
-	const [state, action, pending] = useActionState(handleSignUp, undefined);
+	const [state, action, pending] = useActionState(handleSignUp, initialState);
 
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
@@ -40,9 +46,9 @@ const Signup = () => {
 								placeholder="josh"
 								required
 							/>
-							{state?.errors.name && (
+							{state?.errors?.name && (
 								<div className="text-red-600 flex flex-col text-xs">
-									<span>{state?.errors.name}</span>
+									<span>{state?.errors?.name}</span>
 								</div>
 							)}
 						</div>

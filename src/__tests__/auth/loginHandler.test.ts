@@ -1,6 +1,7 @@
 import { vi, describe, it, expect } from "vitest";
 
-// setup mocks
+//////////////////// setup mocks
+
 vi.mock("aws-amplify/auth", () => ({
 	signIn: vi.fn(),
 	resendSignUpCode: vi.fn(),
@@ -11,17 +12,23 @@ vi.mock("next/navigation", () => ({
 }));
 import { signIn, resendSignUpCode } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
+import { FormState } from "@/libs/definitions";
 const { handleLogin } = await vi.importActual<
 	typeof import("@/libs/cognitoActions")
 >("@/libs/cognitoActions");
 
 describe("handleLogin", () => {
+	const initialState: FormState = {
+		errors: { name: [], email: [], password: [] },
+		message: undefined,
+		success: false,
+	};
 	it("returns error on invalid input", async () => {
 		const formData = new FormData();
 		formData.set("email", "");
 		formData.set("password", "");
 
-		const result = await handleLogin(undefined, formData);
+		const result = await handleLogin(initialState, formData);
 		expect(result?.errors?.email).toBeDefined();
 		expect(result?.errors?.password).toBeDefined();
 		expect(result?.success).toBe(false);
@@ -36,7 +43,7 @@ describe("handleLogin", () => {
 		formData.set("email", "mandip@gmail.com");
 		formData.set("password", "mandip123@");
 
-		const result = await handleLogin(undefined, formData);
+		const result = await handleLogin(initialState, formData);
 
 		expect(result?.message).toEqual("User does not exist.");
 	});
@@ -49,7 +56,7 @@ describe("handleLogin", () => {
 		formData.set("email", "mandip@gmail.com");
 		formData.set("password", "mandip123@");
 
-		const result = await handleLogin(undefined, formData);
+		const result = await handleLogin(initialState, formData);
 
 		expect(result?.message).toEqual("Incorrect email or password.");
 	});
@@ -62,7 +69,7 @@ describe("handleLogin", () => {
 		formData.set("email", "mandip@gmail.com");
 		formData.set("password", "mandip123@");
 
-		const result = await handleLogin(undefined, formData);
+		const result = await handleLogin(initialState, formData);
 
 		expect(result?.message).toEqual("User not confirmed.");
 	});
@@ -78,7 +85,7 @@ describe("handleLogin", () => {
 		formData.set("email", "mandip@gmail.com");
 		formData.set("password", "mandip123@");
 
-		const result = await handleLogin(undefined, formData);
+		await handleLogin(initialState, formData);
 
 		expect(resendSignUpCode).toBeCalledWith({ username: "mandip@gmail.com" });
 		expect(redirect).toBeCalledWith("/auth/confirmEmail");
@@ -97,8 +104,12 @@ describe("handleLogin", () => {
 		formData.set("email", "mandipgurung65@yahoo.com");
 		formData.set("password", "password123@");
 
-		const result = await handleLogin(undefined, formData);
+		const result = await handleLogin(initialState, formData);
 
-		expect(result).toEqual({ success: true });
+		expect(result).toEqual({
+			errors: {},
+			success: true,
+			message: "Successfully loggedin",
+		});
 	});
 });

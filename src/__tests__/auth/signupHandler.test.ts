@@ -1,0 +1,79 @@
+import { vi, describe, it, expect } from "vitest";
+
+// mock setups
+
+vi.mock("aws-amplify/auth", () => ({
+	signUp: vi.fn(),
+}));
+
+// later imports
+import { signUp } from "aws-amplify/auth";
+import { FormState } from "@/libs/definitions";
+const { handleSignUp } = await vi.importActual<
+	typeof import("@/libs/cognitoActions")
+>("@/libs/cognitoActions");
+
+describe("signupHandler", () => {
+	//
+	const initialState: FormState = {
+		errors: { name: [], email: [], password: [] },
+		message: undefined,
+		success: false,
+	};
+	it("invalid inputs returns errors", async () => {
+		const formData = new FormData();
+		formData.set("name", "");
+		formData.set("email", "");
+		formData.set("password", "");
+
+		const result = await handleSignUp(initialState, formData);
+
+		expect(result?.errors?.name).toBeDefined();
+		expect(result?.errors?.email).toBeDefined();
+		expect(result?.errors?.password).toBeDefined();
+		expect(result?.success).toBe(false);
+	});
+
+	// signup exceptions
+	it("returns Username is already taken on UsernameExistsException ", async () => {
+		(signUp as any).mockRejectedValue({
+			name: "UsernameExistsException",
+		});
+		const formData = new FormData();
+		formData.set("name", "mandip");
+		formData.set("email", "mandip123@gmail.com");
+		formData.set("password", "Mandip123@");
+
+		const result = await handleSignUp(initialState, formData);
+
+		expect(result?.message).toEqual("Username is already taken");
+	});
+	it("returns Too many attempts. Please try again later on LimitExceedException ", async () => {
+		(signUp as any).mockRejectedValue({
+			name: "LimitExceededException",
+		});
+		const formData = new FormData();
+		formData.set("name", "mandip");
+		formData.set("email", "mandip123@gmail.com");
+		formData.set("password", "Mandip123@");
+
+		const result = await handleSignUp(initialState, formData);
+
+		expect(result?.message).toEqual(
+			"Too many attempts. Please try again later"
+		);
+	});
+	it("returns Password does not meet requirements on InvalidPasswordException ", async () => {
+		(signUp as any).mockRejectedValue({
+			name: "InvalidPasswordException",
+		});
+		const formData = new FormData();
+		formData.set("name", "mandip");
+		formData.set("email", "mandip123@gmail.com");
+		formData.set("password", "Mandip123@");
+
+		const result = await handleSignUp(initialState, formData);
+
+		expect(result?.message).toEqual("Password does not meet requirements");
+	});
+});
