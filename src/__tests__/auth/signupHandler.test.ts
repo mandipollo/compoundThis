@@ -1,14 +1,21 @@
 import { vi, describe, it, expect } from "vitest";
 
-// mock setups
+////////////////// mock setups
 
 vi.mock("aws-amplify/auth", () => ({
 	signUp: vi.fn(),
 }));
 
-// later imports
+vi.mock("next/navigation", () => ({
+	redirect: vi.fn(),
+}));
+
+////////////////// imports
+import { redirect } from "next/navigation";
 import { signUp } from "aws-amplify/auth";
 import { FormState } from "@/libs/definitions";
+
+////////////////// actual module imports
 const { handleSignUp } = await vi.importActual<
 	typeof import("@/libs/cognitoActions")
 >("@/libs/cognitoActions");
@@ -76,4 +83,50 @@ describe("signupHandler", () => {
 
 		expect(result?.message).toEqual("Password does not meet requirements");
 	});
+
+	// check redirects
+	it("redirects user to confirm email page  ", async () => {
+		(signUp as any).mockResolvedValue({
+			nextStep: { signUpStep: "CONFIRM_SIGN_UP" },
+		});
+		const formData = new FormData();
+		formData.set("name", "mandip");
+		formData.set("email", "mandip123@gmail.com");
+		formData.set("password", "Mandip123@");
+
+		await handleSignUp(initialState, formData);
+
+		expect(redirect).toBeCalledWith("/auth/confirmEmail");
+	});
+
+	it("redirects user to dashboard if signup complete  ", async () => {
+		(signUp as any).mockResolvedValue({
+			isSignUpComplete: true,
+			nextStep: { signUpStep: "DONE" },
+		});
+		const formData = new FormData();
+		formData.set("name", "mandip");
+		formData.set("email", "mandip123@gmail.com");
+		formData.set("password", "Mandip123@");
+
+		await handleSignUp(initialState, formData);
+
+		expect(redirect).toBeCalledWith("/user");
+	});
+
+	// it("next redirects should be rethrown from catch to allow nextjs to handle the navigation ", async () => {
+	// 	(signUp as any).mockResolvedValue({
+	// 		nextSteps: { signUpStep: "CONFIRM_SIGN_UP" },
+	// 	});
+
+	// 	const formData = new FormData();
+
+	// 	formData.set("name", "mandip");
+	// 	formData.set("email", "mandipollo65@gamil.com");
+	// 	formData.set("password", "Mandip123@");
+
+	// 	const result = await handleSignUp(initialState, formData);
+
+	// 	expect
+	// });
 });

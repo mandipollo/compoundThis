@@ -10,9 +10,13 @@ vi.mock("aws-amplify/auth", () => ({
 vi.mock("next/navigation", () => ({
 	redirect: vi.fn(),
 }));
+
+////////////////// imports
 import { signIn, resendSignUpCode } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
 import { FormState } from "@/libs/definitions";
+
+///////////////// actual modules
 const { handleLogin } = await vi.importActual<
 	typeof import("@/libs/cognitoActions")
 >("@/libs/cognitoActions");

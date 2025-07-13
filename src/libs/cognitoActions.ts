@@ -17,10 +17,11 @@ import {
 	LoginFormSchema,
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-// server redirect faults on try catch blocks
+// redirects in try catch returns redirectError =>>>> redirects needs to be caught and thrown for next js to handle it
 
-//// existing users
+///////////////////// existing users
 export async function handleLogin(
 	state: FormState,
 	formData: FormData
@@ -140,7 +141,8 @@ export async function handleConfirmResetPassword(
 	}
 }
 
-//// new users
+//////////////////// new users
+
 export async function handleSignUp(
 	state: FormState,
 	formData: FormData
@@ -162,6 +164,7 @@ export async function handleSignUp(
 			};
 		}
 
+		// amplify automatically sends verification code to the users email
 		const result = await signUp({
 			username: String(formData.get("email")),
 			password: String(formData.get("password")),
@@ -173,25 +176,28 @@ export async function handleSignUp(
 				autoSignIn: true,
 			},
 		});
-		//next steps
+
 		const { isSignUpComplete, nextStep } = result;
 
 		//
-
 		if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
 			redirect("/auth/confirmEmail");
 		}
 		if (isSignUpComplete) {
-			return { errors: {}, success: true, message: "Signup complete" };
+			redirect("/user");
 		}
 
 		return {
 			errors: {},
 			success: false,
-			message: "Unhandled error has occurred!",
+			message: "Error has occurred!",
 		};
 	} catch (error: any) {
-		let errorMessage = "Unexpected Error has occurred";
+		if (isRedirectError(error)) {
+			throw error;
+		}
+
+		let errorMessage = "Something went wrong. Please try agian";
 
 		switch (error.name) {
 			case "UsernameExistsException":

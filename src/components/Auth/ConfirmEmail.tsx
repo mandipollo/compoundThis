@@ -23,7 +23,7 @@ const ConfirmEmail = () => {
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
-				<label htmlFor="code">Code</label>
+				<label htmlFor="code">Verification Code</label>
 				<input
 					name="code"
 					placeholder="Enter code"

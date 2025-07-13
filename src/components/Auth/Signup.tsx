@@ -21,6 +21,8 @@ const initialState: FormState = {
 	message: undefined,
 	success: false,
 };
+
+//TODO: sign up should return the email and forward the value to the confirm email page
 const Signup = () => {
 	const [state, action, pending] = useActionState(handleSignUp, initialState);
 
