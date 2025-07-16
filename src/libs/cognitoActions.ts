@@ -15,6 +15,8 @@ import {
 	SignupFormSchema,
 	FormState,
 	LoginFormSchema,
+	ConfirmFormSchema,
+	ConfirmSignupFormState,
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -115,7 +117,7 @@ export async function handleForgotPassword(prevState: any, formData: FormData) {
 
 //TODO:
 // retrieve username when directed from the resetpassword section
-// direct user to login when code is successfully accepted
+// auto login user when code is accepted
 export async function handleConfirmResetPassword(
 	prevState: any,
 	formData: FormData
@@ -236,14 +238,76 @@ export async function handleSendEmailVerificationCode(
 }
 
 // verify code sent to the email address
-export async function handleConfirmSignUp(prevState: any, formData: FormData) {
+export async function handleConfirmSignUp(
+	state: ConfirmSignupFormState,
+	formData: FormData
+) {
 	try {
-		const { isSignUpComplete, nextStep } = await confirmSignUp({
+		// Validate form fields
+		const validatedFields = ConfirmFormSchema.safeParse({
+			email: formData.get("email"),
+			code: formData.get("code"),
+		});
+
+		// If any form fields are invalid, return early
+		if (!validatedFields.success) {
+			const fieldArrays = validatedFields.error.flatten().fieldErrors;
+			return {
+				errors: {
+					email: fieldArrays.email?.[0] ?? "",
+					code: fieldArrays.code?.[0] ?? "",
+				},
+				success: false,
+				message: "Please fix the highlighted errors",
+			};
+		}
+
+		const { isSignUpComplete } = await confirmSignUp({
 			username: String(formData.get("email")),
 			confirmationCode: String(formData.get("code")),
 		});
-	} catch (error) {
-		return error;
+
+		if (isSignUpComplete) {
+			redirect("/user");
+			return {
+				errors: { email: "", code: "" },
+				message: "confirmed",
+				success: true,
+			};
+		}
+
+		return {
+			errors: { email: "", code: "" },
+			success: false,
+			message: "Something went wrong",
+		};
+	} catch (error: any) {
+		if (isRedirectError(error)) {
+			throw error;
+		}
+		let errorMessage = "Something went wrong. Please try agian";
+
+		switch (error.name) {
+			case "UserNotFoundException":
+				errorMessage = "User does not exist";
+				break;
+			case "CodeMismatchException":
+				errorMessage = "Verification code is incorrect";
+				break;
+			case "ExpiredCodeException":
+				errorMessage = "Verification code has expired";
+				break;
+			case "TooManyFailedAttemptsException":
+				errorMessage = "Too many incorrect attempts";
+				break;
+			default:
+				errorMessage = "Something went wrong. Please try agian";
+		}
+
+		return {
+			errors: { email: "", code: "" },
+			message: errorMessage,
+			success: false,
+		};
 	}
-	redirect("/auth/login");
 }

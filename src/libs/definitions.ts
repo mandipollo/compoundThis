@@ -27,8 +27,21 @@ export const SignupFormSchema = z.object({
 		.trim(),
 });
 
+export const ConfirmFormSchema = z.object({
+	email: z.string().email({ message: "Please enter a valid email." }).trim(),
+	code: z
+		.string()
+		.regex(/^\d{8}$/, { message: "Please enter a valid verification code ." }),
+});
+
 export interface FormState {
 	errors: { name?: string[]; email?: string[]; password?: string[] };
+	message?: string;
+	success: boolean;
+}
+
+export interface ConfirmSignupFormState {
+	errors: { email: string; code: string };
 	message?: string;
 	success: boolean;
 }

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "aws-amplify/auth";
 
+//FIXME: protect private routes
 // 1. Specify protected and public routes
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/user"];
 const publicRoutes = ["/login", "/signup", "/"];
 
 export default async function middleware(req: NextRequest) {
@@ -23,12 +24,8 @@ export default async function middleware(req: NextRequest) {
 	}
 
 	// 5. Redirect to /dashboard if the user is authenticated
-	if (
-		isPublicRoute &&
-		username &&
-		!req.nextUrl.pathname.startsWith("/dashboard")
-	) {
-		return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+	if (isPublicRoute && username && !req.nextUrl.pathname.startsWith("/user")) {
+		return NextResponse.redirect(new URL("/user", req.nextUrl));
 	}
 
 	return NextResponse.next();
