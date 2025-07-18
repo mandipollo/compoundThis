@@ -31,9 +31,12 @@ export const ConfirmFormSchema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }).trim(),
 	code: z
 		.string()
-		.regex(/^\d{8}$/, { message: "Please enter a valid verification code ." }),
+		.regex(/^\d{6}$/, { message: "Please enter a valid verification code ." }),
 });
 
+export const ForgotPasswordFormSchema = z.object({
+	username: z.string().email({ message: "Invalid username" }).trim(),
+});
 export interface FormState {
 	errors: { name?: string[]; email?: string[]; password?: string[] };
 	message?: string;
@@ -41,7 +44,13 @@ export interface FormState {
 }
 
 export interface ConfirmSignupFormState {
-	errors: { email: string; code: string };
-	message?: string;
+	errors: { email: string; code: string; error: string };
+	message: string;
 	success: boolean;
+}
+
+export interface ForgotPasswordFormState {
+	error: string;
+	success: boolean;
+	message: string;
 }

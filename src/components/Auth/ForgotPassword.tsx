@@ -16,13 +16,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ForgotPasswordFormState } from "@/libs/definitions";
 
+const initialState: ForgotPasswordFormState = {
+	error: "",
+	success: false,
+	message: "",
+};
 const ForgotPassword = () => {
 	const [state, action, pending] = useActionState(
 		handleForgotPassword,
-		undefined
+		initialState
 	);
-	console.log(state);
 
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
@@ -50,7 +55,7 @@ const ForgotPassword = () => {
 								required
 							/>
 							<div className="text-red-600 flex flex-col text-xs">
-								<p>{state?.message}</p>
+								<p>{state?.error}</p>
 							</div>
 						</div>
 

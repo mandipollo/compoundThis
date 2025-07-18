@@ -16,7 +16,7 @@ const { handleConfirmSignUp } = await vi.importActual<
 
 describe("confirmSignupHandler", () => {
 	const initialState: ConfirmSignupFormState = {
-		errors: { email: "", code: "" },
+		errors: { email: "", code: "", error: "" },
 		message: "",
 		success: false,
 	};
@@ -41,11 +41,11 @@ describe("confirmSignupHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandi@gmail.com");
-		formData.set("code", "12345678");
+		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.message).toEqual("User does not exist");
+		expect(result.errors.error).toEqual("User does not exist");
 	});
 
 	it("returns Verification code is incorrect on CodeMismatchException", async () => {
@@ -54,11 +54,11 @@ describe("confirmSignupHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandi@gmail.com");
-		formData.set("code", "12345678");
+		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.message).toEqual("Verification code is incorrect");
+		expect(result.errors.error).toEqual("Verification code is incorrect");
 	});
 	it("returns Verification code has expired on ExpiredCodeException", async () => {
 		(confirmSignUp as any).mockRejectedValue({
@@ -66,11 +66,11 @@ describe("confirmSignupHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandi@gmail.com");
-		formData.set("code", "12345678");
+		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.message).toEqual("Verification code has expired");
+		expect(result.errors.error).toEqual("Verification code has expired");
 	});
 	it("returns Too many incorrect attempts on TooManyFailedAttemptsException", async () => {
 		(confirmSignUp as any).mockRejectedValue({
@@ -78,16 +78,16 @@ describe("confirmSignupHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandi@gmail.com");
-		formData.set("code", "12345678");
+		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.message).toEqual("Too many incorrect attempts");
+		expect(result.errors.error).toEqual("Too many incorrect attempts");
 	});
 
 	// success scenario
 
-	it("redirects user to dashboard on successfull signup", async () => {
+	it("redirects user to login after successfull verification", async () => {
 		(confirmSignUp as any).mockResolvedValue({
 			isSignUpComplete: true,
 		});
@@ -95,24 +95,14 @@ describe("confirmSignupHandler", () => {
 		const formData = new FormData();
 
 		formData.set("email", "mandipolo@gmail.com");
-		formData.set("code", "12345678");
+		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
-		expect(result.success).toBe(true);
-		expect(redirect).toBeCalledWith("/user");
-	});
-
-	it("auto login user on successfull signup", async () => {
-		(confirmSignUp as any).mockResolvedValue({
-			isSignUpComplete: true,
+		expect(redirect).toBeCalledWith("/auth/login");
+		expect(result).toEqual({
+			success: true,
+			errors: { email: "", code: "", error: "" },
+			message: "Verification complete",
 		});
-
-		const formData = new FormData();
-
-		formData.set("email", "mandipolo@gmail.com");
-		formData.set("code", "12345678");
-		const result = await handleConfirmSignUp(initialState, formData);
-
-		expect(result.success).toBe(true);
 	});
 });

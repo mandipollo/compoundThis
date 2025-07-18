@@ -36,8 +36,6 @@ const Login = () => {
 	const { fetchUser } = useUserStore();
 	useEffect(() => {
 		if (state?.success) {
-			console.log(state.success);
-
 			const syncUser = async () => {
 				await fetchUser();
 				router.push("/user");

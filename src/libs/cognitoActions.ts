@@ -17,6 +17,8 @@ import {
 	LoginFormSchema,
 	ConfirmFormSchema,
 	ConfirmSignupFormState,
+	ForgotPasswordFormState,
+	ForgotPasswordFormSchema,
 } from "@/libs/definitions";
 import getErrorMessage from "@/utils/get-error-message";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -43,7 +45,7 @@ export async function handleLogin(
 				message: "Please fix the highlighted errors",
 			};
 		}
-		//  handle expected errors
+		//
 		const result = await signIn({
 			username: String(formData.get("email")),
 			password: String(formData.get("password")),
@@ -90,28 +92,66 @@ export async function handleLogin(
 
 // TODO:
 // alert user code has been sent to the user's email
-// Send confirmation code to user's email
-export async function handleForgotPassword(prevState: any, formData: FormData) {
-	const username = formData.get("username")?.toString();
-	if (!username) {
-		return;
-	}
+
+export async function handleForgotPassword(
+	state: ForgotPasswordFormState,
+	formData: FormData
+) {
 	try {
+		const username = String(formData.get("username"));
+		const validatedFields = ForgotPasswordFormSchema.safeParse({
+			username: formData.get("username"),
+		});
+
+		if (!username) {
+			return { error: "Invalid username", message: "", success: false };
+		}
+		if (!validatedFields.success) {
+			const fieldArrays = validatedFields.error.flatten().fieldErrors;
+			return {
+				error: fieldArrays?.username?.[0] || "",
+				success: false,
+				message: "",
+			};
+		}
 		const output = await resetPassword({ username });
 		const { nextStep } = output;
 
 		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+			redirect("/auth/newPassword");
 			return {
 				success: true,
 				message: `A confirmation code has been sent to your ${
 					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
 				}.`,
+				error: "",
 			};
 		}
-		redirect("/auth/newPassword");
-	} catch (err) {
-		const errorMessage = getErrorMessage(err);
-		return { message: errorMessage };
+		return {
+			success: false,
+			message: "",
+			error: "Something went wrong",
+		};
+	} catch (error: any) {
+		if (isRedirectError(error)) {
+			throw error;
+		}
+
+		let errorMessage = "Something went wrong";
+		switch (error.name) {
+			case "UserNotFoundException":
+				errorMessage = "User does not exist";
+				break;
+			case "LimitExceededException":
+				errorMessage = "Too many requests in a short time";
+				break;
+			case "TooManyRequestsException":
+				errorMessage = "You are hitting Cognito rate limit";
+				break;
+			default:
+				errorMessage = "Something went wrong";
+		}
+		return { message: "", error: errorMessage, success: false };
 	}
 }
 
@@ -237,6 +277,7 @@ export async function handleSendEmailVerificationCode(
 	return currentState;
 }
 
+//TODO: auto log in user on successfull verification
 // verify code sent to the email address
 export async function handleConfirmSignUp(
 	state: ConfirmSignupFormState,
@@ -256,9 +297,10 @@ export async function handleConfirmSignUp(
 				errors: {
 					email: fieldArrays.email?.[0] ?? "",
 					code: fieldArrays.code?.[0] ?? "",
+					error: "Please fix the highlighted errors",
 				},
 				success: false,
-				message: "Please fix the highlighted errors",
+				message: "",
 			};
 		}
 
@@ -268,18 +310,18 @@ export async function handleConfirmSignUp(
 		});
 
 		if (isSignUpComplete) {
-			redirect("/user");
+			redirect("/auth/login");
 			return {
-				errors: { email: "", code: "" },
-				message: "confirmed",
+				errors: { email: "", code: "", error: "" },
+				message: "Verification complete",
 				success: true,
 			};
 		}
 
 		return {
-			errors: { email: "", code: "" },
+			errors: { email: "", code: "", error: "Something went wrong" },
 			success: false,
-			message: "Something went wrong",
+			message: "",
 		};
 	} catch (error: any) {
 		if (isRedirectError(error)) {
@@ -305,8 +347,8 @@ export async function handleConfirmSignUp(
 		}
 
 		return {
-			errors: { email: "", code: "" },
-			message: errorMessage,
+			errors: { email: "", code: "", error: errorMessage },
+			message: "",
 			success: false,
 		};
 	}

@@ -1,21 +1,22 @@
 "use client";
-import React, { useActionState } from "react";
+import React, { useActionState, useEffect } from "react";
 import { handleConfirmSignUp } from "@/libs/cognitoActions";
 import { Button } from "../ui/button";
 import {
 	Card,
 	CardHeader,
 	CardTitle,
-	CardAction,
 	CardContent,
 	CardFooter,
 } from "../ui/card";
 
 import { ConfirmSignupFormState } from "@/libs/definitions";
+
 const initialState: ConfirmSignupFormState = {
 	errors: {
 		email: "",
 		code: "",
+		error: "",
 	},
 	success: false,
 	message: "",
@@ -25,6 +26,7 @@ const ConfirmEmail = () => {
 		handleConfirmSignUp,
 		initialState
 	);
+
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
 			<CardHeader>
@@ -58,6 +60,11 @@ const ConfirmEmail = () => {
 					{state?.errors.code && (
 						<span className="text-red-600 flex flex-col text-xs">
 							{state.errors.code}
+						</span>
+					)}
+					{state?.errors.error && (
+						<span className="text-red-600 flex flex-col text-xs">
+							{state.errors.error}
 						</span>
 					)}
 					<button

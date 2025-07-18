@@ -21,7 +21,7 @@ const { handleLogin } = await vi.importActual<
 	typeof import("@/libs/cognitoActions")
 >("@/libs/cognitoActions");
 
-describe("handleLogin", () => {
+describe("LoginHandler", () => {
 	const initialState: FormState = {
 		errors: { name: [], email: [], password: [] },
 		message: undefined,
@@ -92,7 +92,7 @@ describe("handleLogin", () => {
 		await handleLogin(initialState, formData);
 
 		expect(resendSignUpCode).toBeCalledWith({ username: "mandip@gmail.com" });
-		expect(redirect).toBeCalledWith("/auth/confirmEmail");
+		expect(redirect).toHaveBeenCalledWith("/auth/confirmEmail");
 	});
 
 	//
