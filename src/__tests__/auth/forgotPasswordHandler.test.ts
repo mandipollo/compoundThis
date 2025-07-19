@@ -14,9 +14,10 @@ import { resetPassword } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
 import { ForgotPasswordFormState } from "@/libs/definitions";
 
+const mockedResetPassword = vi.mocked(resetPassword);
 const { handleForgotPassword } = await vi.importActual<
-	typeof import("@/libs/cognitoActions")
->("@/libs/cognitoActions");
+	typeof import("@/libs/cognito/existingUser/cognitoActionForgotPassword")
+>("@/libs/existingUser/cognitoActionForgotPassword");
 
 describe("forgotPasswordHandler", () => {
 	const initialState: ForgotPasswordFormState = {
@@ -35,7 +36,7 @@ describe("forgotPasswordHandler", () => {
 		expect(result.error).toEqual("Invalid username");
 	});
 	it("returns User does not exist on UserNotFoundException", async () => {
-		(resetPassword as ReturnType<typeof vi.fn>).mockRejectedValue({
+		mockedResetPassword.mockRejectedValue({
 			name: "UserNotFoundException",
 		});
 
@@ -47,7 +48,7 @@ describe("forgotPasswordHandler", () => {
 		expect(result.error).toEqual("User does not exist");
 	});
 	it("returns Too many requests in a short time on LimitExceededException", async () => {
-		(resetPassword as ReturnType<typeof vi.fn>).mockRejectedValue({
+		mockedResetPassword.mockRejectedValue({
 			name: "LimitExceededException",
 		});
 
@@ -59,7 +60,7 @@ describe("forgotPasswordHandler", () => {
 		expect(result.error).toEqual("Too many requests in a short time");
 	});
 	it("returns You are hitting Cognito rate limit on TooManyRequestsException", async () => {
-		(resetPassword as ReturnType<typeof vi.fn>).mockRejectedValue({
+		mockedResetPassword.mockRejectedValue({
 			name: "TooManyRequestsException",
 		});
 
@@ -71,8 +72,12 @@ describe("forgotPasswordHandler", () => {
 		expect(result.error).toEqual("You are hitting Cognito rate limit");
 	});
 	it("redirects user to verification code submission page on username submission", async () => {
-		(resetPassword as ReturnType<typeof vi.fn>).mockResolvedValue({
-			nextStep: { resetPasswordStep: "CONFIRM_RESET_PASSWORD_WITH_CODE" },
+		mockedResetPassword.mockResolvedValue({
+			nextStep: {
+				resetPasswordStep: "CONFIRM_RESET_PASSWORD_WITH_CODE",
+				codeDeliveryDetails: {},
+			},
+			isPasswordReset: true,
 		});
 
 		const formData = new FormData();

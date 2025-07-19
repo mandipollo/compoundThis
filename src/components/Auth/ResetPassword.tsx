@@ -1,7 +1,7 @@
 "use client";
 
 //
-import { handleConfirmResetPassword } from "@/libs/cognitoActions";
+import { handleConfirmResetPassword } from "@/libs/cognito/existingUser/cognitoConfirmResetPassword";
 import React, { useActionState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { confirmPasswordResetFormState } from "@/libs/definitions";
 
+const initialState: confirmPasswordResetFormState = {
+	formValidationErrors: { username: [], confirmationCode: [], newPassword: [] },
+	success: false,
+	message: "",
+	error: "",
+};
 const ResetPassword = () => {
 	const [state, action, pending] = useActionState(
 		handleConfirmResetPassword,
-		undefined
+		initialState
 	);
-	console.log(state);
 
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">

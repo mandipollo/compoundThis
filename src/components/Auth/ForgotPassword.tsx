@@ -1,7 +1,7 @@
 "use client";
 
 //
-import { handleForgotPassword } from "@/libs/cognitoActions";
+import { handleForgotPassword } from "@/libs/cognito/existingUser/cognitoActionForgotPassword";
 import Link from "next/link";
 import React, { useActionState } from "react";
 

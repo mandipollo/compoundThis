@@ -16,9 +16,11 @@ import { signUp } from "aws-amplify/auth";
 import { FormState } from "@/libs/definitions";
 
 ////////////////// actual module imports
+
+const mockedSignUp = vi.mocked(signUp);
 const { handleSignUp } = await vi.importActual<
-	typeof import("@/libs/cognitoActions")
->("@/libs/cognitoActions");
+	typeof import("@/libs/cognito/newUser/cognitoSignup")
+>("@/libs/newUser/cognitoSignup");
 
 describe("signupHandler", () => {
 	//
@@ -43,7 +45,7 @@ describe("signupHandler", () => {
 
 	// signup exceptions
 	it("returns Username is already taken on UsernameExistsException ", async () => {
-		(signUp as any).mockRejectedValue({
+		mockedSignUp.mockRejectedValue({
 			name: "UsernameExistsException",
 		});
 		const formData = new FormData();
@@ -56,7 +58,7 @@ describe("signupHandler", () => {
 		expect(result?.message).toEqual("Username is already taken");
 	});
 	it("returns Too many attempts. Please try again later on LimitExceedException ", async () => {
-		(signUp as any).mockRejectedValue({
+		mockedSignUp.mockRejectedValue({
 			name: "LimitExceededException",
 		});
 		const formData = new FormData();
@@ -71,7 +73,7 @@ describe("signupHandler", () => {
 		);
 	});
 	it("returns Password does not meet requirements on InvalidPasswordException ", async () => {
-		(signUp as any).mockRejectedValue({
+		mockedSignUp.mockRejectedValue({
 			name: "InvalidPasswordException",
 		});
 		const formData = new FormData();
@@ -86,8 +88,9 @@ describe("signupHandler", () => {
 
 	// check redirects
 	it("redirects user to confirm email page  ", async () => {
-		(signUp as any).mockResolvedValue({
-			nextStep: { signUpStep: "CONFIRM_SIGN_UP" },
+		mockedSignUp.mockResolvedValue({
+			nextStep: { signUpStep: "CONFIRM_SIGN_UP", codeDeliveryDetails: {} },
+			isSignUpComplete: true,
 		});
 		const formData = new FormData();
 		formData.set("name", "mandip");
@@ -100,7 +103,7 @@ describe("signupHandler", () => {
 	});
 
 	it("redirects user to dashboard if signup complete  ", async () => {
-		(signUp as any).mockResolvedValue({
+		mockedSignUp.mockResolvedValue({
 			isSignUpComplete: true,
 			nextStep: { signUpStep: "DONE" },
 		});
@@ -115,7 +118,7 @@ describe("signupHandler", () => {
 	});
 
 	// it("next redirects should be rethrown from catch to allow nextjs to handle the navigation ", async () => {
-	// 	(signUp as any).mockResolvedValue({
+	// 	mockedSignUp.mockResolvedValue({
 	// 		nextSteps: { signUpStep: "CONFIRM_SIGN_UP" },
 	// 	});
 

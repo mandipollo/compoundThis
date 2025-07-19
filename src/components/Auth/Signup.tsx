@@ -1,6 +1,6 @@
 "use client";
 
-import { handleSignUp } from "@/libs/cognitoActions";
+import { handleSignUp } from "@/libs/cognito/newUser/cognitoSignup";
 import Link from "next/link";
 import React, { useActionState } from "react";
 import { Button } from "../ui/button";

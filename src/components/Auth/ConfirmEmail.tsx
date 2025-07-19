@@ -1,6 +1,6 @@
 "use client";
 import React, { useActionState, useEffect } from "react";
-import { handleConfirmSignUp } from "@/libs/cognitoActions";
+import { handleConfirmSignUp } from "@/libs/cognito/newUser/cognitoConfirmSignup";
 import { Button } from "../ui/button";
 import {
 	Card,

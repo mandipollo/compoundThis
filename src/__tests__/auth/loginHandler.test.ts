@@ -16,10 +16,11 @@ import { signIn, resendSignUpCode } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
 import { FormState } from "@/libs/definitions";
 
-///////////////// actual modules
+const mockedSignIn = vi.mocked(signIn);
+const mockResendSignUpCode = vi.mocked(resendSignUpCode);
 const { handleLogin } = await vi.importActual<
-	typeof import("@/libs/cognitoActions")
->("@/libs/cognitoActions");
+	typeof import("@/libs/cognito/existingUser/cognitoLogin")
+>("@/libs/existingUser/cognitoLogin");
 
 describe("LoginHandler", () => {
 	const initialState: FormState = {
@@ -40,7 +41,7 @@ describe("LoginHandler", () => {
 
 	// login exceptions
 	it("returns User does not exists on UserNotFoundException ", async () => {
-		(signIn as any).mockRejectedValue({
+		mockedSignIn.mockRejectedValue({
 			name: "UserNotFoundException",
 		});
 		const formData = new FormData();
@@ -53,7 +54,7 @@ describe("LoginHandler", () => {
 	});
 
 	it("returns Incorrect email or password on NotAuthorizedException", async () => {
-		(signIn as any).mockRejectedValue({
+		mockedSignIn.mockRejectedValue({
 			name: "NotAuthorizedException",
 		});
 		const formData = new FormData();
@@ -66,7 +67,7 @@ describe("LoginHandler", () => {
 	});
 
 	it("returns User not confirmed on UserNotConfirmedException", async () => {
-		(signIn as any).mockRejectedValue({
+		mockedSignIn.mockRejectedValue({
 			name: "UserNotConfirmedException",
 		});
 		const formData = new FormData();
@@ -80,7 +81,7 @@ describe("LoginHandler", () => {
 
 	//
 	it("resends code and directs the user to confirm email page", async () => {
-		(signIn as any).mockResolvedValue({
+		mockedSignIn.mockResolvedValue({
 			nextStep: { signInStep: "CONFIRM_SIGN_UP" },
 			isSignedIn: false,
 		});
@@ -91,16 +92,18 @@ describe("LoginHandler", () => {
 
 		await handleLogin(initialState, formData);
 
-		expect(resendSignUpCode).toBeCalledWith({ username: "mandip@gmail.com" });
+		expect(mockResendSignUpCode).toBeCalledWith({
+			username: "mandip@gmail.com",
+		});
 		expect(redirect).toHaveBeenCalledWith("/auth/confirmEmail");
 	});
 
 	//
 	it("returns success on successfully signing in ", async () => {
 		// simulate successful login
-		(signIn as any).mockResolvedValue({
+		mockedSignIn.mockResolvedValue({
 			isSignedIn: true,
-			nextStep: undefined,
+			nextStep: { signInStep: "DONE" },
 		});
 
 		const formData = new FormData();

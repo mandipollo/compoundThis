@@ -7,12 +7,15 @@ vi.mock("aws-amplify/auth", () => ({
 vi.mock("next/navigation", () => ({
 	redirect: vi.fn(),
 }));
+
 // imports
 import { confirmSignUp } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
+
+const mockedConfirmSignup = vi.mocked(confirmSignUp);
 const { handleConfirmSignUp } = await vi.importActual<
-	typeof import("@/libs/cognitoActions")
->("@/libs/cognitoActions");
+	typeof import("@/libs/cognito/newUser/cognitoConfirmSignup")
+>("@/libs/cognito/newUser/cognitoConfirmSignup");
 
 describe("confirmSignupHandler", () => {
 	const initialState: ConfirmSignupFormState = {
@@ -36,7 +39,7 @@ describe("confirmSignupHandler", () => {
 	// exceptions
 
 	it("returns User does not exist on UserNotFoundException", async () => {
-		(confirmSignUp as any).mockRejectedValue({
+		mockedConfirmSignup.mockRejectedValue({
 			name: "UserNotFoundException",
 		});
 		const formData = new FormData();
@@ -49,7 +52,7 @@ describe("confirmSignupHandler", () => {
 	});
 
 	it("returns Verification code is incorrect on CodeMismatchException", async () => {
-		(confirmSignUp as any).mockRejectedValue({
+		mockedConfirmSignup.mockRejectedValue({
 			name: "CodeMismatchException",
 		});
 		const formData = new FormData();
@@ -61,7 +64,7 @@ describe("confirmSignupHandler", () => {
 		expect(result.errors.error).toEqual("Verification code is incorrect");
 	});
 	it("returns Verification code has expired on ExpiredCodeException", async () => {
-		(confirmSignUp as any).mockRejectedValue({
+		mockedConfirmSignup.mockRejectedValue({
 			name: "ExpiredCodeException",
 		});
 		const formData = new FormData();
@@ -88,8 +91,9 @@ describe("confirmSignupHandler", () => {
 	// success scenario
 
 	it("redirects user to login after successfull verification", async () => {
-		(confirmSignUp as any).mockResolvedValue({
+		mockedConfirmSignup.mockResolvedValue({
 			isSignUpComplete: true,
+			nextStep: { signUpStep: "DONE" },
 		});
 
 		const formData = new FormData();
