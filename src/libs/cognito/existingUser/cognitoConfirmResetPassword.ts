@@ -19,14 +19,10 @@ export async function handleConfirmResetPassword(
 	formData: FormData
 ) {
 	try {
-		const username = formData.get("username")?.toString();
-		const confirmationCode = formData.get("confirmationCode")?.toString();
-		const newPassword = formData.get("newPassword")?.toString();
-
 		// Validate form fields
 		const validatedFields = ConfirmNewPasswordFormSchema.safeParse({
-			username: formData.get("email"),
-			newPassword: formData.get("password"),
+			username: formData.get("username"),
+			newPassword: formData.get("newPassword"),
 			confirmationCode: formData.get("confirmationCode"),
 		});
 
@@ -39,32 +35,52 @@ export async function handleConfirmResetPassword(
 				error: "Please fix the highlighted errors",
 			};
 		}
-		const result = await confirmResetPassword({
-			username,
-			confirmationCode,
-			newPassword,
-		} as ConfirmResetPasswordInput);
+
+		// throws void on success , aws please throw success : true atleast .
+		await confirmResetPassword({
+			username: String(formData.get("username")),
+			confirmationCode: String(formData.get("confirmationCode")),
+			newPassword: String(formData.get("newPassword")),
+		});
+
 		return {
-			message: "",
+			message: "Password has been changed successfully",
 			formValidationErrors: {
 				confirmationCode: [],
 				username: [],
 				newPassword: [],
 			},
-			error: "Something went wrong",
-			success: false,
+			error: "",
+			success: true,
 		};
-	} catch (error) {
+	} catch (error: any) {
 		let errorMessage = "Something went wrong";
 
-		switch (error) {
+		switch (error.name) {
 			case "CodeMismatchException":
 				errorMessage = "Code is invalid";
+				break;
+			case "ExpiredCodeException":
+				errorMessage = "Expired code";
+				break;
+			case "InvalidParameterException":
+				errorMessage = "Invalid parameter";
+				break;
+			case "InvalidPasswordException":
+				errorMessage = "Invalid password";
+				break;
+			case "LimitExceededException":
+				errorMessage = "Limit exceeded";
+				break;
+			case "PasswordHistoryPolicyViolationException":
+				errorMessage = "Password policy voilation";
+				break;
+			case "UserNotConfirmedException":
+				errorMessage = "User not confirmed";
 				break;
 
 			default:
 				errorMessage = "Something went wrong";
-				break;
 		}
 		return {
 			message: "",
