@@ -13,21 +13,22 @@ vi.mock("next/navigation", () => ({
 ////////////////// imports
 import { redirect } from "next/navigation";
 import { signUp } from "aws-amplify/auth";
-import { FormState } from "@/libs/definitions";
+import { SignupFormState } from "@/libs/definitions";
 
 ////////////////// actual module imports
 
 const mockedSignUp = vi.mocked(signUp);
 const { handleSignUp } = await vi.importActual<
 	typeof import("@/libs/cognito/newUser/cognitoSignup")
->("@/libs/newUser/cognitoSignup");
+>("@/libs/cognito/newUser/cognitoSignup");
 
 describe("signupHandler", () => {
 	//
-	const initialState: FormState = {
-		errors: { name: [], email: [], password: [] },
-		message: undefined,
+	const initialState: SignupFormState = {
+		formValidationErrors: { name: [], email: [], password: [] },
+		message: "",
 		success: false,
+		error: "",
 	};
 	it("invalid inputs returns errors", async () => {
 		const formData = new FormData();
@@ -37,9 +38,9 @@ describe("signupHandler", () => {
 
 		const result = await handleSignUp(initialState, formData);
 
-		expect(result?.errors?.name).toBeDefined();
-		expect(result?.errors?.email).toBeDefined();
-		expect(result?.errors?.password).toBeDefined();
+		expect(result?.formValidationErrors?.name).toBeDefined();
+		expect(result?.formValidationErrors?.email).toBeDefined();
+		expect(result?.formValidationErrors?.password).toBeDefined();
 		expect(result?.success).toBe(false);
 	});
 
@@ -55,7 +56,7 @@ describe("signupHandler", () => {
 
 		const result = await handleSignUp(initialState, formData);
 
-		expect(result?.message).toEqual("Username is already taken");
+		expect(result?.error).toEqual("Username is already taken");
 	});
 	it("returns Too many attempts. Please try again later on LimitExceedException ", async () => {
 		mockedSignUp.mockRejectedValue({
@@ -68,9 +69,7 @@ describe("signupHandler", () => {
 
 		const result = await handleSignUp(initialState, formData);
 
-		expect(result?.message).toEqual(
-			"Too many attempts. Please try again later"
-		);
+		expect(result?.error).toEqual("Too many attempts. Please try again later");
 	});
 	it("returns Password does not meet requirements on InvalidPasswordException ", async () => {
 		mockedSignUp.mockRejectedValue({
@@ -83,7 +82,7 @@ describe("signupHandler", () => {
 
 		const result = await handleSignUp(initialState, formData);
 
-		expect(result?.message).toEqual("Password does not meet requirements");
+		expect(result?.error).toEqual("Password does not meet requirements");
 	});
 
 	// check redirects

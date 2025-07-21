@@ -2,7 +2,10 @@ import { redirect } from "next/navigation";
 import { confirmSignUp } from "aws-amplify/auth";
 
 // zod schema
-import { ConfirmFormSchema, ConfirmSignupFormState } from "@/libs/definitions";
+import {
+	ConfirmSignUpFormSchema,
+	ConfirmSignupFormState,
+} from "@/libs/definitions";
 
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
@@ -11,10 +14,10 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 export async function handleConfirmSignUp(
 	state: ConfirmSignupFormState,
 	formData: FormData
-) {
+): Promise<ConfirmSignupFormState> {
 	try {
 		// Validate form fields
-		const validatedFields = ConfirmFormSchema.safeParse({
+		const validatedFields = ConfirmSignUpFormSchema.safeParse({
 			email: formData.get("email"),
 			code: formData.get("code"),
 		});
@@ -23,11 +26,11 @@ export async function handleConfirmSignUp(
 		if (!validatedFields.success) {
 			const fieldArrays = validatedFields.error.flatten().fieldErrors;
 			return {
-				errors: {
+				formValidationErrors: {
 					email: fieldArrays.email?.[0] ?? "",
 					code: fieldArrays.code?.[0] ?? "",
-					error: "Please fix the highlighted errors",
 				},
+				error: "Please fix the highlighted errors",
 				success: false,
 				message: "",
 			};
@@ -41,15 +44,17 @@ export async function handleConfirmSignUp(
 		if (isSignUpComplete) {
 			redirect("/auth/login");
 			return {
-				errors: { email: "", code: "", error: "" },
+				formValidationErrors: { email: "", code: "" },
+				error: "",
 				message: "Verification complete",
 				success: true,
 			};
 		}
 
 		return {
-			errors: { email: "", code: "", error: "Something went wrong" },
+			formValidationErrors: { email: "", code: "" },
 			success: false,
+			error: "Something went wrong",
 			message: "",
 		};
 	} catch (error: any) {
@@ -76,7 +81,8 @@ export async function handleConfirmSignUp(
 		}
 
 		return {
-			errors: { email: "", code: "", error: errorMessage },
+			formValidationErrors: { email: "", code: "" },
+			error: errorMessage,
 			message: "",
 			success: false,
 		};

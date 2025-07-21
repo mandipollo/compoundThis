@@ -16,11 +16,12 @@ import { ForgotPasswordFormState } from "@/libs/definitions";
 
 const mockedResetPassword = vi.mocked(resetPassword);
 const { handleForgotPassword } = await vi.importActual<
-	typeof import("@/libs/cognito/existingUser/cognitoActionForgotPassword")
->("@/libs/existingUser/cognitoActionForgotPassword");
+	typeof import("@/libs/cognito/existingUser/cognitoForgotPassword")
+>("@/libs/cognito/existingUser/cognitoForgotPassword");
 
 describe("forgotPasswordHandler", () => {
 	const initialState: ForgotPasswordFormState = {
+		formValidationError: "",
 		error: "",
 		success: false,
 		message: "",
@@ -33,7 +34,7 @@ describe("forgotPasswordHandler", () => {
 		const result = await handleForgotPassword(initialState, formData);
 
 		expect(result?.success).toBe(false);
-		expect(result.error).toEqual("Invalid username");
+		expect(result.formValidationError).toBeDefined();
 	});
 	it("returns User does not exist on UserNotFoundException", async () => {
 		mockedResetPassword.mockRejectedValue({

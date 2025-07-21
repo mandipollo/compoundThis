@@ -14,18 +14,19 @@ vi.mock("next/navigation", () => ({
 ////////////////// imports
 import { signIn, resendSignUpCode } from "aws-amplify/auth";
 import { redirect } from "next/navigation";
-import { FormState } from "@/libs/definitions";
+import { LoginFormState } from "@/libs/definitions";
 
 const mockedSignIn = vi.mocked(signIn);
 const mockResendSignUpCode = vi.mocked(resendSignUpCode);
 const { handleLogin } = await vi.importActual<
 	typeof import("@/libs/cognito/existingUser/cognitoLogin")
->("@/libs/existingUser/cognitoLogin");
+>("@/libs/cognito/existingUser/cognitoLogin");
 
 describe("LoginHandler", () => {
-	const initialState: FormState = {
-		errors: { name: [], email: [], password: [] },
-		message: undefined,
+	const initialState: LoginFormState = {
+		formValidationErrors: { email: [], password: [] },
+		error: "",
+		message: "",
 		success: false,
 	};
 	it("returns error on invalid input", async () => {
@@ -34,8 +35,8 @@ describe("LoginHandler", () => {
 		formData.set("password", "");
 
 		const result = await handleLogin(initialState, formData);
-		expect(result?.errors?.email).toBeDefined();
-		expect(result?.errors?.password).toBeDefined();
+		expect(result?.formValidationErrors?.email).toBeDefined();
+		expect(result?.formValidationErrors?.password).toBeDefined();
 		expect(result?.success).toBe(false);
 	});
 
@@ -46,11 +47,11 @@ describe("LoginHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandip@gmail.com");
-		formData.set("password", "mandip123@");
+		formData.set("password", "Mandip123@");
 
 		const result = await handleLogin(initialState, formData);
 
-		expect(result?.message).toEqual("User does not exist.");
+		expect(result?.error).toEqual("User does not exist.");
 	});
 
 	it("returns Incorrect email or password on NotAuthorizedException", async () => {
@@ -59,11 +60,11 @@ describe("LoginHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandip@gmail.com");
-		formData.set("password", "mandip123@");
+		formData.set("password", "Mandip123@");
 
 		const result = await handleLogin(initialState, formData);
 
-		expect(result?.message).toEqual("Incorrect email or password.");
+		expect(result?.error).toEqual("Incorrect email or password.");
 	});
 
 	it("returns User not confirmed on UserNotConfirmedException", async () => {
@@ -72,11 +73,11 @@ describe("LoginHandler", () => {
 		});
 		const formData = new FormData();
 		formData.set("email", "mandip@gmail.com");
-		formData.set("password", "mandip123@");
+		formData.set("password", "Mandip123@");
 
 		const result = await handleLogin(initialState, formData);
 
-		expect(result?.message).toEqual("User not confirmed.");
+		expect(result?.error).toEqual("User not confirmed.");
 	});
 
 	//
@@ -88,7 +89,7 @@ describe("LoginHandler", () => {
 
 		const formData = new FormData();
 		formData.set("email", "mandip@gmail.com");
-		formData.set("password", "mandip123@");
+		formData.set("password", "Mandip123@");
 
 		await handleLogin(initialState, formData);
 
@@ -109,14 +110,15 @@ describe("LoginHandler", () => {
 		const formData = new FormData();
 
 		formData.set("email", "mandipgurung65@yahoo.com");
-		formData.set("password", "password123@");
+		formData.set("password", "Password123@");
 
 		const result = await handleLogin(initialState, formData);
 
 		expect(result).toEqual({
-			errors: {},
+			formValidationErrors: { email: [], password: [] },
 			success: true,
-			message: "Successfully loggedin",
+			message: "Successfully logged in",
+			error: "",
 		});
 	});
 });

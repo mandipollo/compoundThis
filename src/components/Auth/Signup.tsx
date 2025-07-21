@@ -14,11 +14,12 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { Label } from "@/components/ui/label";
-import { FormState } from "@/libs/definitions";
+import { SignupFormState } from "@/libs/definitions";
 
-const initialState: FormState = {
-	errors: { name: [], email: [], password: [] },
-	message: undefined,
+const initialState: SignupFormState = {
+	formValidationErrors: { name: [], email: [], password: [] },
+	message: "",
+	error: "",
 	success: false,
 };
 
@@ -48,9 +49,9 @@ const Signup = () => {
 								placeholder="josh"
 								required
 							/>
-							{state?.errors?.name && (
+							{state?.formValidationErrors?.name && (
 								<div className="text-red-600 flex flex-col text-xs">
-									<span>{state?.errors?.name}</span>
+									<span>{state?.formValidationErrors?.name}</span>
 								</div>
 							)}
 						</div>
@@ -63,11 +64,15 @@ const Signup = () => {
 								placeholder="m@example.com"
 								required
 							/>
-							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.email?.map(err => (
-									<span>{err}</span>
-								))}
-							</div>
+							{state?.formValidationErrors.email && (
+								<div className="text-red-600 flex flex-col text-xs">
+									{state?.formValidationErrors?.email?.map(
+										(err: string, index: number) => (
+											<span key={index}>{err}</span>
+										)
+									)}
+								</div>
+							)}
 						</div>
 						<div className="grid gap-2">
 							<div className="flex items-center">
@@ -79,17 +84,22 @@ const Signup = () => {
 									Forgot your password?
 								</a>
 							</div>
-							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.password?.map(err => (
-									<span>{err}</span>
-								))}
-							</div>
+
 							<Input name="password" id="password" type="password" required />
-							<span className="text-xs text-red-600">{state?.message}</span>
+							{state?.formValidationErrors.password && (
+								<div className="text-red-600 flex flex-col text-xs">
+									{state?.formValidationErrors?.password?.map(
+										(err: string, index: number) => (
+											<span key={index}>{err}</span>
+										)
+									)}
+								</div>
+							)}
 						</div>
 						<Button disabled={pending} type="submit" className="w-full">
 							Signup
 						</Button>
+						<span className="text-xs text-red-600">{state?.error}</span>
 					</div>
 				</form>
 			</CardContent>

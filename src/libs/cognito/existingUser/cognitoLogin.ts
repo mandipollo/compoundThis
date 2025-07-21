@@ -2,15 +2,15 @@ import { redirect } from "next/navigation";
 import { signIn, resendSignUpCode } from "aws-amplify/auth";
 
 // zod schema
-import { FormState, LoginFormSchema } from "@/libs/definitions";
+import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
 
 // redirects in try catch returns redirectError =>>>> redirects needs to be caught and thrown for next js to handle it
 
 ///////////////////// existing users
 export async function handleLogin(
-	state: FormState,
+	state: LoginFormState,
 	formData: FormData
-): Promise<FormState> {
+): Promise<LoginFormState> {
 	try {
 		// Validate form fields
 		const validatedFields = LoginFormSchema.safeParse({
@@ -21,9 +21,10 @@ export async function handleLogin(
 		// return on invalid form fields
 		if (!validatedFields.success) {
 			return {
-				errors: validatedFields.error.flatten().fieldErrors,
+				formValidationErrors: validatedFields.error.flatten().fieldErrors,
+				error: "Please fix the highlighted errors",
 				success: false,
-				message: "Please fix the highlighted errors",
+				message: "",
 			};
 		}
 		//
@@ -39,16 +40,27 @@ export async function handleLogin(
 				username: String(formData.get("email")),
 			});
 			redirect("/auth/confirmEmail");
-			return { errors: {}, success: true, message: "Please confirm email" };
+			return {
+				formValidationErrors: { email: [], password: [] },
+				error: "",
+				success: true,
+				message: "Please confirm email",
+			};
 		}
 		if (isSignedIn) {
-			return { errors: {}, success: true, message: "Successfully loggedin" };
+			return {
+				formValidationErrors: { email: [], password: [] },
+				error: "",
+				success: true,
+				message: "Successfully logged in",
+			};
 		}
 		// default fallback
 		return {
-			errors: {},
-			success: false,
-			message: "Something went wrong",
+			formValidationErrors: { email: [], password: [] },
+			error: "Somthing went wrong",
+			success: true,
+			message: "",
 		};
 	} catch (error: any) {
 		let errorMessage = "Unexpected error has occurred!";
@@ -67,6 +79,11 @@ export async function handleLogin(
 				errorMessage = "Unexpected error. Please try again";
 		}
 
-		return { errors: {}, success: false, message: errorMessage };
+		return {
+			formValidationErrors: { email: [], password: [] },
+			error: errorMessage,
+			success: false,
+			message: errorMessage,
+		};
 	}
 }

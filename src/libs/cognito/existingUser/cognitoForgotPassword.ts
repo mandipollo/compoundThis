@@ -16,20 +16,18 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 export async function handleForgotPassword(
 	state: ForgotPasswordFormState,
 	formData: FormData
-) {
+): Promise<ForgotPasswordFormState> {
 	try {
 		const username = String(formData.get("username"));
 		const validatedFields = ForgotPasswordFormSchema.safeParse({
 			username: formData.get("username"),
 		});
 
-		if (!username) {
-			return { error: "Invalid username", message: "", success: false };
-		}
 		if (!validatedFields.success) {
 			const fieldArrays = validatedFields.error.flatten().fieldErrors;
 			return {
-				error: fieldArrays?.username?.[0] || "",
+				formValidationError: fieldArrays?.username?.[0] || "",
+				error: "Please fix the highlighted error",
 				success: false,
 				message: "",
 			};
@@ -40,6 +38,7 @@ export async function handleForgotPassword(
 		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
 			redirect("/auth/newPassword");
 			return {
+				formValidationError: "",
 				success: true,
 				message: `A confirmation code has been sent to your ${
 					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
@@ -48,6 +47,7 @@ export async function handleForgotPassword(
 			};
 		}
 		return {
+			formValidationError: "",
 			success: false,
 			message: "",
 			error: "Something went wrong",
@@ -71,6 +71,11 @@ export async function handleForgotPassword(
 			default:
 				errorMessage = "Something went wrong";
 		}
-		return { message: "", error: errorMessage, success: false };
+		return {
+			formValidationError: "",
+			message: "",
+			error: errorMessage,
+			success: false,
+		};
 	}
 }

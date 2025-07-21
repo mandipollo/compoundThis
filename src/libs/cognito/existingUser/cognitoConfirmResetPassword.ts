@@ -5,7 +5,7 @@ import {
 
 // zod schema
 import {
-	confirmPasswordResetFormState,
+	ConfirmPasswordResetFormState,
 	ConfirmNewPasswordFormSchema,
 } from "@/libs/definitions";
 
@@ -15,9 +15,9 @@ import {
 // retrieve username when directed from the resetpassword section
 // auto login user when code is accepted
 export async function handleConfirmResetPassword(
-	state: confirmPasswordResetFormState,
+	state: ConfirmPasswordResetFormState,
 	formData: FormData
-) {
+): Promise<ConfirmPasswordResetFormState> {
 	try {
 		// Validate form fields
 		const validatedFields = ConfirmNewPasswordFormSchema.safeParse({

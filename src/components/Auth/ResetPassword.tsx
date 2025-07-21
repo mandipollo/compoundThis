@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { confirmPasswordResetFormState } from "@/libs/definitions";
+import { ConfirmPasswordResetFormState } from "@/libs/definitions";
 
-const initialState: confirmPasswordResetFormState = {
+const initialState: ConfirmPasswordResetFormState = {
 	formValidationErrors: { username: [], confirmationCode: [], newPassword: [] },
 	success: false,
 	message: "",
@@ -51,6 +51,11 @@ const ResetPassword = () => {
 								required
 							/>
 						</div>
+						{state?.formValidationErrors.username && (
+							<div className="text-red-600 flex flex-col text-xs">
+								<p>{state?.formValidationErrors.username}</p>
+							</div>
+						)}
 						<div className="grid gap-2">
 							<Label htmlFor="confirmationCode">Confirmation code</Label>
 							<Input
@@ -60,16 +65,28 @@ const ResetPassword = () => {
 								required
 							/>
 						</div>
+						{state?.formValidationErrors.confirmationCode && (
+							<div className="text-red-600 flex flex-col text-xs">
+								<p>{state?.formValidationErrors.confirmationCode}</p>
+							</div>
+						)}
 						<div className="grid gap-2">
 							<Label htmlFor="newPassword">New Password</Label>
 							<Input name="newPassword" id="newPassword" type="text" required />
-							<div className="text-red-600 flex flex-col text-xs">
-								<p>{state?.message}</p>
-							</div>
 						</div>
+						{state?.formValidationErrors.newPassword && (
+							<div className="text-red-600 flex flex-col text-xs">
+								<p>{state?.formValidationErrors.newPassword}</p>
+							</div>
+						)}
 						<Button disabled={pending} type="submit" className="w-full">
 							Submit
 						</Button>
+						{state?.error && (
+							<div className="text-red-600 flex flex-col text-xs">
+								<p>{state?.error}</p>
+							</div>
+						)}
 					</div>
 				</form>
 			</CardContent>

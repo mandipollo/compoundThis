@@ -2,12 +2,12 @@ import { redirect } from "next/navigation";
 import { signUp } from "aws-amplify/auth";
 
 // zod schema
-import { SignupFormSchema, FormState } from "@/libs/definitions";
+import { SignupFormSchema, SignupFormState } from "@/libs/definitions";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 export async function handleSignUp(
-	state: FormState,
+	state: SignupFormState,
 	formData: FormData
-): Promise<FormState> {
+): Promise<SignupFormState> {
 	try {
 		// Validate form fields
 		const validatedFields = SignupFormSchema.safeParse({
@@ -19,9 +19,10 @@ export async function handleSignUp(
 		// If any form fields are invalid, return early
 		if (!validatedFields.success) {
 			return {
-				errors: validatedFields.error.flatten().fieldErrors,
+				formValidationErrors: validatedFields.error.flatten().fieldErrors,
+				error: "Please fix the highlighted errors",
 				success: false,
-				message: "Please fix the highlighted errors",
+				message: "",
 			};
 		}
 
@@ -49,9 +50,10 @@ export async function handleSignUp(
 		}
 
 		return {
-			errors: {},
+			formValidationErrors: { name: [], email: [], password: [] },
 			success: false,
-			message: "Error has occurred!",
+			message: "",
+			error: "Something went wrong",
 		};
 	} catch (error: any) {
 		if (isRedirectError(error)) {
@@ -75,6 +77,11 @@ export async function handleSignUp(
 				break;
 		}
 
-		return { errors: {}, success: false, message: errorMessage };
+		return {
+			formValidationErrors: { email: [], name: [], password: [] },
+			success: false,
+			message: "",
+			error: errorMessage,
+		};
 	}
 }

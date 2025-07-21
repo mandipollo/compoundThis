@@ -11,8 +11,7 @@ vi.mock("aws-amplify/auth", () => ({
 
 // imports
 import { confirmResetPassword } from "aws-amplify/auth";
-import { redirect } from "next/navigation";
-import { confirmPasswordResetFormState } from "@/libs/definitions";
+import { ConfirmPasswordResetFormState } from "@/libs/definitions";
 
 const mockedConfirmResetPassword = vi.mocked(confirmResetPassword);
 // actual imports
@@ -21,7 +20,7 @@ const { handleConfirmResetPassword } = await vi.importActual<
 	typeof import("@/libs/cognito/existingUser/cognitoConfirmResetPassword")
 >("@/libs/cognito/existingUser/cognitoConfirmResetPassword");
 
-const initalState: confirmPasswordResetFormState = {
+const initalState: ConfirmPasswordResetFormState = {
 	formValidationErrors: { username: [], newPassword: [], confirmationCode: [] },
 	success: false,
 	error: "",

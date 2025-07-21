@@ -19,17 +19,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/userStore";
 
-import { FormState } from "@/libs/definitions";
+import { LoginFormState } from "@/libs/definitions";
 
-const initialState: FormState = {
-	errors: { name: [], email: [], password: [] },
-	message: undefined,
+const initialState: LoginFormState = {
+	formValidationErrors: { email: [], password: [] },
+	error: "",
+	message: "",
 	success: false,
 };
 
 const Login = () => {
 	const router = useRouter();
 	const [state, action, pending] = useActionState(handleLogin, initialState);
+	console.log(state);
 
 	// sync user state to zustand when log in is successful
 	const { fetchUser } = useUserStore();
@@ -68,9 +70,11 @@ const Login = () => {
 								required
 							/>
 							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.email?.map(err => (
-									<span>{err}</span>
-								))}
+								{state?.formValidationErrors.email?.map(
+									(err: string, index: number) => (
+										<span key={index}>{err}</span>
+									)
+								)}
 							</div>
 						</div>
 						<div className="grid gap-2">
@@ -84,12 +88,14 @@ const Login = () => {
 								</Link>
 							</div>
 							<div className="text-red-600 flex flex-col text-xs">
-								{state?.errors?.password?.map((err, index) => (
-									<span key={index}>{err}</span>
-								))}
+								{state?.formValidationErrors.password?.map(
+									(err: string, index: number) => (
+										<span key={index}>{err}</span>
+									)
+								)}
 							</div>
 							<Input name="password" id="password" type="password" required />
-							<span className="text-xs text-red-600">{state?.message}</span>
+							<span className="text-xs text-red-600">{state?.error}</span>
 						</div>
 						<Button disabled={pending} type="submit" className="w-full">
 							Login

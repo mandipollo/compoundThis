@@ -1,7 +1,7 @@
 "use client";
 
 //
-import { handleForgotPassword } from "@/libs/cognito/existingUser/cognitoActionForgotPassword";
+import { handleForgotPassword } from "@/libs/cognito/existingUser/cognitoForgotPassword";
 import Link from "next/link";
 import React, { useActionState } from "react";
 
@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { ForgotPasswordFormState } from "@/libs/definitions";
 
 const initialState: ForgotPasswordFormState = {
+	formValidationError: "",
 	error: "",
 	success: false,
 	message: "",
@@ -54,14 +55,21 @@ const ForgotPassword = () => {
 								placeholder="m@example.com"
 								required
 							/>
-							<div className="text-red-600 flex flex-col text-xs">
-								<p>{state?.error}</p>
-							</div>
+							{state?.formValidationError && (
+								<div className="text-red-600 flex flex-col text-xs">
+									<p>{state?.formValidationError}</p>
+								</div>
+							)}
 						</div>
 
 						<Button disabled={pending} type="submit" className="w-full">
 							Submit
 						</Button>
+						{state?.error && (
+							<div className="text-red-600 flex flex-col text-xs">
+								<p>{state?.error}</p>
+							</div>
+						)}
 					</div>
 				</form>
 			</CardContent>

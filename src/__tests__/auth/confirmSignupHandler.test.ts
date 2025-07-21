@@ -19,7 +19,8 @@ const { handleConfirmSignUp } = await vi.importActual<
 
 describe("confirmSignupHandler", () => {
 	const initialState: ConfirmSignupFormState = {
-		errors: { email: "", code: "", error: "" },
+		formValidationErrors: { email: "", code: "" },
+		error: "",
 		message: "",
 		success: false,
 	};
@@ -31,8 +32,8 @@ describe("confirmSignupHandler", () => {
 
 		const result = await handleConfirmSignUp(initialState, formData);
 
-		expect(result?.errors?.email).toBeDefined();
-		expect(result?.errors?.code).toBeDefined();
+		expect(result?.formValidationErrors?.email).toBeDefined();
+		expect(result?.formValidationErrors?.code).toBeDefined();
 		expect(result?.success).toBe(false);
 	});
 
@@ -48,7 +49,7 @@ describe("confirmSignupHandler", () => {
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.errors.error).toEqual("User does not exist");
+		expect(result.error).toEqual("User does not exist");
 	});
 
 	it("returns Verification code is incorrect on CodeMismatchException", async () => {
@@ -61,7 +62,7 @@ describe("confirmSignupHandler", () => {
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.errors.error).toEqual("Verification code is incorrect");
+		expect(result.error).toEqual("Verification code is incorrect");
 	});
 	it("returns Verification code has expired on ExpiredCodeException", async () => {
 		mockedConfirmSignup.mockRejectedValue({
@@ -73,7 +74,7 @@ describe("confirmSignupHandler", () => {
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.errors.error).toEqual("Verification code has expired");
+		expect(result.error).toEqual("Verification code has expired");
 	});
 	it("returns Too many incorrect attempts on TooManyFailedAttemptsException", async () => {
 		(confirmSignUp as any).mockRejectedValue({
@@ -85,7 +86,7 @@ describe("confirmSignupHandler", () => {
 		const result = await handleConfirmSignUp(initialState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.errors.error).toEqual("Too many incorrect attempts");
+		expect(result.error).toEqual("Too many incorrect attempts");
 	});
 
 	// success scenario
@@ -102,10 +103,11 @@ describe("confirmSignupHandler", () => {
 		formData.set("code", "123456");
 		const result = await handleConfirmSignUp(initialState, formData);
 
-		expect(redirect).toBeCalledWith("/auth/login");
+		expect(redirect).toHaveBeenCalledWith("/auth/login");
 		expect(result).toEqual({
 			success: true,
-			errors: { email: "", code: "", error: "" },
+			formValidationErrors: { email: "", code: "" },
+			error: "",
 			message: "Verification complete",
 		});
 	});

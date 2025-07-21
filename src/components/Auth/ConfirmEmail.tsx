@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState } from "react";
 import { handleConfirmSignUp } from "@/libs/cognito/newUser/cognitoConfirmSignup";
 import { Button } from "../ui/button";
 import {
@@ -13,11 +13,11 @@ import {
 import { ConfirmSignupFormState } from "@/libs/definitions";
 
 const initialState: ConfirmSignupFormState = {
-	errors: {
+	formValidationErrors: {
 		email: "",
 		code: "",
-		error: "",
 	},
+	error: "",
 	success: false,
 	message: "",
 };
@@ -43,9 +43,9 @@ const ConfirmEmail = () => {
 							type="email"
 						/>
 					</div>
-					{state?.errors.email && (
+					{state?.formValidationErrors?.email && (
 						<span className="text-red-600 flex flex-col text-xs">
-							{state.errors.email}
+							{state.formValidationErrors.email}
 						</span>
 					)}
 					<div className="flex flex-col gap-2">
@@ -57,14 +57,14 @@ const ConfirmEmail = () => {
 							type="text"
 						/>
 					</div>
-					{state?.errors.code && (
+					{state?.formValidationErrors?.code && (
 						<span className="text-red-600 flex flex-col text-xs">
-							{state.errors.code}
+							{state.formValidationErrors.code}
 						</span>
 					)}
-					{state?.errors.error && (
+					{state?.error && (
 						<span className="text-red-600 flex flex-col text-xs">
-							{state.errors.error}
+							{state.error}
 						</span>
 					)}
 					<button
