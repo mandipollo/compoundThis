@@ -5,6 +5,7 @@ import { vi, describe, it, expect } from "vitest";
 vi.mock("aws-amplify/auth", () => ({
 	signIn: vi.fn(),
 	resendSignUpCode: vi.fn(),
+	// fetchAuthSession: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -18,6 +19,7 @@ import { LoginFormState } from "@/libs/definitions";
 
 const mockedSignIn = vi.mocked(signIn);
 const mockResendSignUpCode = vi.mocked(resendSignUpCode);
+
 const { handleLogin } = await vi.importActual<
 	typeof import("@/libs/cognito/existingUser/cognitoLogin")
 >("@/libs/cognito/existingUser/cognitoLogin");

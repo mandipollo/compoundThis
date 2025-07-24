@@ -48,7 +48,7 @@ const instrument = [
 
 const Watchlist = () => {
 	return (
-		<div className="bg-primary text-white border rounded-md flex flex-1 p-4 flex-col">
+		<div className="bg-white border rounded-md flex flex-1 p-4 flex-col">
 			<h2 className="text-xl">Your Watchlist</h2>
 			<Table>
 				<TableBody>

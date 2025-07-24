@@ -12,7 +12,6 @@ const Dashboard = () => {
 				<UserDash />
 				<SearchBar />
 			</div>
-
 			<Overview />
 			<OverviewDetails />
 			<Watchlist />

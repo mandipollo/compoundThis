@@ -13,7 +13,7 @@ const FeatureListItem: React.FC<FeatureListItemProps> = ({
 }) => {
 	return (
 		<li
-			className="flex flex-col gap-2 max-w-xs w-full bg-slate-50 p-4 border-md"
+			className="flex flex-col gap-2 max-w-xs w-full bg-slate-50 p-4 border-md rounded-md"
 			role="listitem"
 		>
 			<p className="text-xl">{title}</p>

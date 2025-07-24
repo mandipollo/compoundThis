@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/userStore";
 
 import { LoginFormState } from "@/libs/definitions";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 const initialState: LoginFormState = {
 	formValidationErrors: { email: [], password: [] },
@@ -28,17 +29,28 @@ const initialState: LoginFormState = {
 	success: false,
 };
 
+//TODO: store user session to be used in middleware
 const Login = () => {
 	const router = useRouter();
 	const [state, action, pending] = useActionState(handleLogin, initialState);
-	console.log(state);
 
-	// sync user state to zustand when log in is successful
+	// sync user state to zustand && set a cookie to be used by middleware for routing when log in is successful
 	const { fetchUser } = useUserStore();
 	useEffect(() => {
 		if (state?.success) {
 			const syncUser = async () => {
 				await fetchUser();
+				const userSession = await fetchAuthSession();
+				const userId = userSession?.tokens?.idToken?.toString();
+
+				const response = await fetch("/auth/login/api", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ userId }),
+				});
+
 				router.push("/user");
 			};
 			syncUser();

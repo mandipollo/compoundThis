@@ -3,7 +3,7 @@ import OverviewItem from "./OverviewItem";
 
 const Overview = () => {
 	return (
-		<section className="grid grid-cols-3 gap-2">
+		<section className="grid grid-cols-3 gap-2 ">
 			<OverviewItem
 				overviewTitle="My Investment Assets"
 				base={176289}
