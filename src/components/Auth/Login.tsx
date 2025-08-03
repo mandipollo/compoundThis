@@ -19,8 +19,9 @@ import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/userStore";
 
 import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
-import { SignInOutput } from "aws-amplify/auth";
+import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
 import { loginUser } from "@/libs/cognito/existingUser/loginUser";
+import { stringify } from "querystring";
 
 const initialState: LoginFormState = {
 	formValidationErrors: { email: [], password: [] },
@@ -84,6 +85,16 @@ const Login = () => {
 			};
 		}
 		if (isSignedIn) {
+			// pass token to the api route hander
+			const sessions = await fetchAuthSession();
+			const idToken = sessions.tokens?.idToken;
+
+			await fetch("/api/auth/setToken", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ idToken }),
+			});
+
 			// zustand user state
 			await fetchUser();
 

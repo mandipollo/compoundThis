@@ -4,6 +4,8 @@ import { authenticatedUser } from "./utils/amplify-server-utils";
 //TODO: Replace cookies with jwt and validate using aws-jwt-verify
 
 export async function middleware(request: NextRequest) {
+	const idToken = request.cookies?.get("idToken");
+	console.log(idToken);
 	// const response = NextResponse.next();
 	// const user = await authenticatedUser({ request, response });
 

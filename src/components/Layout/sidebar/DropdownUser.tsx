@@ -17,12 +17,13 @@ const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const handleSignout = async () => {
 		await signOutUser();
 
-		// const response = await fetch("/api/auth/signout", {
-		// 	method: "GET",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// });
+		const response = await fetch("/api/auth/removeToken", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		console.log(response);
 
 		redirect("/");
 	};
