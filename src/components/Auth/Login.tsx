@@ -87,7 +87,7 @@ const Login = () => {
 		if (isSignedIn) {
 			// pass token to the api route hander
 			const sessions = await fetchAuthSession();
-			const idToken = sessions.tokens?.idToken;
+			const idToken = sessions.tokens?.idToken?.toString();
 
 			await fetch("/api/auth/setToken", {
 				method: "POST",
