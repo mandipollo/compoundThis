@@ -3,10 +3,10 @@ import React from "react";
 
 const SearchBar = () => {
 	return (
-		<div className="flex flex-row relative h-10 max-w-2xl w-full text-white">
+		<div className="flex flex-row relative h-10 max-w-2xl w-full">
 			<input
 				placeholder="Search for stocks , ETFs and more"
-				className="flex w-full h-full pl-10 rounded-md bg-primary outline-1 outline-[#18312e] focus:outline-green-700 transition-colors duration-300 ease-in"
+				className="flex w-full h-full pl-10 placeholder:text-gray-400 text-black rounded-md bg-white border focus:outline-green-700 transition-colors duration-300 ease-in"
 			></input>
 			<Image
 				className="absolute top-3 left-4"

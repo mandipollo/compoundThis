@@ -82,13 +82,6 @@ export async function handleLogin(
 				errorMessage = "Unexpected error. Please try again";
 		}
 
-		console.error("Error details:", {
-			name: error?.name,
-			message: error?.message,
-			code: error?.code, // some Amplify errors use code instead of name
-			error,
-		});
-
 		return {
 			formValidationErrors: { email: [], password: [] },
 			error: errorMessage,

@@ -16,9 +16,3 @@ export async function POST(req: NextRequest) {
 	cookieStore.set("userId", userId);
 	return new NextResponse("Cookie set", { status: 200 });
 }
-
-export async function GET(req: NextRequest) {
-	const cookieStore = await cookies();
-	cookieStore.delete("userId");
-	return new NextResponse("Cookie deleted", { status: 200 });
-}

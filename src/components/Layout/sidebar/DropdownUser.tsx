@@ -15,14 +15,14 @@ import { ChevronUp, User2 } from "lucide-react";
 const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const { signOutUser } = useUserStore();
 	const handleSignout = async () => {
-		signOutUser();
+		await signOutUser();
 
-		const response = await fetch("/auth/login/api", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		// const response = await fetch("/api/auth/signout", {
+		// 	method: "GET",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// });
 
 		redirect("/");
 	};

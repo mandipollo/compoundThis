@@ -5,13 +5,15 @@ import React from "react";
 
 const Navbar = () => {
 	const { isAuthenticated } = useUserStore();
+
+	if (isAuthenticated) {
+		return;
+	}
 	return (
 		<nav
 			role="navigation"
 			aria-label="Main Navigation"
-			className={`${
-				isAuthenticated ? "hidden " : "flex flex-col"
-			}  w-full bg-primary text-white`}
+			className="flex flex-col w-full bg-primary text-white"
 		>
 			<div className="flex flex-row p-2 items-center justify-between w-full gap-2">
 				<Link href={"/"} className="flex items-center px-4">

@@ -1,6 +1,6 @@
 "use client";
-import React, { useActionState } from "react";
-import { handleConfirmSignUp } from "@/libs/cognito/newUser/cognitoConfirmSignup";
+import React, { useState } from "react";
+
 import { Button } from "../ui/button";
 import {
 	Card,
@@ -10,30 +10,83 @@ import {
 	CardFooter,
 } from "../ui/card";
 
-import { ConfirmSignupFormState } from "@/libs/definitions";
+import {
+	ConfirmSignUpFormSchema,
+	ConfirmSignupFormState,
+} from "@/libs/definitions";
+import { useRouter } from "next/navigation";
+import { confirmEmail } from "@/libs/cognito/newUser/confirmEmail";
+import { ConfirmSignUpOutput } from "aws-amplify/auth";
 
 const initialState: ConfirmSignupFormState = {
-	formValidationErrors: {
-		email: "",
-		code: "",
-	},
+	formValidationErrors: { code: "", email: "" },
 	error: "",
 	success: false,
 	message: "",
 };
 const ConfirmEmail = () => {
-	const [state, action, pending] = useActionState(
-		handleConfirmSignUp,
-		initialState
-	);
+	const [state, setState] = useState(initialState);
+	const [pending, setPending] = useState(false);
+	const router = useRouter();
 
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setPending(true);
+
+		const formData = new FormData(e.currentTarget);
+
+		const email = formData.get("email") as string;
+		const code = formData.get("code") as string;
+
+		// ✅ Validate with Zod
+		const validated = ConfirmSignUpFormSchema.safeParse({
+			email,
+			code,
+		});
+		if (!validated.success) {
+			const fieldArrays = validated.error.flatten().fieldErrors;
+
+			setState({
+				...initialState,
+				formValidationErrors: {
+					email: fieldArrays.email?.[0] ?? "",
+					code: fieldArrays.code?.[0] ?? "",
+				},
+				error: "Please fix the highlighted errors",
+				success: false,
+			});
+			setPending(false);
+			return;
+		}
+
+		// ✅ Try Cognito sign up
+		const { success, error, result } = await confirmEmail(email, code);
+
+		if (!success) {
+			setState({ ...initialState, error });
+			setPending(false);
+			return;
+		}
+
+		const { isSignUpComplete, nextStep } = result as ConfirmSignUpOutput;
+
+		// ✅ Optionally call your API route to create DB user here
+
+		if (isSignUpComplete) {
+			router.push("/auth/login");
+		} else {
+			setState({ ...initialState, message: "Check your email to confirm." });
+		}
+
+		setPending(false);
+	};
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
 			<CardHeader>
 				<CardTitle>Please verify your account</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<form className="grid grid-cols-1 gap-2 " action={action}>
+				<form className="grid grid-cols-1 gap-2 " onSubmit={handleSubmit}>
 					<div className="flex flex-col gap-2">
 						<label htmlFor="email">Email</label>
 						<input
