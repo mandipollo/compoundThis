@@ -8,7 +8,9 @@ import {
 import React from "react";
 
 import { ResultItem } from "./searchQueryTypes";
+import { useSelectedInstrumentStore } from "@/store/selectedInstrumentStore";
 const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
+	const { setSelectedInstrument } = useSelectedInstrumentStore();
 	if (!results || results.length === 0) {
 		return;
 	}
@@ -19,7 +21,12 @@ const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
 			<CommandGroup heading="Suggestions...">
 				{results.map(item => {
 					return (
-						<CommandItem key={item.ticker}>
+						<CommandItem
+							onMouseDown={() => {
+								setSelectedInstrument(item.ticker);
+							}}
+							key={item.ticker}
+						>
 							{item.ticker} - <span className=""> {item.name}</span>
 							<CommandShortcut>
 								{item.market}-{item.primary_exchange}

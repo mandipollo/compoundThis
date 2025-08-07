@@ -40,7 +40,7 @@ const SearchBar = () => {
 	}, [input]);
 
 	return (
-		<div className="flex flex-col gap-.5 max-w-2xl w-full z-40 absolute">
+		<div className="flex flex-col gap-.5 max-w-2xl w-full ">
 			<Input
 				onFocus={() => setHideCommandList(false)}
 				onBlur={() => setHideCommandList(true)}

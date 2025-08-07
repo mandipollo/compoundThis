@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type ResultItem = {
 	active: boolean;
 	cik?: string;
@@ -11,4 +13,8 @@ export type ResultItem = {
 	share_class_figi: string;
 	ticker: string;
 	type: string;
+};
+
+export type SearchBarType = {
+	setSelectedStock?: Dispatch<SetStateAction<string>>;
 };
