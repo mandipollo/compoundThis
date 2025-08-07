@@ -21,7 +21,6 @@ import { useUserStore } from "@/store/userStore";
 import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
 import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
 import { loginUser } from "@/libs/cognito/existingUser/loginUser";
-import { stringify } from "querystring";
 
 const initialState: LoginFormState = {
 	formValidationErrors: { email: [], password: [] },
@@ -88,11 +87,12 @@ const Login = () => {
 			// pass token to the api route hander
 			const sessions = await fetchAuthSession();
 			const idToken = sessions.tokens?.idToken?.toString();
+			const tokenExp = sessions.tokens?.idToken?.payload.exp;
 
 			await fetch("/api/auth/setToken", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ idToken }),
+				body: JSON.stringify({ idToken, tokenExp }),
 			});
 
 			// zustand user state
@@ -166,7 +166,7 @@ const Login = () => {
 							<span className="text-xs text-red-600">{state?.error}</span>
 						</div>
 						<Button disabled={pending} type="submit" className="w-full">
-							Login
+							{pending ? "Logging in..." : "Login"}
 						</Button>
 					</div>
 				</form>

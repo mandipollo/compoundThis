@@ -1,7 +1,4 @@
-import {
-	confirmResetPassword,
-	type ConfirmResetPasswordInput,
-} from "aws-amplify/auth";
+import { confirmResetPassword } from "aws-amplify/auth";
 
 // zod schema
 import {

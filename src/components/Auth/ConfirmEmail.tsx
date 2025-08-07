@@ -59,7 +59,7 @@ const ConfirmEmail = () => {
 			return;
 		}
 
-		// ✅ Try Cognito sign up
+		// Cognito sign up
 		const { success, error, result } = await confirmEmail(email, code);
 
 		if (!success) {
@@ -70,8 +70,7 @@ const ConfirmEmail = () => {
 
 		const { isSignUpComplete, nextStep } = result as ConfirmSignUpOutput;
 
-		// ✅ Optionally call your API route to create DB user here
-
+		//
 		if (isSignUpComplete) {
 			router.push("/auth/login");
 		} else {
@@ -120,13 +119,13 @@ const ConfirmEmail = () => {
 							{state.error}
 						</span>
 					)}
-					<button
-						aria-disabled={pending}
+					<Button
+						disabled={pending}
 						type="submit"
 						className="border bg-primary text-white rounded-md p-2"
 					>
-						SUBMIT
-					</button>
+						{pending ? "Submitting..." : "Submit"}
+					</Button>
 				</form>
 			</CardContent>
 			<CardFooter className="flex-col gap-2">

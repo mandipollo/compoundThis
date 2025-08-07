@@ -9,10 +9,10 @@ const clientId = String(
 
 //FIXME:DEFINE A PREDICTABLE FUNCTION RESPONSE TYPE
 export async function verifyJWT(
-	token: string | undefined
+	idToken: string | undefined
 ): Promise<{ payload: any; success: boolean; message: string; error: string }> {
 	try {
-		if (!token) {
+		if (!idToken) {
 			return {
 				payload: "",
 				success: false,
@@ -26,7 +26,7 @@ export async function verifyJWT(
 			clientId,
 		});
 
-		const payload = await verifier.verify(token);
+		const payload = await verifier.verify(idToken);
 
 		return { payload, success: true, message: "Token verified", error: "" };
 	} catch (error: any) {

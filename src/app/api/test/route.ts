@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-	const response = await fetch("http://localhost:8080/test", {
+	const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
+
+	if (!server) {
+		return;
+	}
+	const response = await fetch(server, {
 		method: "GET",
 		headers: { "Content-Type": "application/json" },
 	});

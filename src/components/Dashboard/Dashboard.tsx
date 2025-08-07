@@ -8,9 +8,8 @@ import UserDash from "./UserDash";
 const Dashboard = () => {
 	return (
 		<section className="flex flex-col gap-2 w-full h-full pt-8 pb-2 pr-2">
-			<div className="flex flex-row gap-2 w-full items-center justify-between">
+			<div className="flex relative flex-row gap-2 w-full  ">
 				<UserDash />
-				<SearchBar />
 			</div>
 			<Overview />
 			<OverviewDetails />

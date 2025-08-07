@@ -25,6 +25,7 @@ const initialState: SignupFormState = {
 	success: false,
 };
 
+//TODO:CREATE A USER DB ON SUCCESSFULL SIGNUP
 const Signup = () => {
 	const [state, setState] = useState(initialState);
 	const [pending, setPending] = useState(false);
@@ -39,7 +40,7 @@ const Signup = () => {
 		const email = formData.get("email") as string;
 		const password = formData.get("password") as string;
 
-		// ✅ Validate with Zod
+		// Validate with Zod
 		const validated = SignupFormSchema.safeParse({ name, email, password });
 		if (!validated.success) {
 			setState({
@@ -51,7 +52,7 @@ const Signup = () => {
 			return;
 		}
 
-		// ✅ Try Cognito sign up
+		// Try Cognito sign up
 		const { success, error, result } = await signUpUser(name, email, password);
 
 		if (!success) {
@@ -61,8 +62,6 @@ const Signup = () => {
 		}
 
 		const { isSignUpComplete, nextStep } = result as SignUpOutput;
-
-		// ✅ Optionally call your API route to create DB user here
 
 		if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
 			router.push("/auth/confirmEmail");

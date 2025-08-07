@@ -12,7 +12,7 @@ const Hero = () => {
 					<p className="text-lg text-gray-300">
 						A proper financial overview will give you peace of mind.
 					</p>
-					<SearchBar />
+					{/* <SearchBar /> */}
 				</div>
 			</div>
 		</section>
