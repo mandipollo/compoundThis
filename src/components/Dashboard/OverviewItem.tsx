@@ -10,7 +10,7 @@ const OverviewItem = ({
 	diff: number;
 }) => {
 	return (
-		<Card className=" p-4 rounded-md gap-4 bg-white border ">
+		<Card className=" p-4 rounded-md gap-4 bg-white border shadow-md ">
 			<CardHeader>
 				<CardTitle className=" font-light">{overviewTitle}</CardTitle>
 			</CardHeader>

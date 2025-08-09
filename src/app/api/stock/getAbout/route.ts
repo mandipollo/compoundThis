@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
 	const ticker = searchParams.get("ticker");
 	const response = await fetch(
-		`${server}/finance-quote/suggestions?ticker=${ticker}`,
+		`${server}/finance-quote/about?ticker=${ticker}`,
 		{
 			method: "GET",
 			headers: { "Content-Type": "application/json" },

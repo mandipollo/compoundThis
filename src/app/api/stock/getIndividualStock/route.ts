@@ -11,10 +11,13 @@ export async function GET(request: NextRequest) {
 
 	const { searchParams } = new URL(request.url);
 	const ticker = searchParams.get("ticker");
-	const response = await fetch(`${server}/getStock?ticker=${ticker}`, {
-		method: "GET",
-		headers: { "Content-Type": "application/json" },
-	});
+	const response = await fetch(
+		`${server}/finance-quote/fundamental?ticker=${ticker}`,
+		{
+			method: "GET",
+			headers: { "Content-Type": "application/json" },
+		}
+	);
 
 	const data = await response.json();
 	return NextResponse.json({ success: true, data });

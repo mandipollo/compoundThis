@@ -19,7 +19,7 @@ const InstrumentTopNews = () => {
 										Meta hits all time high as mark zuck goes on a hiring
 										frenzy!
 									</span>
-									<span className="text-gray-400 text-xs">
+									<span className="text-muted-foreground text-xs">
 										Yahoo finance : 8 minutes ago
 									</span>
 								</div>

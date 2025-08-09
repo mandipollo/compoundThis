@@ -10,8 +10,19 @@ import { ChartAreaDefault } from "../Home/ChartHome";
 
 const OverviewDetails = () => {
 	return (
-		<section className="grid gap-2 grid-cols-[1fr_2fr]">
-			<Card className=" border rounded-md p-4 gap-4">
+		<section className="grid gap-2 grid-cols-[2fr_1fr]">
+			<Card className="bg-white border rounded-md p-4 shadow-md">
+				<CardHeader>
+					<CardTitle className="font-light ">Investment Statistic</CardTitle>
+					<CardDescription>
+						Revealing risks and growths in investment
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<ChartAreaDefault />
+				</CardContent>
+			</Card>
+			<Card className=" border rounded-md p-4 gap-4 shadow-md">
 				<CardHeader>
 					<CardTitle className="font-light ">Invesment Details</CardTitle>
 					<CardDescription>Assets you have in your account</CardDescription>
@@ -47,17 +58,6 @@ const OverviewDetails = () => {
 							</span>
 						</li>
 					</ul>
-				</CardContent>
-			</Card>
-			<Card className="bg-white border rounded-md p-4">
-				<CardHeader>
-					<CardTitle className="font-light ">Investment Statistic</CardTitle>
-					<CardDescription>
-						Revealing risks and growths in investment
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<ChartAreaDefault />
 				</CardContent>
 			</Card>
 		</section>
