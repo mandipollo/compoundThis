@@ -8,9 +8,9 @@ import {
 import React from "react";
 
 import { ResultItem } from "./searchQueryTypes";
-import { useSelectedInstrumentStore } from "@/store/selectedInstrumentStore";
+import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
-	const { setSelectedInstrument } = useSelectedInstrumentStore();
+	const { setSelectedQuote } = useSelectedQuoteStore();
 	if (!results || results.length === 0) {
 		return;
 	}
@@ -23,7 +23,7 @@ const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
 					return (
 						<CommandItem
 							onMouseDown={() => {
-								setSelectedInstrument(item.ticker);
+								setSelectedQuote(item.ticker);
 							}}
 							key={item.ticker}
 						>

@@ -11,12 +11,15 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SidebarMenuButton } from "../../ui/sidebar";
 import { ChevronUp, User2 } from "lucide-react";
+import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
 const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const { signOutUser } = useUserStore();
+	const { clearSelectedQuote } = useSelectedQuoteStore();
 	const handleSignout = async () => {
 		await signOutUser();
 
+		clearSelectedQuote();
 		const response = await fetch("/api/auth/removeToken", {
 			method: "GET",
 			headers: {

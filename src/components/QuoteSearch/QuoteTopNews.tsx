@@ -1,10 +1,8 @@
 import { Card, CardContent } from "../ui/card";
-import { CarouselItem } from "../ui/carousel";
-
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 
-const InstrumentTopNews = () => {
+const QuoteTopNews = () => {
 	return (
 		<section className="flex w-full h-full flex-col">
 			<h3 className="text-lg">Top news</h3>
@@ -41,4 +39,4 @@ const InstrumentTopNews = () => {
 	);
 };
 
-export default InstrumentTopNews;
+export default QuoteTopNews;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Command } from "@/components/ui/command";
 
 import SuggestionLists from "./SuggestionLists";
@@ -21,7 +21,7 @@ const SearchBar = () => {
 		}
 		const getData = setTimeout(async () => {
 			const res = await fetch(
-				`/api/stock/getStockSearchSuggestions?ticker=${input}`,
+				`/api/quote/quoteSearchSuggestions?ticker=${input}`,
 				{
 					method: "GET",
 					headers: { "Content-Type": "application/json" },

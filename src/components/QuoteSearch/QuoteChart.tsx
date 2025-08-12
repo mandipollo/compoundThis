@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -29,7 +29,7 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-const ChartInstrument = () => {
+const QuoteChart = () => {
 	return (
 		<Card>
 			<CardContent className="bg-white">
@@ -81,4 +81,4 @@ const ChartInstrument = () => {
 	);
 };
 
-export default ChartInstrument;
+export default QuoteChart;
