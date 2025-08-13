@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 	}
 
 	const data = await response.json();
-	// ◄ ADDED: Check if the external API's own success flag is false
+	//  Check if the external API's own success flag is false
 	if (data.success === false) {
 		return NextResponse.json({
 			success: false,
