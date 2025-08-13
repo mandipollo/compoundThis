@@ -11,6 +11,10 @@ export async function GET(request: NextRequest) {
 
 	const { searchParams } = new URL(request.url);
 	const ticker = searchParams.get("ticker");
+
+	if (!ticker) {
+		return NextResponse.json({ success: false, error: "Ticker required" });
+	}
 	const response = await fetch(
 		`${server}/finance-quote/suggestions?ticker=${ticker}`,
 		{
@@ -19,6 +23,19 @@ export async function GET(request: NextRequest) {
 		}
 	);
 
+	if (!response.ok) {
+		const errorData = await response.json();
+		return NextResponse.json({ success: false, ...errorData });
+	}
+
 	const data = await response.json();
+
+	//  Check if the external API's own success flag is false
+	if (data.success === false) {
+		return NextResponse.json({
+			success: false,
+			...data,
+		});
+	}
 	return NextResponse.json({ success: true, data });
 }
