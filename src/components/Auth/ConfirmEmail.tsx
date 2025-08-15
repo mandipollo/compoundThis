@@ -29,6 +29,7 @@ const ConfirmEmail = () => {
 	const [pending, setPending] = useState(false);
 	const router = useRouter();
 
+	//TODO: error handling
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);

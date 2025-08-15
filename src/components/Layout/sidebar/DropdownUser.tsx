@@ -16,6 +16,8 @@ import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const { signOutUser } = useUserStore();
 	const { clearSelectedQuote } = useSelectedQuoteStore();
+
+	// TODO:ERROR HANDLING
 	const handleSignout = async () => {
 		await signOutUser();
 

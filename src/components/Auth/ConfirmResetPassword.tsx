@@ -24,6 +24,7 @@ const initialState: ConfirmPasswordResetFormState = {
 	error: "",
 };
 const ResetPassword = () => {
+	// TODO: REWRITE SERVER ACTION INTO CLIENT API CALLS
 	const [state, action, pending] = useActionState(
 		handleConfirmResetPassword,
 		initialState

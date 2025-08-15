@@ -17,7 +17,7 @@ const Navbar = () => {
 		>
 			<div className="flex flex-row p-2 items-center justify-between w-full gap-2">
 				<Link href={"/"} className="flex items-center px-4">
-					<span className="text-xl ">CThis</span>
+					<span className="text-xl underline underline-offset-2 ">CThis</span>
 				</Link>
 
 				<div className="flex flex-row gap-4 justify-center items-center ">

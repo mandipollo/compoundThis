@@ -25,12 +25,12 @@ const initialState: SignupFormState = {
 	success: false,
 };
 
-//TODO:CREATE A USER DB ON SUCCESSFULL SIGNUP
 const Signup = () => {
 	const [state, setState] = useState(initialState);
 	const [pending, setPending] = useState(false);
 	const router = useRouter();
 
+	//TODO:ERROR HANDLING
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
