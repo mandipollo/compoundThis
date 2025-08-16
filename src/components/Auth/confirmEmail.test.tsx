@@ -50,7 +50,8 @@ describe("confirm email component", () => {
 		// mock resolved value
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: false,
-			result: undefined,
+			isSignUpComplete: false,
+			message: "",
 			error: "User does not exist",
 		});
 
@@ -77,7 +78,8 @@ describe("confirm email component", () => {
 		// mock resolved value
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: false,
-			result: undefined,
+			isSignUpComplete: false,
+			message: "",
 			error: "Verification code is incorrect",
 		});
 
@@ -104,7 +106,8 @@ describe("confirm email component", () => {
 		// mock resolved value
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: false,
-			result: undefined,
+			isSignUpComplete: false,
+			message: "",
 			error: "Verification code has expired",
 		});
 
@@ -130,7 +133,8 @@ describe("confirm email component", () => {
 		// mock resolved value
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: false,
-			result: undefined,
+			isSignUpComplete: false,
+			message: "",
 			error: "Too many incorrect attempts",
 		});
 
@@ -156,7 +160,8 @@ describe("confirm email component", () => {
 		// mock resolved value
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: false,
-			result: undefined,
+			isSignUpComplete: false,
+			message: "",
 			error: "Something went wrong. Please try agian",
 		});
 
@@ -224,12 +229,8 @@ describe("confirm email component", () => {
 		mockedConfirmUserEmail.mockResolvedValue({
 			success: true,
 			error: "",
-			result: {
-				isSignUpComplete: true,
-				nextStep: {
-					signUpStep: "DONE",
-				},
-			},
+			isSignUpComplete: true,
+			message: "Signup complete",
 		});
 
 		// render

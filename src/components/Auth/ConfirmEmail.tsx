@@ -63,15 +63,16 @@ const ConfirmEmail = () => {
 		}
 
 		// Cognito sign up
-		const { success, error, result } = await confirmUserEmail(email, code);
+		const { success, error, isSignUpComplete } = await confirmUserEmail(
+			email,
+			code
+		);
 
 		if (!success) {
 			setState({ ...initialState, error });
 			setPending(false);
 			return;
 		}
-
-		const { isSignUpComplete } = result as ConfirmSignUpOutput;
 
 		//
 		if (isSignUpComplete) {

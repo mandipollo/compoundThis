@@ -4,12 +4,17 @@ import { confirmSignUp } from "aws-amplify/auth";
 // verify code sent to the email address
 export async function confirmUserEmail(email: string, code: string) {
 	try {
-		const result = await confirmSignUp({
+		const { isSignUpComplete } = await confirmSignUp({
 			username: email,
 			confirmationCode: code,
 		});
 
-		return { success: true, error: "", result };
+		return {
+			success: true,
+			error: "",
+			isSignUpComplete,
+			message: "Signup complete",
+		};
 	} catch (error: any) {
 		let errorMessage = "Something went wrong. Please try agian";
 
@@ -27,12 +32,14 @@ export async function confirmUserEmail(email: string, code: string) {
 				errorMessage = "Too many incorrect attempts";
 				break;
 			default:
-				errorMessage = "Something went wrong. Please try agian";
+				errorMessage = "Something went wrong. Please try again";
 		}
 
 		return {
 			error: errorMessage,
 			success: false,
+			message: "",
+			isSignUpComplete: null,
 		};
 	}
 }
