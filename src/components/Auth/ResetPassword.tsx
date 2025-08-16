@@ -30,7 +30,7 @@ const initialState: ForgotPasswordFormState = {
 	success: false,
 	message: "",
 };
-const ForgotPassword = () => {
+const ResetPassword = () => {
 	const router = useRouter();
 	const [state, setState] = useState(initialState);
 	const [pending, setPending] = useState(false);
@@ -38,61 +38,48 @@ const ForgotPassword = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
-		try {
-			const formData = new FormData(e.currentTarget);
-			const username = formData.get("username") as string;
 
-			// ✅ Validate with Zod
-			const validated = ForgotPasswordFormSchema.safeParse({ username });
-			if (!validated.success) {
-				const fieldArrays = validated.error.flatten().fieldErrors;
-				setState({
-					...initialState,
-					formValidationError: fieldArrays?.username?.[0] || "",
+		const formData = new FormData(e.currentTarget);
+		const username = formData.get("email") as string;
 
-					error: "Please fix the highlighted errors",
-				});
-				setPending(false);
-				return;
-			}
+		// ✅ Validate with Zod
+		const validated = ForgotPasswordFormSchema.safeParse({ username });
+		if (!validated.success) {
+			const fieldArrays = validated.error.flatten().fieldErrors;
+			setState({
+				...initialState,
+				formValidationError: fieldArrays?.username?.[0] || "",
 
-			const { output, error, message, success } =
-				await resetPasswordUser(username);
-			const { nextStep } = output as ResetPasswordOutput;
+				error: "Please fix the highlighted errors",
+			});
+			setPending(false);
+			return;
+		}
 
-			if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
-				router.push("/auth/newPassword");
-				return {
-					formValidationError: "",
-					success: true,
-					message: `A confirmation code has been sent to your ${
-						nextStep.codeDeliveryDetails?.deliveryMedium || "email"
-					}.`,
-					error: "",
-				};
-			}
-		} catch (error: any) {
-			let errorMessage = "Something went wrong";
-			switch (error.name) {
-				case "UserNotFoundException":
-					errorMessage = "User does not exist";
-					break;
-				case "LimitExceededException":
-					errorMessage = "Too many requests in a short time";
-					break;
-				case "TooManyRequestsException":
-					errorMessage = "You are hitting Cognito rate limit";
-					break;
-				default:
-					errorMessage = "Something went wrong";
-			}
+		const { output, error, message, success } =
+			await resetPasswordUser(username);
+		console.log(success, error);
+
+		if (!success) {
+			return { ...initialState, error: error };
+		}
+		const { nextStep } = output as ResetPasswordOutput;
+
+		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+			router.push("/auth/newPassword");
 			return {
 				formValidationError: "",
-				message: "",
-				error: errorMessage,
-				success: false,
+				success: true,
+				message: `A confirmation code has been sent to your ${
+					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
+				}.`,
+				error: "",
 			};
+		} else {
+			setState({ ...initialState, message: "Check your email to confirm." });
 		}
+
+		setPending(false);
 	};
 
 	return (
@@ -103,7 +90,7 @@ const ForgotPassword = () => {
 					Enter your email below to recieve a code
 				</CardDescription>
 				<CardAction>
-					<Link href={"/auth/login"}>
+					<Link data-testid="loginLink" href={"/auth/login"}>
 						<Button variant="link">Login</Button>
 					</Link>
 				</CardAction>
@@ -112,29 +99,35 @@ const ForgotPassword = () => {
 				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col gap-2">
 						<div className="grid gap-2">
-							<Label htmlFor="username">Email</Label>
+							<Label htmlFor="email">Email</Label>
 							<Input
-								name="username"
+								name="email"
 								id="email"
 								type="email"
 								placeholder="m@example.com"
 								required
 							/>
-							{state?.formValidationError && (
-								<div className="text-red-600 flex flex-col text-xs">
-									<p>{state?.formValidationError}</p>
-								</div>
-							)}
+
+							<span className="text-red-600 flex flex-col text-xs">
+								{state?.formValidationError}
+							</span>
 						</div>
 
-						<Button disabled={pending} type="submit" className="w-full">
+						<Button
+							aria-disabled={pending}
+							disabled={pending}
+							type="submit"
+							className="w-full"
+						>
 							Submit
 						</Button>
-						{state?.error && (
-							<div className="text-red-600 flex flex-col text-xs">
-								<p>{state?.error}</p>
-							</div>
-						)}
+
+						<span
+							data-testid="error"
+							className="text-red-600 flex flex-col text-xs"
+						>
+							{state.error}
+						</span>
 					</div>
 				</form>
 			</CardContent>
@@ -142,4 +135,4 @@ const ForgotPassword = () => {
 	);
 };
 
-export default ForgotPassword;
+export default ResetPassword;

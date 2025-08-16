@@ -1,14 +1,6 @@
-import { redirect } from "next/navigation";
 import { resetPassword } from "aws-amplify/auth";
-
 // zod schema
-import {
-	ForgotPasswordFormState,
-	ForgotPasswordFormSchema,
-} from "@/libs/definitions";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-
-// redirects in try catch returns redirectError =>>>> redirects needs to be caught and thrown for next js to handle it
+import { ForgotPasswordFormSchema } from "@/libs/definitions";
 
 // TODO:
 // alert user code has been sent to the user's email
@@ -30,32 +22,15 @@ export async function resetPasswordUser(username: string) {
 		}
 		const output = await resetPassword({ username });
 
-		return { output, error: "", message: "", success: true };
-		const { nextStep } = output;
-
-		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
-			redirect("/auth/newPassword");
-			return {
-				formValidationError: "",
-				success: true,
-				message: `A confirmation code has been sent to your ${
-					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
-				}.`,
-				error: "",
-			};
-		}
 		return {
-			formValidationError: "",
-			success: false,
-			message: "",
-			error: "Something went wrong",
+			output,
+			error: "",
+			message: "Code has been sent successfully",
+			success: true,
 		};
 	} catch (error: any) {
 		let errorMessage = "Something went wrong";
 		switch (error.name) {
-			case "UserNotFoundException":
-				errorMessage = "User does not exist";
-				break;
 			case "LimitExceededException":
 				errorMessage = "Too many requests in a short time";
 				break;
@@ -66,6 +41,7 @@ export async function resetPasswordUser(username: string) {
 				errorMessage = "Something went wrong";
 		}
 		return {
+			output: undefined,
 			message: "",
 			error: errorMessage,
 			success: false,
