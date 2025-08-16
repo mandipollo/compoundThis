@@ -34,6 +34,6 @@ export async function signUpUser(
 				break;
 		}
 
-		return { success: false, error: errorMessage, result: "" };
+		return { success: false, error: errorMessage, result: null };
 	}
 }

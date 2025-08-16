@@ -17,6 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SignUpOutput } from "aws-amplify/auth";
+import { Loader2Icon } from "lucide-react";
 
 const initialState: SignupFormState = {
 	formValidationErrors: { name: [], email: [], password: [] },
@@ -118,10 +119,17 @@ const Signup = () => {
 							))}
 						</div>
 
-						<Button disabled={pending} type="submit" className="w-full">
-							{pending ? "Signing up..." : "Signup"}
+						<Button
+							aria-disabled={pending}
+							disabled={pending}
+							type="submit"
+							className="w-full"
+						>
+							{pending ? <Loader2Icon className="animate-spin" /> : "Signup"}
 						</Button>
-						<span className="text-xs text-red-600">{state.error}</span>
+						<span data-testid="error" className="text-xs text-red-600">
+							{state.error}
+						</span>
 					</div>
 				</form>
 			</CardContent>
