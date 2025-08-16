@@ -16,7 +16,7 @@ export async function confirmUserEmail(email: string, code: string) {
 			message: "Signup complete",
 		};
 	} catch (error: any) {
-		let errorMessage = "Something went wrong. Please try agian";
+		let errorMessage = "Unexpected error. Please try again";
 
 		switch (error.name) {
 			case "UserNotFoundException":
@@ -32,7 +32,7 @@ export async function confirmUserEmail(email: string, code: string) {
 				errorMessage = "Too many incorrect attempts";
 				break;
 			default:
-				errorMessage = "Something went wrong. Please try again";
+				errorMessage = "Unexpected error. Please try again";
 		}
 
 		return {

@@ -82,14 +82,14 @@ describe("wrapper function for aws resetPassword ", () => {
 		expect(error).toEqual("Too many incorrect attempts");
 		expect(success).toEqual(false);
 	});
-	it("should return Something went wrong on undefined error", async () => {
+	it("should return Unexpected error. Please try again on undefined error", async () => {
 		mockedConfirmSignUp.mockRejectedValue({});
 
 		const { error, success } = await confirmUserEmail(
 			"test@example.com",
 			"Password123@"
 		);
-		expect(error).toEqual("Something went wrong. Please try again");
+		expect(error).toEqual("Unexpected error. Please try again");
 		expect(success).toEqual(false);
 	});
 });

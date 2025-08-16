@@ -32,6 +32,8 @@ export async function signUpUser(
 			case "InvalidPasswordException":
 				errorMessage = "Password does not meet requirements";
 				break;
+			default:
+				errorMessage = "Unexpected error. Please try again";
 		}
 
 		return { success: false, error: errorMessage, result: null };

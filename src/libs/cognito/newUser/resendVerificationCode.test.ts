@@ -56,12 +56,11 @@ describe("aws resendSignUpCode wrapper function ", () => {
 		expect(success).toEqual(false);
 	});
 
-	it("should return Something went wrong, Please try again on Undefined error", async () => {
+	it("should return Unexpected error. Please try again on Undefined error", async () => {
 		mockedResendSignUpCode.mockRejectedValue({});
 
 		const { error, success } = await resendVerificationCode("test@example.com");
-
-		expect(error).toEqual("Something went wrong. Please try again");
+		expect(error).toEqual("Unexpected error. Please try again");
 		expect(success).toEqual(false);
 	});
 });

@@ -58,11 +58,11 @@ describe("wrapper function for aws resetPassword ", () => {
 		expect(error).toEqual("You are hitting Cognito rate limit");
 		expect(success).toEqual(false);
 	});
-	it("should return Something went wrong on undefined error", async () => {
+	it("should return Unexpected error. Please try again on undefined error", async () => {
 		mockedResetPassword.mockRejectedValue({});
 
 		const { error, success } = await resetPasswordUser("test@example.com");
-		expect(error).toEqual("Something went wrong");
+		expect(error).toEqual("Unexpected error. Please try again");
 		expect(success).toEqual(false);
 	});
 });

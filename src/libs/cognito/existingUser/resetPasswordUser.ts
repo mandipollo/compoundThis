@@ -13,7 +13,7 @@ export async function resetPasswordUser(username: string) {
 			success: true,
 		};
 	} catch (error: any) {
-		let errorMessage = "Something went wrong";
+		let errorMessage = "Unexpected error. Please try again";
 		switch (error.name) {
 			case "LimitExceededException":
 				errorMessage = "Too many requests in a short time";
@@ -22,7 +22,7 @@ export async function resetPasswordUser(username: string) {
 				errorMessage = "You are hitting Cognito rate limit";
 				break;
 			default:
-				errorMessage = "Something went wrong";
+				errorMessage = "Unexpected error. Please try again";
 		}
 		return {
 			output: undefined,

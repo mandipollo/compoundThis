@@ -51,7 +51,7 @@ export async function handleConfirmResetPassword(
 			success: true,
 		};
 	} catch (error: any) {
-		let errorMessage = "Something went wrong";
+		let errorMessage = "Something went wrong. Please try again";
 
 		switch (error.name) {
 			case "CodeMismatchException":
@@ -77,7 +77,7 @@ export async function handleConfirmResetPassword(
 				break;
 
 			default:
-				errorMessage = "Something went wrong";
+				errorMessage = "Something went wrong. Please try again";
 		}
 		return {
 			message: "",
