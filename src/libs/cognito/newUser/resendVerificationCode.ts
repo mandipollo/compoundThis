@@ -13,7 +13,7 @@ export async function resendVerificationCode(email: string) {
 			message: "Verification code emailed successfully",
 		};
 	} catch (error: any) {
-		let errorMessage = "Something went wrong";
+		let errorMessage = "Something went wrong. Please try again";
 
 		switch (error.name) {
 			case "UserNotFoundException":
@@ -23,7 +23,7 @@ export async function resendVerificationCode(email: string) {
 				errorMessage = "Failed to deliver the code";
 				break;
 			default:
-				errorMessage = "Something went wrong";
+				errorMessage = "Something went wrong. Please try again";
 		}
 
 		return {
