@@ -111,7 +111,7 @@ const ConfirmEmail = () => {
 							name="code"
 							placeholder="Enter code"
 							className="border p-2 rounded-md"
-							type="text"
+							type="number"
 						/>
 					</div>
 					{state?.formValidationErrors?.code && (
@@ -120,7 +120,10 @@ const ConfirmEmail = () => {
 						</span>
 					)}
 					{state?.error && (
-						<span className="text-red-600 flex flex-col text-xs">
+						<span
+							data-testid="error"
+							className="text-red-600 flex flex-col text-xs"
+						>
 							{state.error}
 						</span>
 					)}
