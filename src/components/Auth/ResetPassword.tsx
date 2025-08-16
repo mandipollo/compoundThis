@@ -58,7 +58,6 @@ const ResetPassword = () => {
 
 		const { output, error, message, success } =
 			await resetPasswordUser(username);
-		console.log(success, error);
 
 		if (!success) {
 			return { ...initialState, error: error };
