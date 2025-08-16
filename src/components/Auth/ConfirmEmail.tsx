@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
 
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import {
 	Card,
@@ -15,8 +15,9 @@ import {
 	ConfirmSignupFormState,
 } from "@/libs/definitions";
 import { useRouter } from "next/navigation";
-import { confirmEmail } from "@/libs/cognito/newUser/confirmEmail";
+import { confirmUserEmail } from "@/libs/cognito/newUser/confirmEmailUser";
 import { ConfirmSignUpOutput } from "aws-amplify/auth";
+import { Loader2Icon } from "lucide-react";
 
 const initialState: ConfirmSignupFormState = {
 	formValidationErrors: { code: "", email: "" },
@@ -29,7 +30,8 @@ const ConfirmEmail = () => {
 	const [pending, setPending] = useState(false);
 	const router = useRouter();
 
-	//TODO: error handling
+	//TODO: Error handling
+	// 		Resend verification code
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
@@ -61,7 +63,7 @@ const ConfirmEmail = () => {
 		}
 
 		// Cognito sign up
-		const { success, error, result } = await confirmEmail(email, code);
+		const { success, error, result } = await confirmUserEmail(email, code);
 
 		if (!success) {
 			setState({ ...initialState, error });
@@ -69,7 +71,7 @@ const ConfirmEmail = () => {
 			return;
 		}
 
-		const { isSignUpComplete, nextStep } = result as ConfirmSignUpOutput;
+		const { isSignUpComplete } = result as ConfirmSignUpOutput;
 
 		//
 		if (isSignUpComplete) {
@@ -90,6 +92,7 @@ const ConfirmEmail = () => {
 					<div className="flex flex-col gap-2">
 						<label htmlFor="email">Email</label>
 						<input
+							id="email"
 							name="email"
 							placeholder="Enter email"
 							className="border p-2 rounded-md"
@@ -104,6 +107,7 @@ const ConfirmEmail = () => {
 					<div className="flex flex-col gap-2">
 						<label htmlFor="code">Verification Code</label>
 						<input
+							id="code"
 							name="code"
 							placeholder="Enter code"
 							className="border p-2 rounded-md"
@@ -121,11 +125,12 @@ const ConfirmEmail = () => {
 						</span>
 					)}
 					<Button
+						aria-disabled={pending}
 						disabled={pending}
 						type="submit"
 						className="border bg-primary text-white rounded-md p-2"
 					>
-						{pending ? "Submitting..." : "Submit"}
+						{pending ? <Loader2Icon className="animate-spin" /> : "Submit"}
 					</Button>
 				</form>
 			</CardContent>

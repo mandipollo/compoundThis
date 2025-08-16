@@ -1,27 +1,23 @@
-/* File: test/unit.test.ts */
-
 import { testApiHandler } from "next-test-api-route-handler"; // ◄ Must be first import
-import { it, describe, expect, vi, beforeEach, afterEach } from "vitest";
-// Import the handler under test from the app directory
-import * as appHandler from "@/app/api/quote/quoteAbout/route";
+import { vi, it, describe, afterEach, expect } from "vitest";
+
+import * as appHandler from "@/app/api/quote/quoteFundamental/route";
 
 afterEach(() => {
 	vi.unstubAllEnvs();
 });
 
-describe("quote about api route", () => {
-	//
-	it("returns Server error on unresponsive server", async () => {
+describe("handle fundamental quote data", () => {
+	it("should return server error on unresponsive server", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "");
 		await testApiHandler({
 			appHandler,
-
-			url: "?ticker=",
+			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
 				const res = await fetch({ method: "GET" });
+				const response = await res.json();
 
-				const jsonBody = await res.json();
-				expect(jsonBody).toStrictEqual({
+				expect(response).toStrictEqual({
 					success: false,
 					error: "Server error",
 				});
@@ -29,16 +25,26 @@ describe("quote about api route", () => {
 		});
 	});
 
-	//
-	it("returns Ticker is required on missing ticker", async () => {
+	it("should return Ticker is required on missing ticker", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
+
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue({
+				json: () =>
+					Promise.resolve({ error: "Ticker is required", success: false }),
+				status: 422,
+			})
+		);
+
 		await testApiHandler({
 			appHandler,
-
+			url: "?ticker=",
 			test: async ({ fetch }) => {
 				const res = await fetch({ method: "GET" });
-				const jsonBody = await res.json();
-				expect(jsonBody).toStrictEqual({
+				const response = await res.json();
+
+				expect(response).toStrictEqual({
 					success: false,
 					error: "Ticker is required",
 				});
@@ -46,52 +52,55 @@ describe("quote about api route", () => {
 		});
 	});
 
-	// ticker not found
-	it("returns Ticker not found on 404", async () => {
-		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
-
-		vi.stubGlobal(
-			"fetch",
-			vi.fn().mockResolvedValue({
-				json: () => Promise.resolve({ error: "Ticker not found" }),
-				status: 404,
-			})
-		);
-		await testApiHandler({
-			appHandler,
-			url: "?ticker=INVALID",
-			test: async ({ fetch }) => {
-				const res = await fetch({ method: "GET" });
-				const jsonBody = await res.json();
-				expect(jsonBody).toStrictEqual({
-					error: "Ticker not found",
-					success: false,
-				});
-			},
-		});
-	});
-
-	// successful response
-	it("returns quote data on a valid ticker", async () => {
+	it("should return Invalid ticker on 404 response from external api ", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
 
 		vi.stubGlobal(
 			"fetch",
 			vi.fn().mockResolvedValue({
 				json: () =>
-					Promise.resolve({ data: { name: "Apple Inc." }, success: true }),
+					Promise.resolve({ error: "Invalid ticker", success: false }),
+				status: 404,
+			})
+		);
+
+		await testApiHandler({
+			appHandler,
+			url: "?ticker=INVALID",
+			test: async ({ fetch }) => {
+				const res = await fetch({ method: "GET" });
+				const response = await res.json();
+
+				expect(response).toStrictEqual({
+					success: false,
+					error: "Invalid ticker",
+				});
+			},
+		});
+	});
+
+	it("should return valid data on success ", async () => {
+		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue({
+				json: () =>
+					Promise.resolve({ success: true, data: { name: "Apple Inc" } }),
 				status: 200,
 			})
 		);
+
 		await testApiHandler({
 			appHandler,
 			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
-				const res = await fetch({ method: "GET" });
-				const jsonBody = await res.json();
-				expect(jsonBody).toStrictEqual({
+				const res = await fetch({
+					method: "Get",
+				});
+				const response = await res.json();
+				expect(response).toStrictEqual({
 					success: true,
-					data: { name: "Apple Inc." },
+					data: { name: "Apple Inc" },
 				});
 			},
 		});

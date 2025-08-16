@@ -2,7 +2,7 @@ import { confirmSignUp } from "aws-amplify/auth";
 
 //TODO: auto log in user on successfull verification
 // verify code sent to the email address
-export async function confirmEmail(email: string, code: string) {
+export async function confirmUserEmail(email: string, code: string) {
 	try {
 		const result = await confirmSignUp({
 			username: email,

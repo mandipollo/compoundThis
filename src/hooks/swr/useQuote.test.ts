@@ -18,12 +18,12 @@ const mockedUseSWR = vi.mocked(useSWR);
 // actual module
 
 const { useQuoteAbout } = await vi.importActual<
-	typeof import("@/hooks/useQuoteData")
->("@/hooks/useQuoteData");
+	typeof import("@/hooks/swr/useQuoteData")
+>("@/hooks/swr/useQuoteData");
 
 const { useQuoteFundamental } = await vi.importActual<
-	typeof import("@/hooks/useQuoteData")
->("@/hooks/useQuoteData");
+	typeof import("@/hooks/swr/useQuoteData")
+>("@/hooks/swr/useQuoteData");
 ///
 describe("Quote hooks ", () => {
 	const mockQuoteAboutData = {

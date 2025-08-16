@@ -164,7 +164,9 @@ const Login = () => {
 							)}
 						</div>
 						<Input name="password" id="password" type="password" required />
-						<span className="text-xs text-red-600">{state?.error}</span>
+						<span data-testid="error" className="text-xs text-red-600">
+							{state?.error}
+						</span>
 					</div>
 					<Button
 						aria-disabled={pending}

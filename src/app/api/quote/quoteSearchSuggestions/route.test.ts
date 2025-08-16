@@ -9,8 +9,7 @@ afterEach(() => {
 });
 
 describe("handles quote search suggestions ", () => {
-	//
-	it("returns Server error on unresponsive server", async () => {
+	it("should return Server error on unresponsive server", async () => {
 		// set server env to be empty , next js automatically loads env from .env.test file
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "");
 
@@ -25,8 +24,8 @@ describe("handles quote search suggestions ", () => {
 			},
 		});
 	});
-	//
-	it("returns Ticker required on missing ticker", async () => {
+
+	it("should return Ticker required on missing ticker", async () => {
 		// set server env to be empty , next js automatically loads env from .env.test file
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
 
@@ -53,8 +52,7 @@ describe("handles quote search suggestions ", () => {
 		});
 	});
 
-	//
-	it("returns Invalid ticker on 404 status ", async () => {
+	it("should return Invalid ticker on 404 response from exterrnal api  ", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
 		vi.stubGlobal(
 			"fetch",
@@ -76,9 +74,7 @@ describe("handles quote search suggestions ", () => {
 		});
 	});
 
-	// success
-
-	it("returns data on success ", async () => {
+	it("should return valid data on success ", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
 		vi.stubGlobal(
 			"fetch",
