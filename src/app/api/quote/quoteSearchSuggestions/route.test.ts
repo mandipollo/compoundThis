@@ -1,7 +1,7 @@
 import { testApiHandler } from "next-test-api-route-handler";
 import { vi, expect, describe, afterEach, it } from "vitest";
 
-import * as appHandler from "@/app/api/quote/quoteSearchSuggestions/route";
+import * as appHandler from "./route";
 
 // clean all stub env used for test function each run
 afterEach(() => {

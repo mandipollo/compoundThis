@@ -1,7 +1,7 @@
 import { testApiHandler } from "next-test-api-route-handler"; // ◄ Must be first import
 import { vi, it, describe, afterEach, expect } from "vitest";
 
-import * as appHandler from "@/app/api/quote/quoteFundamental/route";
+import * as appHandler from "./route";
 
 afterEach(() => {
 	vi.unstubAllEnvs();
