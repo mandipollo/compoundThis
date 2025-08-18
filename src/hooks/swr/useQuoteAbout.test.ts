@@ -45,7 +45,12 @@ describe("Quote hooks ", () => {
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
 			`/api/quote/quoteAbout?ticker=AAPL`,
-			fetcher
+			fetcher,
+			{
+				revalidateOnFocus: false,
+				revalidateOnReconnect: false,
+				refreshInterval: 0,
+			}
 		);
 	});
 	//

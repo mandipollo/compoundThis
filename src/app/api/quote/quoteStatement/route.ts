@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
 		}
 
 		const data = await response.json();
-		return NextResponse.json({ success: true, data: data });
+		return NextResponse.json({ success: true, data: data.data });
 	} catch (error) {
 		return NextResponse.json({ success: false, error: "error" });
 	}

@@ -91,9 +91,7 @@ describe("quote statement api route", () => {
 			"fetch",
 			vi.fn().mockResolvedValueOnce({
 				json: async () =>
-					Promise.resolve({
-						balance: 123,
-					}),
+					Promise.resolve({ data: { balance: 123 }, success: true }),
 				status: 200,
 				ok: true,
 			})

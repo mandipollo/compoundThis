@@ -46,7 +46,12 @@ describe("Quote fundamental  ", () => {
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
 			`/api/quote/quoteFundamental?ticker=${ticker}`,
-			fetcher
+			fetcher,
+			{
+				revalidateOnFocus: false,
+				revalidateOnReconnect: false,
+				refreshInterval: 0,
+			}
 		);
 	});
 	//

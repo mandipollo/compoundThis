@@ -56,7 +56,12 @@ describe("quote statement hook", () => {
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
 			`/api/quote/quoteStatement?ticker=${ticker}`,
-			fetcher
+			fetcher,
+			{
+				revalidateOnFocus: false,
+				revalidateOnReconnect: false,
+				refreshInterval: 0,
+			}
 		);
 	});
 	it("should return Ticker is required and must be string when invalid ticker", async () => {

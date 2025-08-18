@@ -4,7 +4,12 @@ import useSWR from "swr";
 const useQuoteStatement = (selectedQuote: string) => {
 	const { data, error, isLoading } = useSWR(
 		`/api/quote/quoteStatement?ticker=${selectedQuote}`,
-		fetcher
+		fetcher,
+		{
+			revalidateOnFocus: false,
+			revalidateOnReconnect: false,
+			refreshInterval: 0,
+		}
 	);
 
 	return {

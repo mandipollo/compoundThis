@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
 	Accordion,
 	AccordionContent,
@@ -9,33 +9,87 @@ import FinancialStatementBarChart from "./FinancialStatementBarChart";
 import IncomeStatementTable from "./IncomeStatementTables";
 import BalanceSheetTable from "./BalanceSheetTable";
 import CashFlowTable from "./CashFlowTable";
-import { useState } from "react";
+import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
+import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
+export interface StatementItem {
+	dataCode: string;
+	value: number;
+}
+export interface IncomeStatementInterface {
+	date: string;
+	year: number;
+	quarter: number;
+	incomeStatement: StatementItem[];
+}
+export interface BalanceSheetInterface {
+	date: string;
+	year: number;
+	quarter: number;
+	balanceSheet: StatementItem[];
+}
+export interface CashFlowInterface {
+	date: string;
+	year: number;
+	quarter: number;
+	cashFlow: StatementItem[];
+}
+interface StatementData {
+	success: boolean;
+	data: {
+		incomeStatement: IncomeStatementInterface[];
+		balanceSheet: BalanceSheetInterface[];
+		cashFlow: CashFlowInterface[];
+	};
+}
 const FinancialAccordion = () => {
+	const { selectedQuote } = useSelectedQuoteStore();
 
-	const [pending ,setPending] = useState<boolean>(false)
-	
+	const {
+		data,
+		error,
+		isLoading,
+	}: { data: StatementData; error: string; isLoading: boolean } =
+		useQuoteStatement(selectedQuote);
+
+	if (isLoading || !data) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>{error}</div>;
+	}
+
+	console.log(data);
+	const { balanceSheet, cashFlow, incomeStatement } = data.data;
+
 	return (
 		<Accordion type="multiple" className="w-full">
-			<AccordionItem value="item-1">
-				<AccordionTrigger>Income Statement</AccordionTrigger>
-				<AccordionContent className="flex flex-col gap-4 text-balance">
-					<FinancialStatementBarChart />
-					<IncomeStatementTable />
-				</AccordionContent>
-			</AccordionItem>
-			<AccordionItem value="item-2">
-				<AccordionTrigger>Balance Sheet</AccordionTrigger>
-				<AccordionContent className="flex flex-col gap-4 text-balance">
-					<FinancialStatementBarChart />
-					<BalanceSheetTable />
-				</AccordionContent>
-			</AccordionItem>
+			{incomeStatement && (
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Income Statement</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-4 text-balance">
+						<FinancialStatementBarChart />
+						<IncomeStatementTable incomeStatement={incomeStatement} />
+					</AccordionContent>
+				</AccordionItem>
+			)}
+
+			{balanceSheet && (
+				<AccordionItem value="item-2">
+					<AccordionTrigger>Balance Sheet</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-4 text-balance">
+						<FinancialStatementBarChart />
+						<BalanceSheetTable balanceSheet={balanceSheet} />
+					</AccordionContent>
+				</AccordionItem>
+			)}
+
 			<AccordionItem value="item-3">
 				<AccordionTrigger>Cash Flow</AccordionTrigger>
 				<AccordionContent className="flex flex-col gap-4 text-balance">
 					<FinancialStatementBarChart />
-					<CashFlowTable />
+					<CashFlowTable cashFlow={cashFlow} />
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>
