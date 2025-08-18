@@ -2,7 +2,7 @@ import React from "react";
 import { Separator } from "../../ui/separator";
 import Image from "next/image";
 
-import { useQuoteAbout } from "@/hooks/swr/useQuoteData";
+import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 const QuoteAbout = () => {
 	const { selectedQuote } = useSelectedQuoteStore();

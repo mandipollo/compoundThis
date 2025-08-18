@@ -1,3 +1,4 @@
+"use client"
 import {
 	Accordion,
 	AccordionContent,
@@ -8,8 +9,12 @@ import FinancialStatementBarChart from "./FinancialStatementBarChart";
 import IncomeStatementTable from "./IncomeStatementTables";
 import BalanceSheetTable from "./BalanceSheetTable";
 import CashFlowTable from "./CashFlowTable";
+import { useState } from "react";
 
 const FinancialAccordion = () => {
+
+	const [pending ,setPending] = useState<boolean>(false)
+	
 	return (
 		<Accordion type="multiple" className="w-full">
 			<AccordionItem value="item-1">

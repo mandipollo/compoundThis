@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { useQuoteFundamental } from "@/hooks/swr/useQuoteData";
+import useQuoteFundamental from "@/hooks/swr/useQuoteFundamental";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 import React from "react";
 
