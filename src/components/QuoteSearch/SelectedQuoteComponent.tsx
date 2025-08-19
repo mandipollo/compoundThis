@@ -13,7 +13,11 @@ const SelectedQuoteComponent = () => {
 	const { selectedQuote } = useSelectedQuoteStore();
 
 	if (!selectedQuote) {
-		return <section></section>;
+		return (
+			<section className="w-full h-full flex justify-center items-center">
+				Animation to be added
+			</section>
+		);
 	}
 	return (
 		<section className="flex flex-col gap-4">

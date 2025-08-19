@@ -5,10 +5,9 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import FinancialStatementBarChart from "./FinancialStatementBarChart";
-import IncomeStatementTable from "./IncomeStatementTables";
-import BalanceSheetTable from "./BalanceSheetTable";
-import CashFlowTable from "./CashFlowTable";
+import IncomeStatement from "./IncomeStatement";
+import BalanceSheet from "./BalanceSheet";
+import CashFlow from "./CashFlow";
 import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
@@ -69,8 +68,7 @@ const FinancialAccordion = () => {
 				<AccordionItem value="item-1">
 					<AccordionTrigger>Income Statement</AccordionTrigger>
 					<AccordionContent className="flex flex-col gap-4 text-balance">
-						<FinancialStatementBarChart />
-						<IncomeStatementTable incomeStatement={incomeStatement} />
+						<IncomeStatement incomeStatement={incomeStatement} />
 					</AccordionContent>
 				</AccordionItem>
 			)}
@@ -79,8 +77,7 @@ const FinancialAccordion = () => {
 				<AccordionItem value="item-2">
 					<AccordionTrigger>Balance Sheet</AccordionTrigger>
 					<AccordionContent className="flex flex-col gap-4 text-balance">
-						<FinancialStatementBarChart />
-						<BalanceSheetTable balanceSheet={balanceSheet} />
+						<BalanceSheet balanceSheet={balanceSheet} />
 					</AccordionContent>
 				</AccordionItem>
 			)}
@@ -88,8 +85,7 @@ const FinancialAccordion = () => {
 			<AccordionItem value="item-3">
 				<AccordionTrigger>Cash Flow</AccordionTrigger>
 				<AccordionContent className="flex flex-col gap-4 text-balance">
-					<FinancialStatementBarChart />
-					<CashFlowTable cashFlow={cashFlow} />
+					<CashFlow cashFlow={cashFlow} />
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>

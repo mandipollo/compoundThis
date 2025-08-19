@@ -1,6 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import useQuoteFundamental from "@/hooks/swr/useQuoteFundamental";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
+import numberToDispaly from "@/utils/numberFormatter";
+import { Loader2Icon } from "lucide-react";
 import React from "react";
 
 const QuoteEOD = () => {
@@ -10,9 +12,9 @@ const QuoteEOD = () => {
 		return;
 	}
 	const { error, isLoading, data } = useQuoteFundamental(`${selectedQuote}`);
-	console.log(data);
+
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loader2Icon className="animate-spin" />;
 	}
 	if (error) {
 		return <div>Error</div>;
@@ -40,7 +42,7 @@ const QuoteEOD = () => {
 				<Separator />
 				<li className="flex flex-row justify-between items-center ">
 					<span className="text-muted-foreground">MARKET CAP</span>
-					<span>{data.data.marketCap} USD</span>
+					<span>{numberToDispaly(data.data.marketCap)} USD</span>
 				</li>
 				<Separator />
 				<li className="flex flex-row justify-between items-center ">
@@ -50,7 +52,7 @@ const QuoteEOD = () => {
 				<Separator />
 				<li className="flex flex-row justify-between items-center ">
 					<span className="text-muted-foreground">P/E RATIO</span>
-					<span>{data.data.peRatio}</span>
+					<span>{numberToDispaly(data.data.peRatio)}</span>
 				</li>
 				<Separator />
 				<li className="flex flex-row justify-between items-center ">

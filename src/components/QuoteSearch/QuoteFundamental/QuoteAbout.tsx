@@ -1,9 +1,9 @@
 import React from "react";
 import { Separator } from "../../ui/separator";
 import Image from "next/image";
-
 import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
+import { Loader2Icon } from "lucide-react";
 const QuoteAbout = () => {
 	const { selectedQuote } = useSelectedQuoteStore();
 
@@ -16,7 +16,7 @@ const QuoteAbout = () => {
 		return <div>Error</div>;
 	}
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loader2Icon className="animate-spin" />;
 	}
 
 	return (
@@ -32,7 +32,7 @@ const QuoteAbout = () => {
 							src={"/iconsAbout/calender.svg"}
 							width={15}
 							height={15}
-							alt="ceo"
+							alt="calender icon"
 						/>
 						<span className="text-xs text-muted-foreground">LISTED DATE</span>
 					</div>
@@ -45,7 +45,7 @@ const QuoteAbout = () => {
 							src={"/iconsAbout/location.svg"}
 							width={15}
 							height={15}
-							alt="ceo"
+							alt="map pin icon"
 						/>
 						<span className="text-xs text-muted-foreground">HEADQUARTERS</span>
 					</div>
@@ -60,7 +60,7 @@ const QuoteAbout = () => {
 							src={"/iconsAbout/website.svg"}
 							width={15}
 							height={15}
-							alt="ceo"
+							alt="website icon"
 						/>
 						<span className="text-xs text-muted-foreground">WEBSITE</span>
 					</div>
@@ -79,7 +79,7 @@ const QuoteAbout = () => {
 							src={"/iconsAbout/employees.svg"}
 							width={15}
 							height={15}
-							alt="ceo"
+							alt="group of people icon"
 						/>
 						<span className="text-xs text-muted-foreground">EMPLOYEES</span>
 					</div>
@@ -92,7 +92,7 @@ const QuoteAbout = () => {
 							src={"/iconsAbout/exchange.svg"}
 							width={15}
 							height={15}
-							alt="ceo"
+							alt="exchange icon"
 						/>
 						<span className="text-xs text-muted-foreground">
 							PRIMARY EXCHANGE
