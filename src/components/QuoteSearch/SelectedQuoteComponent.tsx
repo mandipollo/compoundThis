@@ -1,14 +1,22 @@
 "use client";
 
-import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 import React from "react";
+
+// ui
 import { Separator } from "../ui/separator";
+
+// components
 import FinancialAccordion from "./FinancialStatementTables/FinancialAccordion";
 import QuoteChart from "./QuoteChart";
 import QuoteTopNews from "./QuoteTopNews";
 import QuoteAbout from "./QuoteFundamental/QuoteAbout";
 import QuoteEOD from "./QuoteFundamental/QuoteEOD";
 
+// store
+import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
+import QuoteLiveFeed from "./QuoteLiveFeed";
+
+//
 const SelectedQuoteComponent = () => {
 	const { selectedQuote } = useSelectedQuoteStore();
 
@@ -28,6 +36,7 @@ const SelectedQuoteComponent = () => {
 			<Separator />
 			<div className="grid grid-cols-[2fr_1fr] gap-4">
 				<div className="flex flex-col gap-2 w-full">
+					<QuoteLiveFeed ticker={selectedQuote} />
 					<QuoteChart />
 					<QuoteTopNews />
 					<FinancialAccordion />

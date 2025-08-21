@@ -8,7 +8,25 @@
 	--color-primaryLight: #fdfaf6;
 }
 body {
-	font-family: var(--font-archivo) Arial, Helvetica, sans-serif;
+	font-family:
+		var(--font-archivo) Arial,
+		Helvetica,
+		sans-serif;
+}
+
+@layer utilities {
+	@keyframes infinite-scroll {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-100%);
+		}
+	}
+
+	.animate-infinite-scroll {
+		animation: infinite-scroll 50s linear infinite;
+	}
 }
 
 @theme inline {

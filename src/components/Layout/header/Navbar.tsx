@@ -13,7 +13,7 @@ const Navbar = () => {
 		<nav
 			role="navigation"
 			aria-label="Main Navigation"
-			className="flex flex-col w-full bg-primary text-white"
+			className="flex flex-col w-full bg-primary text-white shadow-xl"
 		>
 			<div className="flex flex-row p-2 items-center justify-between w-full gap-2">
 				<Link href={"/"} className="flex items-center px-4">

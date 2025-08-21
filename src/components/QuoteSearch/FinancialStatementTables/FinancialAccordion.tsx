@@ -58,8 +58,6 @@ const FinancialAccordion = () => {
 	if (error) {
 		return <div>{error}</div>;
 	}
-
-	console.log(data);
 	const { balanceSheet, cashFlow, incomeStatement } = data.data;
 
 	return (

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "../ui/card";
-import Image from "next/image";
+
 import { Separator } from "../ui/separator";
 
 const QuoteTopNews = () => {
@@ -21,14 +21,9 @@ const QuoteTopNews = () => {
 										Yahoo finance : 8 minutes ago
 									</span>
 								</div>
-								<figure className="relative aspect-[5/4] h-20">
-									<Image
-										src="/meta-zuck.jpeg"
-										fill
-										alt="meta zuch "
-										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-									/>
-								</figure>
+								<div className="relative aspect-[5/4] h-20 border flex justify-center items-center rounded-md shadow-md">
+									News Image
+								</div>
 							</CardContent>
 						</Card>
 					</div>
