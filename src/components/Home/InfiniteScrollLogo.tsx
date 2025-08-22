@@ -2,15 +2,31 @@ import React from "react";
 import Image from "next/image";
 const InfiniteScrollLogo = () => {
 	const logos = [
-		{ src: "/meta.svg", alt: "Meta" },
-		{ src: "/alphabet.svg", alt: "Alphabet" },
+		{ src: "/companyLogo/meta.svg", alt: "Meta" },
+		{ src: "/companyLogo/alphabet.svg", alt: "Alphabet" },
 		{
-			src: "/amd.svg",
+			src: "/companyLogo/amd.svg",
 			alt: "AMD",
 		},
-		{ src: "/apple.svg", alt: "Apple" },
-		{ src: "/blackberry.svg", alt: "Blackberry" },
-		{ src: "/tesla.svg", alt: "Tesla" },
+		{ src: "/companyLogo/apple.svg", alt: "Apple" },
+		{ src: "/companyLogo/blackberry.svg", alt: "Blackberry" },
+		{ src: "/companyLogo/tesla.svg", alt: "Tesla" },
+		{
+			src: "/companyLogo/amazon.svg",
+			alt: "Amazon",
+		},
+		{
+			src: "/companyLogo/nvidia.svg",
+			alt: "Nvidia",
+		},
+		{
+			src: "/companyLogo/palantir.svg",
+			alt: "Palantir",
+		},
+		{
+			src: "/companyLogo/roblox.svg",
+			alt: "Roblox",
+		},
 	];
 	return (
 		<div className="inline-flex text-xl w-full pt-38 pb-10 flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
