@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Gradient } from "./gradient";
 import {
 	TableCaption,
 	TableRow,
@@ -9,7 +8,6 @@ import {
 	Table,
 } from "../ui/table";
 import { io } from "socket.io-client";
-import { set } from "zod";
 import Container from "../Containers/Container";
 const PopularStocks = () => {
 	// connect to io
@@ -18,11 +16,8 @@ const PopularStocks = () => {
 	const [popularStocks, setPopularStocks] = useState<{}[]>([]);
 	useEffect(() => {
 		const socket = io(server);
-
-		socket.on("popularStocks", data => {
-			const dataStream = data.toString();
-
-			setPopularStocks(dataStream);
+		socket.on("homepage", data => {
+			console.log(data);
 		});
 
 		return () => {

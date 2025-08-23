@@ -75,15 +75,17 @@ const Hero = () => {
 							</Button>
 						</div>
 					</div>
-					<div className="flex flex-col gap-4 items-center max-w-2xl w-full">
-						<figure>
+					<div className="flex justify-center items-center max-w-2xl w-full">
+						<div className="relative flex h-full w-full items-center justify-center">
 							<Image
+								unoptimized
+								priority
+								height={300}
+								width={300}
 								alt="gif depicting intelligence"
-								width={400}
-								height={400}
 								src="/hero-animation.gif"
 							/>
-						</figure>
+						</div>
 					</div>
 				</div>
 				<InfiniteScrollLogo />

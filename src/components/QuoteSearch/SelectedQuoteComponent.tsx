@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 // ui
 import { Separator } from "../ui/separator";
@@ -18,8 +18,13 @@ import QuoteLiveFeed from "./QuoteLiveFeed";
 
 //
 const SelectedQuoteComponent = () => {
-	const { selectedQuote } = useSelectedQuoteStore();
+	const { selectedQuote, clearSelectedQuote } = useSelectedQuoteStore();
 
+	useEffect(() => {
+		return () => {
+			clearSelectedQuote();
+		};
+	}, []);
 	if (!selectedQuote) {
 		return (
 			<section className="w-full h-full flex justify-center items-center">

@@ -5,34 +5,34 @@ import Image from "next/image";
 
 const instrument = [
 	{
-		logo: "/apple.svg",
+		logo: "/companyLogo/apple.svg",
 		price: "£212.09",
 		company: "Apple Inc",
 		ticker: "AAPL",
 	},
 	{
-		logo: "/tesla.svg",
+		logo: "/companyLogo/tesla.svg",
 
 		price: "£303",
 		company: "Tesla",
 		ticker: "TSLA",
 	},
 	{
-		logo: "/amd.svg",
+		logo: "/companyLogo/amd.svg",
 
 		price: "£143.19",
 		company: "AMD",
 		ticker: "AMD",
 	},
 	{
-		logo: "/blackberry.svg",
+		logo: "/companyLogo/blackberry.svg",
 
 		price: "£4.15",
 		company: "Blackberry",
 		ticker: "BB",
 	},
 	{
-		logo: "/meta.svg",
+		logo: "/companyLogo/meta.svg",
 
 		price: "£726.02",
 		company: "Meta Inc",
