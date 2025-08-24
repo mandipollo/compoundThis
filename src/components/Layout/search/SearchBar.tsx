@@ -1,42 +1,60 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Command } from "@/components/ui/command";
 
-import SuggestionLists from "./SuggestionLists";
-import { SearchResultItem } from "./searchQueryTypes";
+// ui
+import { Command } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
+
+// components
+import SuggestionLists from "./SuggestionLists";
+
+// types
+import { SearchResultItem } from "@/types/Stock.type";
+import { ApiResponse } from "@/types/ApiResponse.type";
+
+// utils
+import getErrorMessage from "@/utils/get-error-message";
 
 const SearchBar = () => {
 	const [hideCommandList, setHideCommandList] = useState<boolean>(false);
 	const [input, setInput] = useState<string>("");
 	const [results, setResults] = useState<SearchResultItem[]>([]);
+	const [error, setError] = useState<string>("");
 
-	// focus input
-
-	//
+	// debounce api call 500ms
 	useEffect(() => {
 		if (!input) {
+			setResults([]);
 			return;
 		}
-		const getData = setTimeout(async () => {
-			const res = await fetch(
-				`/api/quote/quoteSearchSuggestions?ticker=${input}`,
-				{
-					method: "GET",
-					headers: { "Content-Type": "application/json" },
+		const delayDebounce = setTimeout(async () => {
+			try {
+				const res = await fetch(
+					`/api/quote/quoteSearchSuggestions?ticker=${input}`,
+					{
+						method: "GET",
+						headers: { "Content-Type": "application/json" },
+					}
+				);
+
+				const data: ApiResponse<SearchResultItem[]> = await res.json();
+				if (data.success) {
+					setResults(data.data);
+				} else {
+					setResults([]);
 				}
-			);
-
-			const data = await res.json();
-			console.log(data);
-
-			if (data.success) {
-				setResults(data.data);
+			} catch (error) {
+				const message = getErrorMessage(error);
+				setError(message);
+				console.log(message);
 			}
-		}, 2000);
+		}, 500);
 
-		return () => clearTimeout(getData);
+		return () => {
+			clearTimeout(delayDebounce);
+			setResults([]);
+		};
 	}, [input]);
 
 	return (
@@ -49,6 +67,7 @@ const SearchBar = () => {
 				value={input}
 				onChange={e => setInput(e.target.value)}
 			></Input>
+			{error && <span className="text-md text-red-500">{error}</span>}
 			{results && results.length > 0 && (
 				<Command
 					className={`z-10 absolute top-10 left-0 h-60 rounded-m rounded-t-none border shadow-md ${hideCommandList && "hidden"} `}

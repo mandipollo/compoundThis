@@ -16,36 +16,9 @@ import CashFlow from "./CashFlow";
 // hooks
 import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
 
-export interface StatementItem {
-	dataCode: string;
-	value: number;
-}
-export interface IncomeStatementInterface {
-	date: string;
-	year: number;
-	quarter: number;
-	incomeStatement: StatementItem[];
-}
-export interface BalanceSheetInterface {
-	date: string;
-	year: number;
-	quarter: number;
-	balanceSheet: StatementItem[];
-}
-export interface CashFlowInterface {
-	date: string;
-	year: number;
-	quarter: number;
-	cashFlow: StatementItem[];
-}
-interface StatementData {
-	success: boolean;
-	data: {
-		incomeStatement: IncomeStatementInterface[];
-		balanceSheet: BalanceSheetInterface[];
-		cashFlow: CashFlowInterface[];
-	};
-}
+// types
+import { StatementData } from "@/types/Stock.type";
+
 const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 	const {
 		data,

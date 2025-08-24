@@ -1,9 +1,13 @@
 "use server";
 
+import { ApiResponse } from "@/types/ApiResponse.type";
+import { SearchResultItem } from "@/types/Stock.type";
 import { NextRequest, NextResponse } from "next/server";
 
 //
-export async function GET(request: NextRequest) {
+export async function GET(
+	request: NextRequest
+): Promise<NextResponse<ApiResponse<SearchResultItem[]>>> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -49,12 +53,14 @@ export async function GET(request: NextRequest) {
 				{ status: 502 }
 			);
 		}
-		return NextResponse.json(data, { status: 200 });
+		return NextResponse.json<ApiResponse<SearchResultItem[]>>(data, {
+			status: 200,
+		});
 	} catch (error: unknown) {
 		// Catch unexpected runtime errors
 		const message =
 			error instanceof Error ? error.message : "Unexpected server error";
-		return NextResponse.json(
+		return NextResponse.json<ApiResponse<never>>(
 			{ success: false, error: message },
 			{ status: 500 }
 		);

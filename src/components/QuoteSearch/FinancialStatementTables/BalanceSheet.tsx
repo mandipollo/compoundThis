@@ -18,9 +18,9 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 //utils
 import numberToDispaly from "@/utils/numberFormatter";
+import { BalanceSheetInterface } from "@/types/Stock.type";
 
 //types
-import { BalanceSheetInterface } from "./FinancialAccordion";
 
 const chartConfig = {
 	totalAssets: {

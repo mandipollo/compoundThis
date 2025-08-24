@@ -1,3 +1,6 @@
+import React from "react";
+
+//ui
 import {
 	CommandList,
 	CommandEmpty,
@@ -5,10 +8,13 @@ import {
 	CommandItem,
 	CommandShortcut,
 } from "@/components/ui/command";
-import React from "react";
 
-import { SearchResultItem } from "./searchQueryTypes";
+// types
+import { SearchResultItem } from "@/types/Stock.type";
+
+// hooks
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
+
 const SuggestionLists = ({ results }: { results: SearchResultItem[] }) => {
 	const { setSelectedQuote } = useSelectedQuoteStore();
 	if (!results || results.length === 0) {

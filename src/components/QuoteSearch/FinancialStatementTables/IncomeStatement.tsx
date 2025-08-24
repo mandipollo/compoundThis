@@ -16,9 +16,8 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
+import { IncomeStatementInterface } from "@/types/Stock.type";
 // types
-
-import { IncomeStatementInterface } from "./FinancialAccordion";
 
 export interface ChartDataInterface {
 	date: string;

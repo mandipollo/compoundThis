@@ -18,9 +18,9 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
+import { CashFlowInterface } from "@/types/Stock.type";
 
 // types
-import { CashFlowInterface } from "./FinancialAccordion";
 
 const chartConfig = {
 	freeCashFlow: {
