@@ -1,12 +1,13 @@
 import React from "react";
-import { Separator } from "../../ui/separator";
 import Image from "next/image";
-import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
-import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
+// ui
+import { Separator } from "../../ui/separator";
 import { Loader2Icon } from "lucide-react";
-const QuoteAbout = () => {
-	const { selectedQuote } = useSelectedQuoteStore();
 
+// hooks
+import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
+
+const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!selectedQuote) {
 		return;
 	}

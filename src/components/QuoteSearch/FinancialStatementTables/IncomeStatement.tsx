@@ -1,3 +1,10 @@
+//ui
+import {
+	ChartConfig,
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
 	Table,
 	TableBody,
@@ -6,16 +13,12 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import numberToDispaly from "@/utils/numberFormatter";
-import { IncomeStatementInterface } from "./FinancialAccordion";
-import {
-	ChartConfig,
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-} from "@/components/ui/chart";
-
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
+// utils
+import numberToDispaly from "@/utils/numberFormatter";
+// types
+
+import { IncomeStatementInterface } from "./FinancialAccordion";
 
 export interface ChartDataInterface {
 	date: string;

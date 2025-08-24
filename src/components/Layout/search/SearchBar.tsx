@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { Command } from "@/components/ui/command";
 
 import SuggestionLists from "./SuggestionLists";
-import { ResultItem } from "./searchQueryTypes";
+import { SearchResultItem } from "./searchQueryTypes";
 import { Input } from "@/components/ui/input";
 
 const SearchBar = () => {
 	const [hideCommandList, setHideCommandList] = useState<boolean>(false);
 	const [input, setInput] = useState<string>("");
-	const [results, setResults] = useState<ResultItem[]>([]);
+	const [results, setResults] = useState<SearchResultItem[]>([]);
 
 	// focus input
 
@@ -32,7 +32,7 @@ const SearchBar = () => {
 			console.log(data);
 
 			if (data.success) {
-				setResults(data.data.data.results);
+				setResults(data.data);
 			}
 		}, 2000);
 
@@ -40,7 +40,7 @@ const SearchBar = () => {
 	}, [input]);
 
 	return (
-		<div className="flex flex-col gap-.5 max-w-2xl w-full ">
+		<div className="flex relative flex-col gap-.5 max-w-2xl w-full ">
 			<Input
 				onFocus={() => setHideCommandList(false)}
 				onBlur={() => setHideCommandList(true)}
@@ -51,7 +51,7 @@ const SearchBar = () => {
 			></Input>
 			{results && results.length > 0 && (
 				<Command
-					className={`rounded-m rounded-t-none border shadow-md ${hideCommandList && "hidden"} `}
+					className={`z-10 absolute top-10 left-0 h-60 rounded-m rounded-t-none border shadow-md ${hideCommandList && "hidden"} `}
 				>
 					<SuggestionLists results={results} />
 				</Command>

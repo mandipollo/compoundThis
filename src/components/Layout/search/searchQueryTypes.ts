@@ -1,20 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 
-export type ResultItem = {
-	active: boolean;
-	cik?: string;
-	composite_figi: string;
-	currency_name: string;
-	last_updated_utc: string;
-	locale: string;
-	market: string;
-	name: string;
-	primary_exchange: string;
-	share_class_figi: string;
+export interface SearchResultItem {
 	ticker: string;
-	type: string;
-};
-
+	name: string | null;
+	market: string | null;
+	primary_exchange: string | null;
+	type: string | null;
+}
 export type SearchBarType = {
 	setSelectedStock?: Dispatch<SetStateAction<string>>;
 };

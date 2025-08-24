@@ -1,3 +1,6 @@
+import React from "react";
+// ui
+
 import {
 	TableHeader,
 	TableRow,
@@ -6,19 +9,18 @@ import {
 	TableCell,
 	Table,
 } from "@/components/ui/table";
-import numberToDispaly from "@/utils/numberFormatter";
-
-import React from "react";
-import { CashFlowInterface } from "./FinancialAccordion";
-
 import {
 	ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
-
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
+// utils
+import numberToDispaly from "@/utils/numberFormatter";
+
+// types
+import { CashFlowInterface } from "./FinancialAccordion";
 
 const chartConfig = {
 	freeCashFlow: {

@@ -1,5 +1,4 @@
 import { Card, CardContent } from "../ui/card";
-
 import { Separator } from "../ui/separator";
 
 const QuoteTopNews = () => {

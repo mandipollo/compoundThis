@@ -1,13 +1,13 @@
-import { Separator } from "@/components/ui/separator";
-import useQuoteFundamental from "@/hooks/swr/useQuoteFundamental";
-import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
-import numberToDispaly from "@/utils/numberFormatter";
-import { Loader2Icon } from "lucide-react";
 import React from "react";
+//ui
+import { Separator } from "@/components/ui/separator";
+import { Loader2Icon } from "lucide-react";
+// hooks
+import useQuoteFundamental from "@/hooks/swr/useQuoteFundamental";
+// utils
+import numberToDispaly from "@/utils/numberFormatter";
 
-const QuoteEOD = () => {
-	const { selectedQuote } = useSelectedQuoteStore();
-
+const QuoteEOD = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!selectedQuote) {
 		return;
 	}

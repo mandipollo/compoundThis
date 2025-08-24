@@ -44,11 +44,11 @@ const SelectedQuoteComponent = () => {
 					<QuoteLiveFeed ticker={selectedQuote} />
 					<QuoteChart />
 					<QuoteTopNews />
-					<FinancialAccordion />
+					<FinancialAccordion selectedQuote={selectedQuote} />
 				</div>
 				<div className="flex flex-col gap-2">
-					<QuoteEOD />
-					<QuoteAbout />
+					<QuoteEOD selectedQuote={selectedQuote} />
+					<QuoteAbout selectedQuote={selectedQuote} />
 				</div>
 			</div>
 		</section>

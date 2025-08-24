@@ -1,15 +1,20 @@
 "use client";
+
+// ui
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+
+// components
 import IncomeStatement from "./IncomeStatement";
 import BalanceSheet from "./BalanceSheet";
 import CashFlow from "./CashFlow";
+
+// hooks
 import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
-import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
 export interface StatementItem {
 	dataCode: string;
@@ -41,9 +46,7 @@ interface StatementData {
 		cashFlow: CashFlowInterface[];
 	};
 }
-const FinancialAccordion = () => {
-	const { selectedQuote } = useSelectedQuoteStore();
-
+const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 	const {
 		data,
 		error,
@@ -59,6 +62,7 @@ const FinancialAccordion = () => {
 		return <div>{error}</div>;
 	}
 	const { balanceSheet, cashFlow, incomeStatement } = data.data;
+	console.log(data);
 
 	return (
 		<Accordion type="multiple" className="w-full">

@@ -7,9 +7,9 @@ import {
 } from "@/components/ui/command";
 import React from "react";
 
-import { ResultItem } from "./searchQueryTypes";
+import { SearchResultItem } from "./searchQueryTypes";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
-const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
+const SuggestionLists = ({ results }: { results: SearchResultItem[] }) => {
 	const { setSelectedQuote } = useSelectedQuoteStore();
 	if (!results || results.length === 0) {
 		return;
@@ -27,9 +27,9 @@ const SuggestionLists = ({ results }: { results: ResultItem[] }) => {
 							}}
 							key={item.ticker}
 						>
-							{item.ticker} - <span className=""> {item.name}</span>
+							{item.ticker} - <span className=""> {item.name ?? "N/A"}</span>
 							<CommandShortcut>
-								{item.market}-{item.primary_exchange}
+								{item.type ?? "N/A"}-{item.primary_exchange ?? "N/A"}
 							</CommandShortcut>
 						</CommandItem>
 					);
