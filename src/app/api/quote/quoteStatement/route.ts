@@ -7,7 +7,7 @@ export async function GET(
 	req: NextRequest
 ): Promise<NextResponse<ApiResponse<StatementData>>> {
 	try {
-		const server = process.env.LOCAL_BASE_SERVER;
+		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 
 		if (!server) {
 			return NextResponse.json<ApiResponse<never>>(

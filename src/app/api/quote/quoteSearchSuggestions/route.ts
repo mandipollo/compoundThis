@@ -9,7 +9,7 @@ export async function GET(
 	request: NextRequest
 ): Promise<NextResponse<ApiResponse<SearchResultItem[]>>> {
 	try {
-		const server = process.env.LOCAL_BASE_SERVER;
+		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
 			return NextResponse.json(
 				{ success: false, error: "Server error" },
@@ -20,9 +20,9 @@ export async function GET(
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
 
-		if (!ticker) {
+		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json(
-				{ success: false, error: "Ticker required" },
+				{ success: false, error: "Ticker is required" },
 				{ status: 500 }
 			);
 		}
@@ -34,21 +34,14 @@ export async function GET(
 			}
 		);
 
-		if (!response.ok) {
-			return NextResponse.json(
-				{ success: false, error: response.statusText },
-				{ status: response.status }
-			);
-		}
-
 		const data = await response.json();
 
 		//  Check if the external API's own success flag is false
-		if (!data.success) {
+		if (data.success === "false") {
 			return NextResponse.json(
 				{
 					success: false,
-					error: data.error || "Unknown backend error",
+					error: response.statusText || "Unknown backend error",
 				},
 				{ status: 502 }
 			);

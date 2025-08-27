@@ -29,7 +29,7 @@ const SuggestionLists = ({ results }: { results: SearchResultItem[] }) => {
 					return (
 						<CommandItem
 							onMouseDown={() => {
-								setSelectedQuote(item.ticker);
+								setSelectedQuote(item.ticker ?? "");
 							}}
 							key={item.ticker}
 						>

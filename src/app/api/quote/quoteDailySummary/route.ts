@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { DailyTickerSummary, FundamentalData } from "@/types/Stock.type";
+import { DailyTickerSummary } from "@/types/Stock.type";
 import { NextRequest, NextResponse } from "next/server";
 
 //
@@ -9,7 +9,7 @@ export async function GET(
 	request: NextRequest
 ): Promise<NextResponse<ApiResponse<DailyTickerSummary>>> {
 	try {
-		const server = process.env.LOCAL_BASE_SERVER;
+		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
 			return NextResponse.json<ApiResponse<never>>(
 				{
@@ -23,7 +23,7 @@ export async function GET(
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
 
-		if (!ticker) {
+		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json<ApiResponse<never>>(
 				{
 					success: false,
@@ -40,29 +40,18 @@ export async function GET(
 			}
 		);
 
-		// check for invalid ticker
-		if (!response.ok) {
-			const errorData = await response.json();
-			return NextResponse.json<ApiResponse<never>>(
-				{
-					success: false,
-					error: response.statusText,
-				},
-				{ status: response.status }
-			);
-		}
 		const data = await response.json();
 		//  Check if the external API's own success flag is false
-		if (!data.success) {
+		if (data.success === "false") {
 			return NextResponse.json<ApiResponse<never>>({
 				success: false,
-				...data,
+				error: data,
 			});
 		}
 
 		return NextResponse.json<ApiResponse<DailyTickerSummary>>({
 			success: true,
-			data: data.data,
+			data: data,
 		});
 	} catch (error: unknown) {
 		const message =

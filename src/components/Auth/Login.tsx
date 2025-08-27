@@ -1,8 +1,10 @@
 "use client";
-
-//
-import Link from "next/link";
 import React, { useState } from "react";
+import Link from "next/link";
+import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
+
+// ui
+
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon } from "lucide-react";
@@ -18,10 +20,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+// store
 import { useUserStore } from "@/store/userStore";
 
+// zod
+
 import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
-import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
+
+// hooks
 import { loginUser } from "@/libs/cognito/existingUser/loginUser";
 
 const initialState: LoginFormState = {
@@ -45,73 +52,85 @@ const Login = () => {
 		e.preventDefault();
 		setPending(true);
 
-		// form inputs
-		const formData = new FormData(e.currentTarget);
-		const email = formData.get("email") as string;
-		const password = formData.get("password") as string;
+		try {
+			// Extract form data
+			const formData = new FormData(e.currentTarget);
+			const email = formData.get("email") as string;
+			const password = formData.get("password") as string;
 
-		// ✅ Validate with Zod
-		const validated = LoginFormSchema.safeParse({ email, password });
-		if (!validated.success) {
-			setState({
-				...initialState,
-				formValidationErrors: validated.error.flatten().fieldErrors,
-				error: "Please fix the highlighted errors",
-			});
+			// Validate form with Zod
+			const validated = LoginFormSchema.safeParse({ email, password });
+			if (!validated.success) {
+				setState({
+					...initialState,
+					formValidationErrors: validated.error.flatten().fieldErrors,
+					error: "Please fix the highlighted errors",
+				});
+				return;
+			}
+
+			// Call Cognito login service
+			const { success, error, result } = await loginUser(email, password);
+			console.log(success, error);
+
+			if (!success) {
+				setState(prev => ({ ...prev, error }));
+				return;
+			}
+
+			const { nextStep, isSignedIn } = result as SignInOutput;
+
+			// Unconfirmed users
+			if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
+				setState(prev => ({
+					...prev,
+					success: true,
+					message: "Please confirm your email",
+					formValidationErrors: { email: [], password: [] },
+				}));
+				router.push("/auth/confirmEmail");
+				return;
+			}
+
+			// Signed-in users
+			if (isSignedIn) {
+				// Fetch session token and save to backend
+				const sessions = await fetchAuthSession();
+				const idToken = sessions.tokens?.idToken?.toString();
+				const tokenExp = sessions.tokens?.idToken?.payload.exp;
+
+				await fetch("/api/auth/setToken", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ idToken, tokenExp }),
+				});
+
+				// Update global user state
+				await fetchUser();
+
+				// Redirect to protected page
+				setState(prev => ({
+					...prev,
+					success: true,
+					message: "Successfully logged in",
+					formValidationErrors: { email: [], password: [] },
+					error: "",
+				}));
+				router.push("/user");
+				return;
+			}
+
+			// Fallback if login somehow incomplete
+			setState(prev => ({
+				...prev,
+				message: "Check your email to confirm.",
+			}));
+		} catch (err: unknown) {
+			const message = err instanceof Error ? err.message : "Unexpected error";
+			setState(prev => ({ ...prev, error: message }));
+		} finally {
 			setPending(false);
-			return;
 		}
-
-		//  Call cognito signup
-		const { success, error, result } = await loginUser(email, password);
-
-		// success false
-		if (!success) {
-			setState({ ...initialState, error });
-			setPending(false);
-			return;
-		}
-
-		// retrieve output from cognito signin
-		const { nextStep, isSignedIn } = result as SignInOutput;
-
-		// redirect unconfirmed user
-		if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
-			router.push("/auth/confirmEmail");
-			return {
-				formValidationErrors: { email: [], password: [] },
-				error: "",
-				success: true,
-				message: "Please confirm email",
-			};
-		}
-		if (isSignedIn) {
-			// pass token to the api route hander
-			const sessions = await fetchAuthSession();
-			const idToken = sessions.tokens?.idToken?.toString();
-			const tokenExp = sessions.tokens?.idToken?.payload.exp;
-
-			await fetch("/api/auth/setToken", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ idToken, tokenExp }),
-			});
-
-			// zustand user state
-			await fetchUser();
-
-			// redirect user to protected routes
-			router.push("/user");
-			return {
-				formValidationErrors: { email: [], password: [] },
-				error: "",
-				success: true,
-				message: "Successfully logged in",
-			};
-		} else {
-			setState({ ...initialState, message: "Check your email to confirm." });
-		}
-		setPending(false);
 	};
 
 	return (

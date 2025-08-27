@@ -11,19 +11,19 @@ import { io } from "socket.io-client";
 import Container from "../Containers/Container";
 const PopularStocks = () => {
 	// connect to io
-	const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
+	const server = process.env.LOCAL_BASE_SERVER;
 
-	const [popularStocks, setPopularStocks] = useState<{}[]>([]);
-	useEffect(() => {
-		const socket = io(server);
-		socket.on("homepage", data => {
-			console.log(data);
-		});
+	// const [popularStocks, setPopularStocks] = useState<{}[]>([]);
+	// useEffect(() => {
+	// 	const socket = io(server);
+	// 	socket.on("homepage", data => {
+	// 		console.log(data);
+	// 	});
 
-		return () => {
-			socket.disconnect();
-		};
-	}, []);
+	// 	return () => {
+	// 		socket.disconnect();
+	// 	};
+	// }, []);
 
 	return (
 		<section className="flex justify-center items-center w-full h-full bg-primary">

@@ -6,7 +6,7 @@ export async function GET(
 	request: NextRequest
 ): Promise<NextResponse<ApiResponse<ChartBarData[]>>> {
 	try {
-		const server = process.env.LOCAL_BASE_SERVER;
+		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
 			return NextResponse.json<ApiResponse<never>>(
 				{ success: false, error: "Server error" },
@@ -28,15 +28,6 @@ export async function GET(
 			method: "GET",
 			headers: { "Content-Type": "application/json" },
 		});
-		// if (!response.ok) {
-		// 	return NextResponse.json<ApiResponse<never>>(
-		// 		{
-		// 			success: false,
-		// 			error: response.statusText,
-		// 		},
-		// 		{ status: response.status }
-		// 	);
-		// }
 
 		const data = await response.json();
 

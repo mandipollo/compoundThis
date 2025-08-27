@@ -13,6 +13,7 @@ export async function loginUser(
 			username: email,
 			password: password,
 		});
+		console.log(result);
 
 		return {
 			result,

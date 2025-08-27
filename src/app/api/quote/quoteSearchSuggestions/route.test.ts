@@ -1,14 +1,19 @@
+// mock
+
+vi.stubGlobal("fetch", vi.fn());
+const mockedFetch = vi.mocked(fetch);
+
+// imports
 import { testApiHandler } from "next-test-api-route-handler";
 import { vi, expect, describe, afterEach, it } from "vitest";
 
 import * as appHandler from "./route";
-
-// clean all stub env used for test function each run
-afterEach(() => {
-	vi.unstubAllEnvs();
-});
+import { SearchResultItem, SearchSuggestionResponse } from "@/types/Stock.type";
 
 describe("handles quote search suggestions ", () => {
+	//
+
+	const mockServer = "http://localhost:8080";
 	it("should return Server error on unresponsive server", async () => {
 		// set server env to be empty , next js automatically loads env from .env.test file
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "");
@@ -27,16 +32,8 @@ describe("handles quote search suggestions ", () => {
 
 	it("should return Ticker required on missing ticker", async () => {
 		// set server env to be empty , next js automatically loads env from .env.test file
-		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
+		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", mockServer);
 
-		// mock fetch function to resolve into promise with given data to avoid calling the prod api
-		vi.stubGlobal(
-			"fetch",
-			vi.fn().mockResolvedValue({
-				json: Promise.resolve({ success: false, error: "Ticker required" }),
-				status: 422,
-			})
-		);
 		await testApiHandler({
 			appHandler,
 			url: "?ticker=",
@@ -46,44 +43,20 @@ describe("handles quote search suggestions ", () => {
 
 				expect(data).toStrictEqual({
 					success: false,
-					error: "Ticker required",
+					error: "Ticker is required",
 				});
-			},
-		});
-	});
-
-	it("should return Invalid ticker on 404 response from exterrnal api  ", async () => {
-		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
-		vi.stubGlobal(
-			"fetch",
-			vi.fn().mockResolvedValue({
-				json: () =>
-					Promise.resolve({ success: false, error: "Invalid ticker" }),
-				status: 404,
-			})
-		);
-
-		await testApiHandler({
-			appHandler,
-			url: "?ticker=INVALID",
-			test: async ({ fetch }) => {
-				const res = await fetch({ method: "GET" });
-				const data = await res.json();
-				expect(data).toStrictEqual({ success: false, error: "Invalid ticker" });
 			},
 		});
 	});
 
 	it("should return valid data on success ", async () => {
 		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
-		vi.stubGlobal(
-			"fetch",
-			vi.fn().mockResolvedValue({
-				json: () =>
-					Promise.resolve({ success: true, data: { name: "Apple Inc" } }),
-				status: 200,
-			})
-		);
+		mockedFetch.mockResolvedValue({
+			ok: true,
+			json: () =>
+				Promise.resolve({ data: { some: "raw-data" }, success: true }),
+			status: 200,
+		} as unknown as Response);
 
 		await testApiHandler({
 			appHandler,
@@ -93,7 +66,7 @@ describe("handles quote search suggestions ", () => {
 				const data = await res.json();
 				expect(data).toStrictEqual({
 					success: true,
-					data: { name: "Apple Inc" },
+					data: { some: "raw-data" },
 				});
 			},
 		});

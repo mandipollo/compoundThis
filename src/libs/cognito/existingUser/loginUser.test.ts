@@ -8,38 +8,14 @@ const mockedSignin = vi.mocked(signIn);
 
 // imports
 
-import { vi, expect, describe, it, afterEach } from "vitest";
+import { vi, expect, describe, it, beforeEach } from "vitest";
 import { signIn } from "aws-amplify/auth";
 import { loginUser } from "./loginUser";
 
-// clean up
-afterEach(() => {
-	vi.clearAllMocks();
-});
-
 // test
 describe("wrapper function for aws sign in ", () => {
-	it("resolves correctly ", async () => {
-		mockedSignin.mockResolvedValue({
-			isSignedIn: true,
-			nextStep: { signInStep: "DONE" },
-		});
-
-		const { result, error, success } = await loginUser(
-			"test@example.com",
-			"Password123@"
-		);
-
-		expect(mockedSignin).toHaveBeenCalledWith({
-			username: "test@example.com",
-			password: "Password123@",
-		});
-		expect(error).toEqual("");
-		expect(success).toEqual(true);
-		expect(result).toEqual({
-			isSignedIn: true,
-			nextStep: { signInStep: "DONE" },
-		});
+	beforeEach(() => {
+		vi.resetAllMocks();
 	});
 
 	// error scenarios
@@ -87,5 +63,28 @@ describe("wrapper function for aws sign in ", () => {
 
 		expect(success).toEqual(false);
 		expect(error).toEqual("Unexpected error. Please try again");
+	});
+
+	it("resolves correctly ", async () => {
+		mockedSignin.mockResolvedValue({
+			isSignedIn: true,
+			nextStep: { signInStep: "DONE" },
+		});
+
+		const { result, error, success } = await loginUser(
+			"test@example.com",
+			"Password123@"
+		);
+
+		expect(mockedSignin).toHaveBeenCalledWith({
+			username: "test@example.com",
+			password: "Password123@",
+		});
+		expect(error).toEqual("");
+		expect(success).toEqual(true);
+		expect(result).toEqual({
+			isSignedIn: true,
+			nextStep: { signInStep: "DONE" },
+		});
 	});
 });

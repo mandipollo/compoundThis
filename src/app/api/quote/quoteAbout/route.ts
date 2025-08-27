@@ -9,7 +9,7 @@ export async function GET(
 	request: NextRequest
 ): Promise<NextResponse<ApiResponse<AboutData>>> {
 	try {
-		const server = process.env.LOCAL_BASE_SERVER;
+		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
 			return NextResponse.json<ApiResponse<never>>(
 				{ success: false, error: "Server error" },
@@ -19,7 +19,7 @@ export async function GET(
 
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
-		if (!ticker) {
+		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json<ApiResponse<never>>(
 				{ success: false, error: "Ticker is required" },
 				{ status: 400 }

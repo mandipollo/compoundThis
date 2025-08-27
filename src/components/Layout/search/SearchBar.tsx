@@ -51,7 +51,7 @@ const SearchBar = () => {
 				setError(message);
 				console.log(message);
 			}
-		}, 500);
+		}, 400);
 
 		return () => {
 			clearTimeout(delayDebounce);
