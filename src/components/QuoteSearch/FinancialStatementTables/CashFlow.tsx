@@ -75,17 +75,21 @@ const CashFlow = ({ cashFlow }: { cashFlow: CashFlowInterface[] }) => {
 				<TableHeader>
 					<TableRow>
 						<TableHead>(USD)</TableHead>
-						<TableHead className="text-right">{latestQuarter.date}</TableHead>
+						<TableHead className="text-right">
+							{latestQuarter?.date ?? "N/A"}
+						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{latestQuarter.cashFlow.map(data => (
-						<TableRow key={data.dataCode}>
+					{latestQuarter?.cashFlow?.map((data, index) => (
+						<TableRow key={index}>
 							<TableCell>
-								{data.dataCode[0].toUpperCase() + data.dataCode.slice(1)}
+								{data.dataCode[0]
+									? data.dataCode[0].toUpperCase() + data.dataCode.slice(1)
+									: "N/A"}
 							</TableCell>
 							<TableCell className="text-right">
-								{numberToDispaly(data.value)}
+								{data.value ? numberToDispaly(data.value) : "N/A"}
 							</TableCell>
 						</TableRow>
 					))}

@@ -10,11 +10,10 @@ import FinancialAccordion from "./FinancialStatementTables/FinancialAccordion";
 import QuoteChart from "./QuoteChart";
 import QuoteTopNews from "./QuoteTopNews";
 import QuoteAbout from "./QuoteFundamental/QuoteAbout";
-import QuoteEOD from "./QuoteFundamental/QuoteEOD";
+import QuoteDailySummary from "./QuoteFundamental/QuoteDailySummary";
 
 // store
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
-import QuoteLiveFeed from "./QuoteLiveFeed";
 
 //
 const SelectedQuoteComponent = () => {
@@ -34,20 +33,14 @@ const SelectedQuoteComponent = () => {
 	}
 	return (
 		<section className="flex flex-col gap-4">
-			<div className="flex flex-row justify-between py-2">
-				<h2 className="text-xl">{selectedQuote}</h2>
-			</div>
-
-			<Separator />
 			<div className="grid grid-cols-[2fr_1fr] gap-4">
 				<div className="flex flex-col gap-2 w-full">
-					<QuoteLiveFeed ticker={selectedQuote} />
-					<QuoteChart />
+					<QuoteChart selectedQuote={selectedQuote} />
 					<QuoteTopNews />
-					<FinancialAccordion selectedQuote={selectedQuote} />
+					{/* <FinancialAccordion selectedQuote={selectedQuote} /> */}
 				</div>
 				<div className="flex flex-col gap-2">
-					<QuoteEOD selectedQuote={selectedQuote} />
+					<QuoteDailySummary selectedQuote={selectedQuote} />
 					<QuoteAbout selectedQuote={selectedQuote} />
 				</div>
 			</div>

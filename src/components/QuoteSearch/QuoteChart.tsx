@@ -1,9 +1,16 @@
 "use client";
+// ui
+import { Loader2Icon, TrendingUp } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	ChartConfig,
 	ChartContainer,
@@ -11,32 +18,96 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 
+import useQuoteChart from "@/hooks/swr/useQuoteChart";
+import { ChartBarData } from "@/types/Stock.type";
+import { Button } from "../ui/button";
+
+// demo
 export const description = "A simple area chart";
 
-const chartData = [
-	{ month: "January", desktop: 186 },
-	{ month: "February", desktop: 305 },
-	{ month: "March", desktop: 237 },
-	{ month: "April", desktop: 73 },
-	{ month: "May", desktop: 209 },
-	{ month: "June", desktop: 214 },
-];
+const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
+	if (!selectedQuote) {
+		return;
+	}
+	const { data, error, isLoading } = useQuoteChart(selectedQuote);
 
-const chartConfig = {
-	desktop: {
-		label: "META",
-		color: "#002c28",
-	},
-} satisfies ChartConfig;
+	if (error) {
+		return <div>Error</div>;
+	}
+	if (isLoading) {
+		return <Loader2Icon className="animate-spin" />;
+	}
+	if (!data) {
+		return <Loader2Icon className="animate-spin" />;
+	}
 
-const QuoteChart = () => {
+	const chartBar: ChartBarData[] = data?.data;
+	console.log(chartBar);
+
+	const chartConfig = {
+		desktop: {
+			label: "META",
+			color: "#002c28",
+		},
+	} satisfies ChartConfig;
+
 	return (
 		<Card>
+			<CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+				<div className="grid flex-1 gap-1">
+					<CardTitle className="text-xl">{selectedQuote}</CardTitle>
+					<CardDescription>Current Price</CardDescription>
+					<div role="tablist" className="flex flex-row gap-1">
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							1 D
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							5 D
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							1 M
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							6 M
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							YTD
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							1 Y
+						</Button>
+						<Button
+							role="tab"
+							className="bg-white hover:bg-green-200 text-black shadow-md border"
+						>
+							5 Y
+						</Button>
+					</div>
+				</div>
+			</CardHeader>
 			<CardContent className="bg-white">
 				<ChartContainer config={chartConfig}>
 					<AreaChart
 						accessibilityLayer
-						data={chartData}
+						data={chartBar}
 						margin={{
 							left: 12,
 							right: 12,
@@ -44,19 +115,28 @@ const QuoteChart = () => {
 					>
 						<CartesianGrid vertical={false} />
 						<XAxis
-							dataKey="month"
+							dataKey="time"
 							tickLine={false}
 							axisLine={true}
 							tickMargin={8}
-							tickFormatter={value => value.slice(0, 3)}
+							tickFormatter={value => {
+								const date = new Date(value * 1000);
+								const hours = String(date.getHours()).padStart(2, "0");
+								const minutes = String(date.getMinutes()).padStart(2, "0");
+								return `${hours}:${minutes}`;
+							}}
 						/>
-
+						<YAxis
+							dataKey="close"
+							domain={["dataMin", "dataMax"]} // scale to min and max of your data
+							tickFormatter={value => value.toFixed(2)} // optional formatting
+						/>
 						<ChartTooltip
 							cursor={false}
 							content={<ChartTooltipContent indicator="line" />}
 						/>
 						<Area
-							dataKey="desktop"
+							dataKey="close"
 							type="natural"
 							fill="var(--color-desktop)"
 							fillOpacity={0.4}

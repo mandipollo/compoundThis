@@ -1,14 +1,13 @@
 "use server";
 
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { FundamentalData } from "@/types/Stock.type";
-import getErrorMessage from "@/utils/get-error-message";
+import { DailyTickerSummary, FundamentalData } from "@/types/Stock.type";
 import { NextRequest, NextResponse } from "next/server";
 
 //
 export async function GET(
 	request: NextRequest
-): Promise<NextResponse<ApiResponse<FundamentalData>>> {
+): Promise<NextResponse<ApiResponse<DailyTickerSummary>>> {
 	try {
 		const server = process.env.LOCAL_BASE_SERVER;
 		if (!server) {
@@ -34,7 +33,7 @@ export async function GET(
 			);
 		}
 		const response = await fetch(
-			`${server}/quote/fundamental?ticker=${ticker}`,
+			`${server}/quote/daily-summary?ticker=${ticker}`,
 			{
 				method: "GET",
 				headers: { "Content-Type": "application/json" },
@@ -61,7 +60,7 @@ export async function GET(
 			});
 		}
 
-		return NextResponse.json<ApiResponse<FundamentalData>>({
+		return NextResponse.json<ApiResponse<DailyTickerSummary>>({
 			success: true,
 			data: data.data,
 		});

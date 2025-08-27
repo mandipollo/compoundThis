@@ -35,6 +35,8 @@ const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 		return <div>{error}</div>;
 	}
 	const { balanceSheet, cashFlow, incomeStatement } = data.data;
+	console.log(balanceSheet);
+
 	console.log(data);
 
 	return (

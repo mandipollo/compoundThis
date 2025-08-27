@@ -9,7 +9,7 @@ export async function GET(
 	request: NextRequest
 ): Promise<NextResponse<ApiResponse<SearchResultItem[]>>> {
 	try {
-		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
+		const server = process.env.LOCAL_BASE_SERVER;
 		if (!server) {
 			return NextResponse.json(
 				{ success: false, error: "Server error" },
@@ -27,7 +27,7 @@ export async function GET(
 			);
 		}
 		const response = await fetch(
-			`${server}/finance-quote/suggestions?ticker=${ticker}`,
+			`${server}/quote/suggestions?ticker=${ticker}`,
 			{
 				method: "GET",
 				headers: { "Content-Type": "application/json" },
@@ -44,7 +44,7 @@ export async function GET(
 		const data = await response.json();
 
 		//  Check if the external API's own success flag is false
-		if (data.success === false) {
+		if (!data.success) {
 			return NextResponse.json(
 				{
 					success: false,

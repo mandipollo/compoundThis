@@ -6,12 +6,14 @@ import { Loader2Icon } from "lucide-react";
 
 // hooks
 import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
+import { AboutData } from "@/types/Stock.type";
+import numberToDispaly from "@/utils/numberFormatter";
 
 const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!selectedQuote) {
 		return;
 	}
-	const { error, isLoading, data } = useQuoteAbout(`${selectedQuote}`);
+	const { data, error, isLoading } = useQuoteAbout(`${selectedQuote}`);
 
 	if (error) {
 		return <div>Error</div>;
@@ -19,12 +21,18 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}
+	if (!data) {
+		return <Loader2Icon className="animate-spin" />;
+	}
+	const about: AboutData = data?.data;
 
 	return (
 		<div className="border rounded-md shadow-md p-2 gap-2">
-			<h4 className="text-lg py-2">About</h4>
+			<span className="text-lg py-2 flex gap-2 flex-row">
+				{about.name ?? "N/A"}
+			</span>
 			<div className="flex flex-col gap-4">
-				<p className="text-xs">{data.data.description}</p>
+				<p className="text-xs">{about.description ?? "N/A"}</p>
 				<Separator />
 
 				<div className="flex items-center justify-between">
@@ -37,7 +45,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						/>
 						<span className="text-xs text-muted-foreground">LISTED DATE</span>
 					</div>
-					<span>{data.data.listDate}</span>
+					<span>{about?.listDate ?? "N/A"}</span>
 				</div>
 				<Separator />
 				<div className="flex items-center justify-between">
@@ -51,7 +59,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						<span className="text-xs text-muted-foreground">HEADQUARTERS</span>
 					</div>
 					<span>
-						{data.data.city} {data.data.state}
+						{about?.city ?? "N/A"}-{about?.state ?? "N/A"}
 					</span>
 				</div>
 				<Separator />
@@ -65,13 +73,17 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						/>
 						<span className="text-xs text-muted-foreground">WEBSITE</span>
 					</div>
-					<a
-						href={data.data.homePageUrl}
-						target="_blank"
-						className="text-blue-600"
-					>
-						{data.data.homePageUrl}
-					</a>
+					{about.homePageUrl ? (
+						<a
+							href={about?.homePageUrl}
+							target="_blank"
+							className="text-blue-600"
+						>
+							{about?.homePageUrl}
+						</a>
+					) : (
+						"N/A"
+					)}
 				</div>
 				<Separator />
 				<div className="flex items-center justify-between">
@@ -84,7 +96,22 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						/>
 						<span className="text-xs text-muted-foreground">EMPLOYEES</span>
 					</div>
-					<span>{data.data.totalEmployees}</span>
+					<span>{about?.totalEmployees ?? "N/A"}</span>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<div className="flex flex-row gap-2 items-center justify-center">
+						<Image
+							src={"/iconsAbout/market_value.svg"}
+							width={15}
+							height={15}
+							alt="group of people icon"
+						/>
+						<span className="text-xs text-muted-foreground">MARKET CAP</span>
+					</div>
+					<span>
+						{about.marketCap ? numberToDispaly(about?.marketCap) : "N/A"}
+					</span>
 				</div>
 				<Separator />
 				<div className="flex items-center justify-between">
@@ -99,7 +126,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 							PRIMARY EXCHANGE
 						</span>
 					</div>
-					<span>{data.data.primaryExchange}</span>
+					<span>{about?.primaryExchange ?? "N/A"}</span>
 				</div>
 			</div>
 		</div>

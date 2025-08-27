@@ -1,13 +1,10 @@
-"use server";
-
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { AboutData } from "@/types/Stock.type";
+import { ChartBarData } from "@/types/Stock.type";
 import { NextRequest, NextResponse } from "next/server";
 
-//
 export async function GET(
 	request: NextRequest
-): Promise<NextResponse<ApiResponse<AboutData>>> {
+): Promise<NextResponse<ApiResponse<ChartBarData[]>>> {
 	try {
 		const server = process.env.LOCAL_BASE_SERVER;
 		if (!server) {
@@ -19,6 +16,7 @@ export async function GET(
 
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
+
 		if (!ticker) {
 			return NextResponse.json<ApiResponse<never>>(
 				{ success: false, error: "Ticker is required" },
@@ -26,21 +24,22 @@ export async function GET(
 			);
 		}
 
-		const response = await fetch(`${server}/quote/about?ticker=${ticker}`, {
+		const response = await fetch(`${server}/quote/chart?ticker=${ticker}`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json" },
 		});
-		if (!response.ok) {
-			return NextResponse.json<ApiResponse<never>>(
-				{
-					success: false,
-					error: response.statusText,
-				},
-				{ status: response.status }
-			);
-		}
+		// if (!response.ok) {
+		// 	return NextResponse.json<ApiResponse<never>>(
+		// 		{
+		// 			success: false,
+		// 			error: response.statusText,
+		// 		},
+		// 		{ status: response.status }
+		// 	);
+		// }
 
 		const data = await response.json();
+
 		//  Check if the external API's own success flag is false
 		if (!data.success) {
 			return NextResponse.json<ApiResponse<never>>(
@@ -52,7 +51,7 @@ export async function GET(
 			);
 		}
 
-		return NextResponse.json<ApiResponse<AboutData>>(
+		return NextResponse.json<ApiResponse<ChartBarData[]>>(
 			{
 				success: true,
 				data: data.data,

@@ -39,11 +39,13 @@ const SearchBar = () => {
 				);
 
 				const data: ApiResponse<SearchResultItem[]> = await res.json();
-				if (data.success) {
-					setResults(data.data);
-				} else {
+
+				if (!data.success) {
 					setResults([]);
+					throw new Error(data.error);
 				}
+
+				setResults(data.data);
 			} catch (error) {
 				const message = getErrorMessage(error);
 				setError(message);

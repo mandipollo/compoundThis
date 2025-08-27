@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
 	// verify id token is valid by calling util function jwt-verify
 	const { success } = await verifyJWT(idTokenValue);
 
-	console.log("middleware running", idTokenValue);
+	console.log("middleware running");
 	if (success && isPublicRoute) {
 		return NextResponse.redirect(new URL("/user", request.nextUrl));
 	}

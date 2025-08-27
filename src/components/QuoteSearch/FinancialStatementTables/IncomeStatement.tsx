@@ -69,17 +69,21 @@ const IncomeStatement = ({
 				<TableHeader>
 					<TableRow>
 						<TableHead>(USD)</TableHead>
-						<TableHead className="text-right">{latestQuarter.date}</TableHead>
+						<TableHead className="text-right">
+							{latestQuarter?.date ?? "N/A"}
+						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{latestQuarter.incomeStatement.map(data => (
-						<TableRow key={data.dataCode}>
+					{latestQuarter?.incomeStatement?.map((data, index) => (
+						<TableRow key={index}>
 							<TableCell>
-								{data.dataCode[0].toUpperCase() + data.dataCode.slice(1)}
+								{data.dataCode
+									? data.dataCode[0].toUpperCase() + data.dataCode.slice(1)
+									: "N/A"}
 							</TableCell>
 							<TableCell className="text-right">
-								{numberToDispaly(data.value)}
+								{data.value ? numberToDispaly(data.value) : "N/A"}
 							</TableCell>
 						</TableRow>
 					))}
