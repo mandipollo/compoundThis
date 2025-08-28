@@ -77,9 +77,9 @@ describe("Login component", () => {
 		expect(forgotPasswordLink).toBeInTheDocument();
 	});
 
-	// Test errors are correctly being rendered
+	// Test errors are rendered in the error span
 
-	it("should correctly render User does not exist on error span element", async () => {
+	it("should correctly render error on error span element", async () => {
 		// mock resolved value
 		mockedLoginUser.mockResolvedValue({
 			success: false,
@@ -103,87 +103,6 @@ describe("Login component", () => {
 
 		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
 			"User does not exist"
-		);
-	});
-
-	it("should correctly render Incorrect email or password on error span element", async () => {
-		// mock resolved value
-		mockedLoginUser.mockResolvedValue({
-			success: false,
-			result: undefined,
-			error: "Incorrect email or password",
-		});
-
-		// render
-
-		render(<Login />);
-
-		// user event
-
-		const logBtn = screen.getByRole("button", { name: /^login$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^password$/i), "Password123");
-		await user.click(logBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Incorrect email or password"
-		);
-	});
-
-	it("should correctly render User not confirmed on error span element", async () => {
-		// mock resolved value
-		mockedLoginUser.mockResolvedValue({
-			success: false,
-			result: undefined,
-			error: "User not confirmed",
-		});
-
-		// render
-
-		render(<Login />);
-
-		// user event
-
-		const logBtn = screen.getByRole("button", { name: /^login$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^password$/i), "Password123");
-		await user.click(logBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"User not confirmed"
-		);
-	});
-
-	it("should correctly render Unexpected error. Please try again on error span element", async () => {
-		// mock resolved value
-		mockedLoginUser.mockResolvedValue({
-			success: false,
-			result: undefined,
-			error: "Unexpected error. Please try again",
-		});
-
-		// render
-
-		render(<Login />);
-
-		// user event
-
-		const logBtn = screen.getByRole("button", { name: /^login$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^password$/i), "Password123");
-		await user.click(logBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Unexpected error. Please try again"
 		);
 	});
 

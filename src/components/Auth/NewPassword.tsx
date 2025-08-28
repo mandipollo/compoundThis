@@ -26,7 +26,7 @@ const initialState: ConfirmPasswordResetFormState = {
 	message: "",
 	error: "",
 };
-const ResetPassword = () => {
+const NewPassword = () => {
 	// route
 
 	const route = useRouter();
@@ -41,7 +41,7 @@ const ResetPassword = () => {
 		try {
 			// Extract form data
 			const formData = new FormData(e.currentTarget);
-			const username = formData.get("email") as string;
+			const username = formData.get("username") as string;
 			const confirmationCode = formData.get("confirmationCode") as string;
 			const newPassword = formData.get("newPassword") as string;
 
@@ -113,7 +113,7 @@ const ResetPassword = () => {
 							<Label htmlFor="username">Email</Label>
 							<Input
 								name="username"
-								id="email"
+								id="username"
 								type="email"
 								placeholder="m@example.com"
 								required
@@ -125,7 +125,7 @@ const ResetPassword = () => {
 							</div>
 						)}
 						<div className="grid gap-2">
-							<Label htmlFor="confirmationCode">Confirmation code</Label>
+							<Label htmlFor="confirmationCode">Confirmation Code</Label>
 							<Input
 								name="confirmationCode"
 								id="confirmationCode"
@@ -147,11 +147,19 @@ const ResetPassword = () => {
 								<p>{state?.formValidationErrors.newPassword}</p>
 							</div>
 						)}
-						<Button disabled={pending} type="submit" className="w-full">
+						<Button
+							aria-disabled={pending}
+							disabled={pending}
+							type="submit"
+							className="w-full"
+						>
 							Submit
 						</Button>
 						{state?.error && (
-							<div className="text-red-600 flex flex-col text-xs">
+							<div
+								data-testid="error"
+								className="text-red-600 flex flex-col text-xs"
+							>
 								<p>{state?.error}</p>
 							</div>
 						)}
@@ -162,4 +170,4 @@ const ResetPassword = () => {
 	);
 };
 
-export default ResetPassword;
+export default NewPassword;

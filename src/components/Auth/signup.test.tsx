@@ -84,7 +84,7 @@ describe("signup component", () => {
 		});
 	});
 
-	// error scenarios
+	// test errors are rendered correctly on the error element
 
 	it("should render Username is already taken on span element error ", async () => {
 		mockedSignupUser.mockResolvedValue({
@@ -109,57 +109,6 @@ describe("signup component", () => {
 
 		expect(screen.getByTestId("error")).toHaveTextContent(
 			"Username is already taken"
-		);
-	});
-
-	it("should render Too many attempts. Please try again later on error span element", async () => {
-		mockedSignupUser.mockResolvedValue({
-			success: false,
-			error: "Too many attempts. Please try again later",
-			result: null,
-		});
-
-		//
-
-		render(<Signup />);
-		const signupBtn = screen.getByRole("button", { name: "Signup" });
-
-		// user event
-
-		await user.type(screen.getByLabelText(/^name$/i), "test");
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^password$/i), "Password123@");
-		await user.click(signupBtn);
-
-		// assertion
-
-		expect(screen.getByTestId("error")).toHaveTextContent(
-			"Too many attempts. Please try again later"
-		);
-	});
-	it("should render Password does not meet requirements on error span element", async () => {
-		mockedSignupUser.mockResolvedValue({
-			success: false,
-			error: "Password does not meet requirements",
-			result: null,
-		});
-
-		//
-
-		render(<Signup />);
-		const signupBtn = screen.getByRole("button", { name: "Signup" });
-
-		// user event
-
-		await user.type(screen.getByLabelText(/^name$/i), "test");
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^password$/i), "Password123@");
-		await user.click(signupBtn);
-
-		// assertion
-
-		expect(screen.getByTestId("error")).toHaveTextContent(
-			"Password does not meet requirements"
 		);
 	});
 

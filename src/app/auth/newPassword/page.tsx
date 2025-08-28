@@ -1,8 +1,8 @@
-import ResetPassword from "@/components/Auth/ConfirmResetPassword";
+import NewPassword from "@/components/Auth/NewPassword";
 import React from "react";
 
 const NewPasswordPage = () => {
-	return <ResetPassword />;
+	return <NewPassword />;
 };
 
 export default NewPasswordPage;

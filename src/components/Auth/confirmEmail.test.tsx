@@ -44,7 +44,7 @@ describe("confirm email component", () => {
 		expect(screen.getByRole("button", { name: /submit/i }));
 	});
 
-	// error scenarios
+	// test errors are rendered in the error element
 
 	it("should correctly render User does not exist on error span element", async () => {
 		// mock resolved value
@@ -74,115 +74,6 @@ describe("confirm email component", () => {
 		);
 	});
 
-	it("should correctly render Verification code is incorrect on error span element", async () => {
-		// mock resolved value
-		mockedConfirmUserEmail.mockResolvedValue({
-			success: false,
-			isSignUpComplete: false,
-			message: "",
-			error: "Verification code is incorrect",
-		});
-
-		// render
-
-		render(<ConfirmEmail />);
-
-		// user event
-
-		const submitBtn = screen.getByRole("button", { name: /^submit$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^verification code$/i), "123456");
-		await user.click(submitBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Verification code is incorrect"
-		);
-	});
-
-	it("should correctly render Verification code has expired on error span element", async () => {
-		// mock resolved value
-		mockedConfirmUserEmail.mockResolvedValue({
-			success: false,
-			isSignUpComplete: false,
-			message: "",
-			error: "Verification code has expired",
-		});
-
-		// render
-
-		render(<ConfirmEmail />);
-
-		// user event
-
-		const submitBtn = screen.getByRole("button", { name: /^submit$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^verification code$/i), "123456");
-		await user.click(submitBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Verification code has expired"
-		);
-	});
-	it("should correctly render Too many incorrect attempts on error span element", async () => {
-		// mock resolved value
-		mockedConfirmUserEmail.mockResolvedValue({
-			success: false,
-			isSignUpComplete: false,
-			message: "",
-			error: "Too many incorrect attempts",
-		});
-
-		// render
-
-		render(<ConfirmEmail />);
-
-		// user event
-
-		const submitBtn = screen.getByRole("button", { name: /^submit$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^verification code$/i), "123456");
-		await user.click(submitBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Too many incorrect attempts"
-		);
-	});
-	it("should correctly render Something went wrong. Please try agian on error span element", async () => {
-		// mock resolved value
-		mockedConfirmUserEmail.mockResolvedValue({
-			success: false,
-			isSignUpComplete: false,
-			message: "",
-			error: "Something went wrong. Please try agian",
-		});
-
-		// render
-
-		render(<ConfirmEmail />);
-
-		// user event
-
-		const submitBtn = screen.getByRole("button", { name: /^submit$/i });
-
-		await user.type(screen.getByLabelText(/^email$/i), "test@example.com");
-		await user.type(screen.getByLabelText(/^verification code$/i), "123456");
-		await user.click(submitBtn);
-
-		// assertion
-
-		expect(screen.getByTestId(/^error$/i)).toHaveTextContent(
-			"Something went wrong. Please try agian"
-		);
-	});
 	//. Promise state scenario
 	it("should show loading state and disable the button during submission", async () => {
 		// mock promise
@@ -221,7 +112,7 @@ describe("confirm email component", () => {
 		expect(submitBtn).toHaveAttribute("aria-disabled", "true");
 	});
 
-	//
+	// test routing
 
 	it("on successful code verificaton user is routed to login page", async () => {
 		// mock resolve
