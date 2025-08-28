@@ -48,7 +48,6 @@ const Login = () => {
 	const [state, setState] = useState(initialState);
 	const [pending, setPending] = useState(false);
 
-	//TODO:ERROR HANDLING && TEST
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
@@ -67,29 +66,32 @@ const Login = () => {
 					formValidationErrors: validated.error.flatten().fieldErrors,
 					error: "Please fix the highlighted errors",
 				});
+				setPending(false);
 				return;
 			}
 
 			// Call Cognito login service
 			const { success, error, result } = await loginUser(email, password);
-			console.log(success, error, result);
 
+			// on failure return
 			if (!success) {
-				setState(prev => ({ ...prev, error }));
+				setState(prev => ({ ...prev, error: error }));
+				setPending(false);
 				return;
 			}
 
+			// success
 			const { nextStep, isSignedIn } = result as SignInOutput;
 
-			// Unconfirmed users
+			// Route unconfirmed users
 			if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
-				setState(prev => ({
-					...prev,
+				setState({
+					...initialState,
 					success: true,
 					message: "Please confirm your email",
-					formValidationErrors: { email: [], password: [] },
-				}));
+				});
 				router.push("/auth/confirmEmail");
+				setPending(false);
 				return;
 			}
 
@@ -100,6 +102,7 @@ const Login = () => {
 				const idToken = sessions.tokens?.idToken?.toString();
 				const tokenExp = sessions.tokens?.idToken?.payload.exp;
 
+				// set tokens in middleware
 				await fetch("/api/auth/setToken", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -110,29 +113,27 @@ const Login = () => {
 				await fetchUser();
 
 				// Redirect to protected page
-				setState(prev => ({
-					...prev,
+				setState({
+					...initialState,
 					success: true,
 					message: "Successfully logged in",
-					formValidationErrors: { email: [], password: [] },
-					error: "",
-				}));
+				});
 				router.push("/user");
+				setPending(false);
 				return;
 			}
 
 			// Fallback if login somehow incomplete
-			setState(prev => ({
-				...prev,
+			setState({
+				...initialState,
 				message: "Check your email to confirm.",
-			}));
-		} catch (err: unknown) {
-			const message =
-				err instanceof Error
-					? err.message
+			});
+		} catch (error: unknown) {
+			let message =
+				error instanceof Error
+					? error.message
 					: "Unexpected error. Please try again";
 			setState(prev => ({ ...prev, error: message }));
-		} finally {
 			setPending(false);
 		}
 	};

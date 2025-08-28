@@ -1,9 +1,12 @@
 "use client";
-
-//
-import { handleConfirmResetPassword } from "@/libs/cognito/existingUser/cognitoConfirmResetPassword";
-import React, { useActionState } from "react";
-
+import React, { useState } from "react";
+// auth
+import {
+	ConfirmNewPasswordFormSchema,
+	ConfirmPasswordResetFormState,
+} from "@/libs/definitions";
+import { confirmResetPasswordHandler } from "@/libs/cognito/existingUser/confirmResetPasswordHandler";
+// ui
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -15,7 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ConfirmPasswordResetFormState } from "@/libs/definitions";
+import { useRouter } from "next/navigation";
 
 const initialState: ConfirmPasswordResetFormState = {
 	formValidationErrors: { username: [], confirmationCode: [], newPassword: [] },
@@ -24,11 +27,75 @@ const initialState: ConfirmPasswordResetFormState = {
 	error: "",
 };
 const ResetPassword = () => {
-	// TODO: REWRITE SERVER ACTION INTO CLIENT API CALLS
-	const [state, action, pending] = useActionState(
-		handleConfirmResetPassword,
-		initialState
-	);
+	// route
+
+	const route = useRouter();
+	//
+	const [state, setState] = useState(initialState);
+	const [pending, setPending] = useState(false);
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setPending(true);
+
+		try {
+			// Extract form data
+			const formData = new FormData(e.currentTarget);
+			const username = formData.get("email") as string;
+			const confirmationCode = formData.get("confirmationCode") as string;
+			const newPassword = formData.get("newPassword") as string;
+
+			// Validate form with Zod
+			const validated = ConfirmNewPasswordFormSchema.safeParse({
+				username,
+				newPassword,
+				confirmationCode,
+			});
+			if (!validated.success) {
+				setState({
+					...initialState,
+					formValidationErrors: validated.error.flatten().fieldErrors,
+					error: "Please fix the highlighted errors",
+				});
+				setPending(false);
+				return;
+			}
+
+			// Call Cognito login service
+			const { success, error } = await confirmResetPasswordHandler(
+				username,
+				newPassword,
+				confirmationCode
+			);
+
+			//
+
+			if (!success) {
+				setState({ ...initialState, error: error });
+				setPending(false);
+				return;
+			}
+
+			if (success) {
+				setState({
+					...initialState,
+					message: "Password reset",
+					success: true,
+				});
+				setPending(false);
+				route.push("/auth/login");
+				return;
+			}
+		} catch (error) {
+			let message =
+				error instanceof Error
+					? error.message
+					: "Unexpected error. Please try again";
+
+			setState({ ...initialState, error: message });
+			setPending(false);
+		}
+	};
 
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
@@ -40,7 +107,7 @@ const ResetPassword = () => {
 				</CardAction>
 			</CardHeader>
 			<CardContent>
-				<form action={action}>
+				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col gap-2">
 						<div className="grid gap-2">
 							<Label htmlFor="username">Email</Label>
