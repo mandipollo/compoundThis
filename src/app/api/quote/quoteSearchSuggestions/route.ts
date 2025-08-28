@@ -46,8 +46,9 @@ export async function GET(
 				{ status: 502 }
 			);
 		}
-		return NextResponse.json<ApiResponse<SearchResultItem[]>>(data, {
-			status: 200,
+		return NextResponse.json<ApiResponse<SearchResultItem[]>>({
+			success: true,
+			data: data.data,
 		});
 	} catch (error: unknown) {
 		// Catch unexpected runtime errors

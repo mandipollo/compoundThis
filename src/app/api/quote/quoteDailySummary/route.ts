@@ -51,7 +51,7 @@ export async function GET(
 
 		return NextResponse.json<ApiResponse<DailyTickerSummary>>({
 			success: true,
-			data: data,
+			data: data.data,
 		});
 	} catch (error: unknown) {
 		const message =
