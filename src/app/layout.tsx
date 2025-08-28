@@ -1,12 +1,13 @@
+import React from "react";
 import type { Metadata } from "next";
 
+// imports
 import "./globals.css";
 import { Archivo } from "next/font/google";
-
-import React from "react";
+//component
 import Navbar from "@/components/Layout/header/Navbar";
-
 import Footer from "@/components/Footer/Footer";
+// config
 import ConfigureAmplifyClientSide from "./amplify-cognito-config";
 
 //👇 Configure our font object

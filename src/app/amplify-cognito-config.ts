@@ -8,6 +8,8 @@ export const authConfig: ResourcesConfig["Auth"] = {
 		userPoolClientId: String(
 			process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_CLIENT_ID
 		),
+		signUpVerificationMethod: "code",
+		loginWith: { email: true },
 	},
 };
 Amplify.configure(

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
@@ -71,7 +72,7 @@ const Login = () => {
 
 			// Call Cognito login service
 			const { success, error, result } = await loginUser(email, password);
-			console.log(success, error);
+			console.log(success, error, result);
 
 			if (!success) {
 				setState(prev => ({ ...prev, error }));

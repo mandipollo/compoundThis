@@ -1,4 +1,9 @@
-import { signIn, SignInOutput } from "aws-amplify/auth";
+import {
+	getCurrentUser,
+	signIn,
+	SignInOutput,
+	signOut,
+} from "aws-amplify/auth";
 
 export async function loginUser(
 	email: string,
@@ -9,11 +14,18 @@ export async function loginUser(
 	success: boolean;
 }> {
 	try {
+		//clear stale user sessions
+		try {
+			await getCurrentUser(); // throws if none
+			await signOut(); // clears stale/expired session
+		} catch {
+			// no user signed in, safe to continue
+		}
+
 		const result = await signIn({
 			username: email,
 			password: password,
 		});
-		console.log(result);
 
 		return {
 			result,
@@ -21,7 +33,7 @@ export async function loginUser(
 			success: true,
 		};
 	} catch (error: any) {
-		let errorMessage = "Unexpected error has occurred!";
+		let errorMessage = "Unexpected error. Please try again";
 
 		switch (error.name) {
 			case "UserNotFoundException":

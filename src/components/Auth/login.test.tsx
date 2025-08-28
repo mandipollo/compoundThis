@@ -39,7 +39,7 @@ const mockFetch = vi.stubGlobal(
 );
 // imports
 import React from "react";
-import { vi, describe, it, expect, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { render, screen, cleanup, act } from "@testing-library/react";
 import { useRouter } from "next/navigation";
@@ -51,12 +51,11 @@ import Login from "@/components/Auth/Login";
 const user = userEvent.setup();
 //
 
-afterEach(() => {
-	vi.clearAllMocks();
-	cleanup();
-});
-
 describe("Login component", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+		cleanup();
+	});
 	// Test initial component render
 	it("should render the login form with all the inputs and button ", async () => {
 		render(<Login />);
