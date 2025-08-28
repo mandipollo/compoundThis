@@ -1,10 +1,9 @@
 "use client";
-
-//
-
 import Link from "next/link";
 import React, { useState } from "react";
-
+import { ResetPasswordOutput } from "aws-amplify/auth";
+import { useRouter } from "next/navigation";
+// ui
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -16,13 +15,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+// schemas
 import {
 	ForgotPasswordFormSchema,
 	ForgotPasswordFormState,
 } from "@/libs/definitions";
+
+// auth
 import { resetPasswordUser } from "@/libs/cognito/existingUser/resetPasswordUser";
-import { ResetPasswordOutput } from "aws-amplify/auth";
-import { useRouter } from "next/navigation";
 
 const initialState: ForgotPasswordFormState = {
 	formValidationError: "",
@@ -39,46 +40,59 @@ const ResetPassword = () => {
 		e.preventDefault();
 		setPending(true);
 
-		const formData = new FormData(e.currentTarget);
-		const username = formData.get("email") as string;
+		try {
+			const formData = new FormData(e.currentTarget);
+			const username = formData.get("email") as string;
 
-		// ✅ Validate with Zod
-		const validated = ForgotPasswordFormSchema.safeParse({ username });
-		if (!validated.success) {
-			const fieldArrays = validated.error.flatten().fieldErrors;
-			setState({
-				...initialState,
-				formValidationError: fieldArrays?.username?.[0] || "",
+			// ✅ Validate with Zod
+			const validated = ForgotPasswordFormSchema.safeParse({ username });
+			if (!validated.success) {
+				const fieldArrays = validated.error.flatten().fieldErrors;
+				setState({
+					...initialState,
+					formValidationError: fieldArrays?.username?.[0] || "",
+					error: "Please fix the highlighted errors",
+				});
+				setPending(false);
+				return;
+			}
 
-				error: "Please fix the highlighted errors",
-			});
+			// attempt reset password
+			const { output, error, success } = await resetPasswordUser(username);
+
+			// break if failure
+			if (!success) {
+				return { ...initialState, error: error };
+			}
+
+			//
+			const { nextStep } = output as ResetPasswordOutput;
+
+			// route user to confirmation page
+			if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+				router.push("/auth/newPassword");
+				setState({
+					...initialState,
+					message: `A confirmation code has been sent to your ${
+						nextStep.codeDeliveryDetails?.deliveryMedium || "email"
+					}.`,
+					success: true,
+				});
+				return;
+			} else {
+				setState({ ...initialState, message: "Check your email to confirm." });
+			}
+
 			setPending(false);
-			return;
+		} catch (error: unknown) {
+			let message =
+				error instanceof Error
+					? error.message
+					: "Unexpected error. Please try again";
+
+			setState({ ...initialState, error: message });
+			setPending(false);
 		}
-
-		const { output, error, message, success } =
-			await resetPasswordUser(username);
-
-		if (!success) {
-			return { ...initialState, error: error };
-		}
-		const { nextStep } = output as ResetPasswordOutput;
-
-		if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
-			router.push("/auth/newPassword");
-			return {
-				formValidationError: "",
-				success: true,
-				message: `A confirmation code has been sent to your ${
-					nextStep.codeDeliveryDetails?.deliveryMedium || "email"
-				}.`,
-				error: "",
-			};
-		} else {
-			setState({ ...initialState, message: "Check your email to confirm." });
-		}
-
-		setPending(false);
 	};
 
 	return (
