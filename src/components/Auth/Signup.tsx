@@ -2,8 +2,12 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { SignUpOutput } from "aws-amplify/auth";
+// auth
 import { signUpUser } from "@/libs/cognito/newUser/signupUser";
 import { SignupFormSchema, SignupFormState } from "@/libs/definitions";
+import Link from "next/link";
+// ui
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -15,8 +19,6 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { SignUpOutput } from "aws-amplify/auth";
 import { Loader2Icon } from "lucide-react";
 
 const initialState: SignupFormState = {
@@ -31,48 +33,70 @@ const Signup = () => {
 	const [pending, setPending] = useState(false);
 	const router = useRouter();
 
-	//TODO:ERROR HANDLING
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
 
-		const formData = new FormData(e.currentTarget);
-		const name = formData.get("name") as string;
-		const email = formData.get("email") as string;
-		const password = formData.get("password") as string;
+		try {
+			const formData = new FormData(e.currentTarget);
+			const name = formData.get("name") as string;
+			const email = formData.get("email") as string;
+			const password = formData.get("password") as string;
 
-		// Validate with Zod
-		const validated = SignupFormSchema.safeParse({ name, email, password });
-		if (!validated.success) {
+			// Validate with Zod
+			const validated = SignupFormSchema.safeParse({
+				name,
+				email,
+				password,
+			});
+			if (!validated.success) {
+				setState({
+					...initialState,
+					formValidationErrors: validated.error.flatten().fieldErrors,
+					error: "Please fix the highlighted errors",
+				});
+				setPending(false);
+				return;
+			}
+
+			// Try Cognito sign up
+			const { success, error, result } = await signUpUser(
+				name,
+				email,
+				password
+			);
+
+			if (!success) {
+				setState({ ...initialState, error });
+				setPending(false);
+				return;
+			}
+
+			const { isSignUpComplete, nextStep } = result as SignUpOutput;
+
+			if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
+				router.push("/auth/confirmEmail");
+			} else if (isSignUpComplete) {
+				router.push("/user");
+			} else {
+				setState({
+					...initialState,
+					message: "Check your email to confirm.",
+				});
+			}
+
+			setPending(false);
+		} catch (error: unknown) {
+			let message = "";
+			if (error instanceof Error) {
+				message = error.message ?? "Unexpected error. Please try again";
+			}
 			setState({
 				...initialState,
-				formValidationErrors: validated.error.flatten().fieldErrors,
-				error: "Please fix the highlighted errors",
+				error: message,
 			});
 			setPending(false);
-			return;
 		}
-
-		// Try Cognito sign up
-		const { success, error, result } = await signUpUser(name, email, password);
-
-		if (!success) {
-			setState({ ...initialState, error });
-			setPending(false);
-			return;
-		}
-
-		const { isSignUpComplete, nextStep } = result as SignUpOutput;
-
-		if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
-			router.push("/auth/confirmEmail");
-		} else if (isSignUpComplete) {
-			router.push("/user");
-		} else {
-			setState({ ...initialState, message: "Check your email to confirm." });
-		}
-
-		setPending(false);
 	};
 
 	return (

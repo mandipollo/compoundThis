@@ -127,7 +127,10 @@ const Login = () => {
 				message: "Check your email to confirm.",
 			}));
 		} catch (err: unknown) {
-			const message = err instanceof Error ? err.message : "Unexpected error";
+			const message =
+				err instanceof Error
+					? err.message
+					: "Unexpected error. Please try again";
 			setState(prev => ({ ...prev, error: message }));
 		} finally {
 			setPending(false);
