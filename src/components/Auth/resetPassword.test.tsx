@@ -64,7 +64,7 @@ describe("Password reset component", () => {
 			success: true,
 			message: "Code has been sent successfully",
 			error: "",
-			output: {
+			result: {
 				nextStep: {
 					resetPasswordStep: "CONFIRM_RESET_PASSWORD_WITH_CODE",
 					codeDeliveryDetails: {

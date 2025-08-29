@@ -9,7 +9,7 @@ export async function loginUser(
 	email: string,
 	password: string
 ): Promise<{
-	result: SignInOutput | undefined;
+	result: SignInOutput | null;
 	error: string;
 	success: boolean;
 }> {
@@ -50,7 +50,7 @@ export async function loginUser(
 		}
 
 		return {
-			result: undefined,
+			result: null,
 			error: errorMessage,
 			success: false,
 		};

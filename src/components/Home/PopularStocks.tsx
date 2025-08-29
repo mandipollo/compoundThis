@@ -13,6 +13,17 @@ const PopularStocks = () => {
 	// connect to io
 	const server = process.env.LOCAL_BASE_SERVER;
 
+	// check if the market is open
+
+	useEffect(() => {
+		const getMarketStatus = async () => {
+			const response = await fetch("/api/quote/marketStatus");
+			const data = await response.json();
+			console.log(data);
+		};
+		getMarketStatus();
+	}, []);
+
 	// const [popularStocks, setPopularStocks] = useState<{}[]>([]);
 	// useEffect(() => {
 	// 	const socket = io(server);

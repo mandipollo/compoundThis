@@ -83,7 +83,7 @@ describe("Login component", () => {
 		// mock resolved value
 		mockedLoginUser.mockResolvedValue({
 			success: false,
-			result: undefined,
+			result: null,
 			error: "User does not exist",
 		});
 

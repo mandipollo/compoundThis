@@ -58,7 +58,7 @@ const ResetPassword = () => {
 			}
 
 			// attempt reset password
-			const { output, error, success } = await resetPasswordUser(username);
+			const { result, error, success } = await resetPasswordUser(username);
 
 			// break if failure
 			if (!success) {
@@ -66,7 +66,7 @@ const ResetPassword = () => {
 			}
 
 			//
-			const { nextStep } = output as ResetPasswordOutput;
+			const { nextStep } = result as ResetPasswordOutput;
 
 			// route user to confirmation page
 			if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {

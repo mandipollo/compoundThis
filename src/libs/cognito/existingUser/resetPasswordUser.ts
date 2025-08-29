@@ -1,13 +1,20 @@
-import { resetPassword } from "aws-amplify/auth";
+import { resetPassword, ResetPasswordOutput } from "aws-amplify/auth";
 // TODO:
 // alert user code has been sent to the user's email
 
-export async function resetPasswordUser(username: string) {
+export async function resetPasswordUser(
+	username: string
+): Promise<{
+	result: ResetPasswordOutput | null;
+	error: string;
+	message: string;
+	success: boolean;
+}> {
 	try {
-		const output = await resetPassword({ username });
+		const result = await resetPassword({ username });
 
 		return {
-			output,
+			result,
 			error: "",
 			message: "Code has been sent successfully",
 			success: true,
@@ -25,7 +32,7 @@ export async function resetPasswordUser(username: string) {
 				errorMessage = "Unexpected error. Please try again";
 		}
 		return {
-			output: undefined,
+			result: null,
 			message: "",
 			error: errorMessage,
 			success: false,

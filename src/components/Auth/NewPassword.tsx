@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 // auth
 import {
 	ConfirmNewPasswordFormSchema,
@@ -18,7 +19,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
 
 const initialState: ConfirmPasswordResetFormState = {
 	formValidationErrors: { username: [], confirmationCode: [], newPassword: [] },
