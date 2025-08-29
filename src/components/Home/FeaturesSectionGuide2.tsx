@@ -17,6 +17,7 @@ const FeatureSectionGuide2 = () => {
 						<div className="grid grid-cols-2 gap-2  ">
 							<div>
 								<Image
+									style={{ height: "auto", width: "auto" }}
 									width={300}
 									height={300}
 									alt="Analysis image"

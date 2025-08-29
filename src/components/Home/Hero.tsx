@@ -90,8 +90,10 @@ const Hero = () => {
 					<div className="flex justify-center items-center max-w-2xl w-full">
 						<div className="relative flex h-full w-full items-center justify-center">
 							<Image
+								className="aspect-auto"
 								unoptimized
 								priority
+								style={{ height: "auto", width: "auto" }}
 								height={300}
 								width={300}
 								alt="gif depicting intelligence"

@@ -1,5 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
+
+// ui
 import {
 	TableCaption,
 	TableRow,
@@ -7,22 +10,38 @@ import {
 	TableCell,
 	Table,
 } from "../ui/table";
-import { io } from "socket.io-client";
 import Container from "../Containers/Container";
+
+// websockets
+import { io } from "socket.io-client";
+
+// hooks
+import useMarketStatus from "@/hooks/swr/useMarketStatus";
 const PopularStocks = () => {
 	// connect to io
 	const server = process.env.LOCAL_BASE_SERVER;
 
-	// check if the market is open
+	// check market status
 
-	useEffect(() => {
-		const getMarketStatus = async () => {
-			const response = await fetch("/api/quote/marketStatus");
-			const data = await response.json();
-			console.log(data);
-		};
-		getMarketStatus();
-	}, []);
+	const { data, isLoading, error } = useMarketStatus();
+
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		return <p>{error}</p>;
+	}
+
+	// caption
+
+	const renderCaption = () => {
+		if (!data.data) <p>Loading...</p>;
+		if (data.data?.market === "extended-hours") {
+			return data.data.earlyHours ? "Pre-Market" : "After-Hours";
+		}
+		return data.data?.market;
+	};
 
 	// const [popularStocks, setPopularStocks] = useState<{}[]>([]);
 	// useEffect(() => {
@@ -42,8 +61,8 @@ const PopularStocks = () => {
 				<div className=" flex py-10 w-full h-full ">
 					<div className="flex justify-center items-center bg-white rounded-4xl p-10 h-full w-full font-extralight">
 						<Table className="w-full">
-							<TableCaption className="text-xl font-md text-black ">
-								Popular Stocks
+							<TableCaption className="text-xl font-md text-black caption-top">
+								{renderCaption()}
 							</TableCaption>
 
 							<TableBody>

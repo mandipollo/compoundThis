@@ -1,4 +1,4 @@
-Client -
+/////////////// Client
 
 Next js, typescript, tailwind, shadcn, zod, zustand, socket i.o, swr
 
@@ -11,9 +11,11 @@ Testing with separation of concerns
 
 eg - proxy handler should not test data formatting
 
-//
+////////////// misc
 
-// backend
+• useSWR- need to declare "use client" top of component , nextjs will throw error unspecific error.
+
+/////////////// Server
 
 node js backend hosted in aws ec2
 
