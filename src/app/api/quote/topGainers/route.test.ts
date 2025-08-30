@@ -1,0 +1,56 @@
+// mock
+
+vi.stubGlobal("fetch", vi.fn());
+const mockedFetch = vi.mocked(fetch);
+
+// imports
+import { testApiHandler } from "next-test-api-route-handler";
+import { vi, expect, describe, beforeEach, it } from "vitest";
+
+import * as appHandler from "./route";
+
+describe("handles quote search suggestions ", () => {
+	//
+	beforeEach(() => {
+		vi.resetAllMocks();
+	});
+
+	const mockServer = "http://localhost:8080";
+	it("should return Server error on unresponsive server", async () => {
+		// set server env to be empty , next js automatically loads env from .env.test file
+		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "");
+
+		await testApiHandler({
+			appHandler,
+
+			test: async ({ fetch }) => {
+				const res = await fetch({ method: "GET" });
+				const data = await res.json();
+
+				expect(data).toStrictEqual({ success: false, error: "Server error" });
+			},
+		});
+	});
+
+	it("should return valid data on success ", async () => {
+		vi.stubEnv("NEXT_PUBLIC_LOCAL_BASE_SERVER", "http://localhost:8080");
+		mockedFetch.mockResolvedValue({
+			ok: true,
+			json: () =>
+				Promise.resolve({ data: { some: "raw-data" }, success: true }),
+			status: 200,
+		} as unknown as Response);
+
+		await testApiHandler({
+			appHandler,
+			test: async ({ fetch }) => {
+				const res = await fetch({ method: "GET" });
+				const data = await res.json();
+				expect(data).toStrictEqual({
+					success: true,
+					data: { some: "raw-data" },
+				});
+			},
+		});
+	});
+});

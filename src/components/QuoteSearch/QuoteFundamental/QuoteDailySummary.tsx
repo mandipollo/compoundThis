@@ -1,9 +1,12 @@
 import React from "react";
+
 //ui
 import { Separator } from "@/components/ui/separator";
 import { Loader2Icon } from "lucide-react";
+
 // hooks
 import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
+
 // utils
 
 const QuoteDailySummary = ({ selectedQuote }: { selectedQuote: string }) => {

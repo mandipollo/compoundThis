@@ -42,6 +42,7 @@ const PopularStocks = () => {
 		}
 		return data.data?.market;
 	};
+	console.log(data);
 
 	// const [popularStocks, setPopularStocks] = useState<{}[]>([]);
 	// useEffect(() => {
@@ -62,7 +63,7 @@ const PopularStocks = () => {
 					<div className="flex justify-center items-center bg-white rounded-4xl p-10 h-full w-full font-extralight">
 						<Table className="w-full">
 							<TableCaption className="text-xl font-md text-black caption-top">
-								{renderCaption()}
+								Market is currently {renderCaption()}
 							</TableCaption>
 
 							<TableBody>
