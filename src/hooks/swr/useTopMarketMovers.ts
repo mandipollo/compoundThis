@@ -11,7 +11,11 @@ const useTopMarketMovers = () => {
 		data: TopMarketMoversTickerData[];
 		isLoading: boolean;
 		error: string | undefined;
-	} = useSWR("/api/quote/topGainers", fetcher);
+	} = useSWR("/api/quote/topGainers", fetcher, {
+		revalidateOnFocus: false,
+		revalidateOnReconnect: false,
+		refreshInterval: 0,
+	});
 
 	return {
 		data,
@@ -19,3 +23,5 @@ const useTopMarketMovers = () => {
 		error,
 	};
 };
+
+export default useTopMarketMovers;
