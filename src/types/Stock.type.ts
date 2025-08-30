@@ -141,3 +141,40 @@ export interface TopMarketMoversTickerData {
 	todaysChangePerc: number | null;
 	updated: number | null;
 }
+
+// popular stocks
+
+export interface PopularTickerData {
+	day: {
+		c: number | null;
+		h: number | null;
+		l: number | null;
+		o: number | null;
+		v: number | null;
+		vw: number | null;
+	};
+
+	min: {
+		av: number | null;
+		c: number | null;
+		h: number | null;
+		l: number | null;
+		n: number | null;
+		o: number | null;
+		t: number | null;
+		v: number | null;
+		vw: number | null;
+	};
+	prevDay: {
+		c: number | null;
+		h: number | null;
+		l: number | null;
+		o: number | null;
+		v: number | null;
+		vw: number | null;
+	};
+	ticker: string;
+	todaysChange: number | null;
+	todaysChangePerc: number | null;
+	updated: number | null;
+}

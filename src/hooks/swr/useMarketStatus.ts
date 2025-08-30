@@ -14,7 +14,7 @@ const useMarketStatus = () => {
 	} = useSWR("/api/quote/marketStatus", fetcher, {
 		revalidateOnFocus: true,
 		revalidateOnReconnect: true,
-		refreshInterval: 30000,
+		refreshInterval: 0,
 	});
 
 	return {

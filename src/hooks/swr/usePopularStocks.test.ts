@@ -12,22 +12,12 @@ import useSWR from "swr";
 import { SWRResponse } from "swr";
 import { vi, describe, it, expect } from "vitest";
 import { fetcher } from "@/libs/fetcher";
-import useMarketStatus from "./useMarketStatus";
+import usePopularStocks from "./usePopularStocks";
 
 // mocked version
 const mockedUseSWR = vi.mocked(useSWR);
 
-describe("market status  ", () => {
-	const mockMarketStatusData = {
-		afterHours: true,
-		earlyHours: false,
-		exchanges: {
-			nasdaq: "extended-hours",
-			nyse: "extended-hours",
-		},
-		serverTime: "2018-08-20",
-		market: "extended-hours",
-	};
+describe("hook for fetching popular stocks ", () => {
 	it("calls useSWR with the correct API URL and fetcher", async () => {
 		// Arrange
 		mockedUseSWR.mockReturnValue({
@@ -40,7 +30,7 @@ describe("market status  ", () => {
 
 		// Act
 
-		const { result } = renderHook(() => useMarketStatus());
+		const { result } = renderHook(() => usePopularStocks());
 		const { data, isLoading, error } = result.current;
 		// Assert hook output
 		expect(data).toBe("mock-data");
@@ -48,7 +38,7 @@ describe("market status  ", () => {
 		expect(error).toBe(undefined);
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
-			`/api/quote/marketStatus`,
+			`/api/quote/popularStocks`,
 			fetcher,
 			{
 				revalidateOnFocus: true,
@@ -67,7 +57,7 @@ describe("market status  ", () => {
 			mutate: vi.fn(),
 			isValidating: false,
 		}) as unknown as SWRResponse;
-		const { result } = renderHook(() => useMarketStatus());
+		const { result } = renderHook(() => usePopularStocks());
 		const { error, isLoading, data } = result.current;
 		expect(data).toBeUndefined();
 		expect(error).toBeUndefined();
@@ -78,16 +68,16 @@ describe("market status  ", () => {
 
 	it("should return correctly formatted data on success", async () => {
 		mockedUseSWR.mockReturnValue({
-			data: mockMarketStatusData,
+			data: "mock-data",
 			isLoading: false,
 			error: undefined,
 			mutate: vi.fn(),
 			isValidating: false,
 		}) as unknown as SWRResponse;
 
-		const { result } = renderHook(() => useMarketStatus());
+		const { result } = renderHook(() => usePopularStocks());
 		const { error, isLoading, data } = result.current;
-		expect(data).toEqual(mockMarketStatusData);
+		expect(data).toEqual("mock-data");
 		expect(error).toBeUndefined();
 		expect(isLoading).toBe(false);
 	});

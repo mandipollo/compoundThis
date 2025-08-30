@@ -17,13 +17,14 @@ import { io } from "socket.io-client";
 
 // hooks
 import useMarketStatus from "@/hooks/swr/useMarketStatus";
+import usePopularStocks from "@/hooks/swr/usePopularStocks";
 const PopularStocks = () => {
 	// connect to io
 	const server = process.env.LOCAL_BASE_SERVER;
 
 	// check market status
 
-	const { data, isLoading, error } = useMarketStatus();
+	const { data, isLoading, error } = usePopularStocks();
 
 	if (isLoading) {
 		return <p>Loading...</p>;
@@ -33,15 +34,6 @@ const PopularStocks = () => {
 		return <p>{error}</p>;
 	}
 
-	// caption
-
-	const renderCaption = () => {
-		if (!data.data) <p>Loading...</p>;
-		if (data.data?.market === "extended-hours") {
-			return data.data.earlyHours ? "Pre-Market" : "After-Hours";
-		}
-		return data.data?.market;
-	};
 	console.log(data);
 
 	// const [popularStocks, setPopularStocks] = useState<{}[]>([]);
@@ -63,7 +55,7 @@ const PopularStocks = () => {
 					<div className="flex justify-center items-center bg-white rounded-4xl p-10 h-full w-full font-extralight">
 						<Table className="w-full">
 							<TableCaption className="text-xl font-md text-black caption-top">
-								Market is currently {renderCaption()}
+								Popular stocks
 							</TableCaption>
 
 							<TableBody>
