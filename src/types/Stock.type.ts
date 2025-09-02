@@ -144,7 +144,7 @@ export interface TopMarketMoversTickerData {
 
 // popular stocks
 
-export interface PopularTickerData {
+export interface TickerSnapshot {
 	day: {
 		c: number | null;
 		h: number | null;
@@ -177,4 +177,29 @@ export interface PopularTickerData {
 	todaysChange: number | null;
 	todaysChangePerc: number | null;
 	updated: number | null;
+}
+
+export interface PopularTickerData {
+	tickers: TickerSnapshot[];
+	status: string | null;
+	request_id: string | null;
+	count: number | null;
+}
+
+// webSocket stock data
+
+export interface WebSocketPopularStockData {
+	a: number;
+	av: number;
+	c: number;
+	e: number;
+	ev: string;
+	h: number;
+	l: number;
+	o: number;
+	s: number;
+	sym: string;
+	v: number;
+	vw: number;
+	z: number;
 }

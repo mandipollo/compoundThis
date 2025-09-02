@@ -8,12 +8,12 @@ const usePopularStocks = () => {
 		isLoading,
 		error,
 	}: {
-		data: PopularTickerData[];
+		data: { success: boolean; data: PopularTickerData };
 		isLoading: boolean;
 		error: string | undefined;
 	} = useSWR("/api/quote/popularStocks", fetcher, {
 		refreshInterval: 0,
-		revalidateOnFocus: true,
+		revalidateOnFocus: false,
 		revalidateOnReconnect: true,
 	});
 

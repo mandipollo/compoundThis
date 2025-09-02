@@ -49,10 +49,7 @@ describe("quote about api route", () => {
 			test: async ({ fetch }) => {
 				const res = await fetch({ method: "GET" });
 				const jsonBody = await res.json();
-				expect(jsonBody.data).toStrictEqual({
-					success: true,
-					data: { some: "raw-data" },
-				});
+				expect(jsonBody.data).toStrictEqual({ some: "raw-data" });
 			},
 		});
 	});

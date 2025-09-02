@@ -12,7 +12,7 @@ const useMarketStatus = () => {
 		error: string | undefined;
 		isLoading: boolean;
 	} = useSWR("/api/quote/marketStatus", fetcher, {
-		revalidateOnFocus: true,
+		revalidateOnFocus: false,
 		revalidateOnReconnect: true,
 		refreshInterval: 0,
 	});

@@ -41,7 +41,7 @@ describe("hook for fetching popular stocks ", () => {
 			`/api/quote/popularStocks`,
 			fetcher,
 			{
-				revalidateOnFocus: true,
+				revalidateOnFocus: false,
 				revalidateOnReconnect: true,
 				refreshInterval: 0,
 			}

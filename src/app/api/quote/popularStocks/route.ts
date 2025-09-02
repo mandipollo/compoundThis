@@ -28,7 +28,7 @@ export async function GET(
 
 		return NextResponse.json<ApiResponse<PopularTickerData[]>>({
 			success: true,
-			data: data,
+			data: data.data,
 		});
 	} catch (error: unknown) {
 		let message =
