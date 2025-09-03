@@ -1,6 +1,7 @@
 import React from "react";
-import { TableBody, TableCell, TableRow } from "../ui/table";
+
 import { WebSocketPopularStockData } from "@/types/Stock.type";
+import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 const PopularStockLiveData = ({
 	wsStockData,

@@ -9,8 +9,8 @@ import {
 	TableBody,
 	TableCell,
 	Table,
-} from "../ui/table";
-import Container from "../Containers/Container";
+} from "../../ui/table";
+import Container from "../../Containers/Container";
 
 // websockets
 import { io } from "socket.io-client";
@@ -25,6 +25,7 @@ import { WebSocketPopularStockData } from "@/types/Stock.type";
 
 // components
 import PopularStockLiveData from "./PopularStockLiveData";
+import PopularStockSnapShot from "./PopularStockSnapShot";
 
 const PopularStocks = () => {
 	// connect to io
@@ -101,40 +102,7 @@ const PopularStocks = () => {
 								Market - {marketStatus.data.market}
 							</TableCaption>
 							{marketStatus.data.market === "closed" ? (
-								<TableBody>
-									{snapshotData?.data?.tickers?.map(ticker => (
-										<TableRow key={ticker.ticker} className="text-center">
-											<TableCell>{ticker.ticker}</TableCell>
-											<TableCell>
-												${ticker.min.c === 0 ? ticker.prevDay.c : ticker.min.c}
-											</TableCell>
-											<TableCell
-												className={
-													ticker.todaysChange && ticker.todaysChange > 0
-														? "text-green-800"
-														: "text-red-800"
-												}
-											>
-												$
-												{ticker.todaysChange
-													? numberToDispaly(ticker.todaysChange)
-													: "N/A"}
-											</TableCell>
-											<TableCell
-												className={
-													ticker.todaysChangePerc && ticker.todaysChangePerc > 0
-														? "text-green-800"
-														: "text-red-800"
-												}
-											>
-												{ticker.todaysChangePerc
-													? numberToDispaly(ticker.todaysChangePerc)
-													: "N/A"}
-												%
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
+								<PopularStockSnapShot snapshotData={snapshotData.data} />
 							) : (
 								<PopularStockLiveData wsStockData={wsStockData} />
 							)}

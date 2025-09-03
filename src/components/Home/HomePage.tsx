@@ -5,7 +5,7 @@ import React from "react";
 import Hero from "./Hero";
 import FeaturesSectionGuide1 from "./FeaturesSectionGuide1";
 import FeaturesSectionGuide2 from "./FeaturesSectionGuide2";
-import PopularStocks from "./PopularStocks";
+import PopularStocks from "./PopularStockFeed/PopularStocks";
 import StockOverview from "./StockOverview";
 import CtaPage from "./CtaPage";
 
