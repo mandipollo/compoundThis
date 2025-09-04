@@ -1,17 +1,28 @@
+import Image from "next/image";
 import React from "react";
+import Container from "../Containers/Container";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const CtaPage = () => {
 	return (
 		<section className="flex justify-center items-center w-full h-full bg-[#dae9e9] p-2 py-20 text-white font-extralight">
-			<div className="flex bg-primary flex-col items-center max-w-5xl w-full h-96  p-[1px] rounded-4xl ">
-				<h5 className="text-3xl pt-10">JOIN THE FINANCIAL REVOLUTION</h5>
-				<div className="grid grid-cols-2 w-full h-full p-10 gap-4">
-					<div className="text-center border rounded-md">dashboard image</div>
-					<div className="text-center border rounded-md">
-						financial spreadsheet
+			<Container>
+				<div className="flex bg-primary flex-col gap-4 justify-center items-center w-full h-full py-20 rounded-4xl ">
+					<Image src="./logo.svg" alt="Company logo" width={40} height={40} />
+					<span className="text-2xl">JOIN THE FINANCIAL REVOLUTION TODAY</span>
+					<div className="flex flex-row gap-2">
+						<Link href={"/auth/signup"}>
+							<Button className="bg-[#1C6EA4] hover:bg-[#154D71] hover:cursor-pointer ">
+								Start Now
+							</Button>
+						</Link>
+						<Button className="bg-white hover:bg-gray-200 text-black">
+							Learn More
+						</Button>
 					</div>
 				</div>
-			</div>
+			</Container>
 		</section>
 	);
 };

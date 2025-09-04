@@ -6,6 +6,8 @@
 @theme {
 	--color-primary: #002c28;
 	--color-primaryLight: #fdfaf6;
+	--color-primaryBlue: #9aafff;
+	--color-secondaryBlue: #7d94ff;
 }
 body {
 	font-family:

@@ -1,6 +1,6 @@
 "use client";
 // ui
-import { Loader2Icon, TrendingUp } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
@@ -20,16 +20,23 @@ import {
 
 import useQuoteChart from "@/hooks/swr/useQuoteChart";
 import { ChartBarData } from "@/types/Stock.type";
-import { Button } from "../ui/button";
 
 // demo
 export const description = "A simple area chart";
 
 const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!selectedQuote) {
-		return;
+		return null;
 	}
-	const { data, error, isLoading } = useQuoteChart(selectedQuote);
+	const {
+		data,
+		error,
+		isLoading,
+	}: {
+		data: { success: boolean; data: ChartBarData[] };
+		error: string;
+		isLoading: boolean;
+	} = useQuoteChart(selectedQuote);
 
 	if (error) {
 		return <div>Error</div>;
@@ -41,11 +48,11 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 		return <Loader2Icon className="animate-spin" />;
 	}
 
-	const chartBar: ChartBarData[] = data?.data;
+	const chartBar = data?.data;
 
 	const chartConfig = {
 		desktop: {
-			label: "META",
+			label: selectedQuote,
 			color: "#002c28",
 		},
 	} satisfies ChartConfig;
@@ -55,51 +62,6 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 			<CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
 				<div className="grid flex-1 gap-1">
 					<CardTitle className="text-xl">{selectedQuote}</CardTitle>
-					<CardDescription>Current Price</CardDescription>
-					<div role="tablist" className="flex flex-row gap-1">
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							1 D
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							5 D
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							1 M
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							6 M
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							YTD
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							1 Y
-						</Button>
-						<Button
-							role="tab"
-							className="bg-white hover:bg-green-200 text-black shadow-md border"
-						>
-							5 Y
-						</Button>
-					</div>
 				</div>
 			</CardHeader>
 			<CardContent className="bg-white">
@@ -115,7 +77,7 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 						<CartesianGrid vertical={false} />
 						<XAxis
 							dataKey="time"
-							tickLine={false}
+							tickLine={true}
 							axisLine={true}
 							tickMargin={8}
 							tickFormatter={value => {
@@ -127,7 +89,10 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 						/>
 						<YAxis
 							dataKey="close"
-							domain={["dataMin", "dataMax"]} // scale to min and max of your data
+							domain={([min, max]) => {
+								const padding = (max - min) * 0.1;
+								return [min - padding, max + padding];
+							}} // padding to the min and max of the data
 							tickFormatter={value => value.toFixed(2)} // optional formatting
 						/>
 						<ChartTooltip
@@ -144,18 +109,6 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 					</AreaChart>
 				</ChartContainer>
 			</CardContent>
-			<CardFooter className="bg-white text-black">
-				<div className="flex w-full items-start gap-2 text-sm">
-					<div className="grid gap-2">
-						<div className="flex items-center gap-2 leading-none font-medium">
-							Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-						</div>
-						<div className="text-muted-foreground flex items-center gap-2 leading-none">
-							January - June 2024
-						</div>
-					</div>
-				</div>
-			</CardFooter>
 		</Card>
 	);
 };

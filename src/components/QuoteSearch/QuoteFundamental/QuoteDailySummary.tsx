@@ -21,6 +21,8 @@ const QuoteDailySummary = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (error) {
 		return <div>{error}</div>;
 	}
+	console.log(data);
+
 	return (
 		<div className=" border rounded-md shadow-md ">
 			<ul className="flex flex-col p-4 text-xs gap-4">

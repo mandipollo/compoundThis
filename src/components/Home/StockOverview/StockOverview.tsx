@@ -16,7 +16,7 @@ const StockOverview = () => {
 		<section className=" flex justify-center items-center w-full h-full bg-primary font-extralight ">
 			<div className=" flex justify-center items-center w-full h-full  bg-white rounded-t-4xl">
 				<Container>
-					<div className="grid grid-cols-[2fr_1fr] gap-4 py-10">
+					<div className="grid grid-cols-[3fr_2fr] gap-4 py-10">
 						<div className="flex flex-col gap-2 w-full">
 							<QuoteChart selectedQuote={selectedQuote} />
 							<FinancialAccordion selectedQuote={selectedQuote} />

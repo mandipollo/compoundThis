@@ -25,7 +25,7 @@ const PopularStockLiveData = ({
 		<TableBody>
 			<TableRow
 				onClick={() => setSelectedQuote("AAPL")}
-				className={`${selectedQuote === "AAPL" && "bg-blue-400"} text-center hover:bg-blue-400`}
+				className={`${selectedQuote === "AAPL" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
 			>
 				<TableCell>AAPL</TableCell>
 				<TableCell>{wsStockData["AAPL"]?.c.toFixed(2) ?? "N/A"}</TableCell>
@@ -37,7 +37,7 @@ const PopularStockLiveData = ({
 			</TableRow>
 			<TableRow
 				onClick={() => setSelectedQuote("TSLA")}
-				className={`${selectedQuote === "TSLA" && "bg-blue-400"} text-center hover:bg-blue-400`}
+				className={`${selectedQuote === "TSLA" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
 			>
 				<TableCell>TSLA</TableCell>
 				<TableCell>{wsStockData["TSLA"]?.c.toFixed(2) ?? "N/A"}</TableCell>
@@ -49,7 +49,7 @@ const PopularStockLiveData = ({
 			</TableRow>
 			<TableRow
 				onClick={() => setSelectedQuote("GOOG")}
-				className={`${selectedQuote === "GOOG" && "bg-blue-400"} text-center hover:bg-blue-400`}
+				className={`${selectedQuote === "GOOG" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
 			>
 				<TableCell>GOOG</TableCell>
 				<TableCell>{wsStockData["GOOG"]?.c.toFixed(2) ?? "N/A"}</TableCell>
@@ -61,7 +61,7 @@ const PopularStockLiveData = ({
 			</TableRow>
 			<TableRow
 				onClick={() => setSelectedQuote("MSFT")}
-				className={`${selectedQuote === "MSFT" && "bg-blue-400"} text-center hover:bg-blue-400`}
+				className={`${selectedQuote === "MSFT" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
 			>
 				<TableCell>MSFT</TableCell>
 				<TableCell>{wsStockData["MSFT"]?.c.toFixed(2) ?? "N/A"}</TableCell>

@@ -82,14 +82,8 @@ export interface DailyTickerSummary {
 // custom bar chart
 
 export interface ChartBarData {
-	c: number | null;
-	h: number | null;
-	l: number | null;
-	n: number | null;
-	o: number | null;
-	t: number | null;
-	v: number | null;
-	vw: number | null;
+	close: number | null;
+	time: number | null;
 }
 
 // market movers
