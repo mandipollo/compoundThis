@@ -293,39 +293,6 @@ export interface CashFlowInterface {
 	};
 }
 
-export interface ComprehensiveInterface {
-	comprehensive_income_loss: {
-		label: string;
-		order: number | null;
-		unit: string;
-		value: number | null;
-	};
-	comprehensive_income_loss_attributable_to_noncontrolling_interest: {
-		label: string;
-		order: number | null;
-		unit: string;
-		value: number | null;
-	};
-	comprehensive_income_loss_attributable_to_parent: {
-		label: string;
-		order: number | null;
-		unit: string;
-		value: number | null;
-	};
-	other_comprehensive_income_loss: {
-		label: string;
-		order: number | null;
-		unit: string;
-		value: number | null;
-	};
-	other_comprehensive_income_loss_attributable_to_parent: {
-		label: string;
-		order: number | null;
-		unit: string;
-		value: number | null;
-	};
-}
-
 export interface IncomeStatementInterface {
 	basic_earnings_per_share: {
 		label: string;
@@ -442,31 +409,6 @@ export interface IncomeStatementInterface {
 		value: number | null;
 	};
 }
-export interface FinancialStatementResult {
-	cik: string;
-	company_name: string;
-	end_date: string;
-	filing_date: string;
-	financials: {
-		balance_sheet: BalanceSheetInterface;
-		cash_flow_statement: CashFlowInterface;
-		comprehensive_income: ComprehensiveInterface;
-		income_statement: IncomeStatementInterface;
-	};
-	fiscal_period: string;
-	fiscal_year: string;
-	source_filing_file_url: string;
-	source_filing_url: string;
-	start_date: string;
-}
-
-export interface FinancialStatementResponse {
-	count: number;
-	next_url: string | null;
-	request_id: string;
-	results: FinancialStatementResult[];
-	status: string;
-}
 
 export interface FormattedBalanceSheet {
 	fiscal_year: string;
@@ -486,15 +428,8 @@ export interface FormattedCashflow {
 	cash_flow: CashFlowInterface;
 }
 
-export interface FormattedComprehensiveIncome {
-	fiscal_year: string;
-	fiscal_period: string;
-	comprehensive_income: ComprehensiveInterface;
-}
-
 export interface FormattedFinancialStatementData {
 	income_statement: FormattedIncomeStatement[];
 	balance_sheet: FormattedBalanceSheet[];
 	cash_flow: FormattedCashflow[];
-	comprehensive_income: FormattedComprehensiveIncome[];
 }

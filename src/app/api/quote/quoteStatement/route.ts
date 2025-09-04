@@ -22,7 +22,7 @@ export async function GET(
 
 		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json<ApiResponse<never>>(
-				{ success: false, error: "Ticker is required and must be string" },
+				{ success: false, error: "Ticker is required" },
 				{ status: 400 }
 			);
 		}
@@ -42,10 +42,11 @@ export async function GET(
 			);
 		}
 
-		const data: FormattedFinancialStatementData = await response.json();
+		const data: { success: boolean; data: FormattedFinancialStatementData } =
+			await response.json();
 		return NextResponse.json<ApiResponse<FormattedFinancialStatementData>>({
 			success: true,
-			data,
+			data: data.data,
 		});
 	} catch (error: unknown) {
 		// Catch unexpected runtime errors

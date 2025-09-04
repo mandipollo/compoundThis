@@ -18,7 +18,7 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
-import { CashFlowInterface } from "@/types/Stock.type";
+import { FormattedCashflow } from "@/types/Stock.type";
 
 // types
 
@@ -37,14 +37,13 @@ interface CashFlowChartData {
 	freeCashFlow: number;
 	netCashFlow: number;
 }
-const CashFlow = ({ cashFlow }: { cashFlow: CashFlowInterface[] }) => {
+const CashFlow = ({ cashFlow }: { cashFlow: FormattedCashflow[] }) => {
 	// chart data
 
 	const chartData: CashFlowChartData[] = cashFlow.map(item => ({
-		date: item.date,
-		freeCashFlow:
-			item.cashFlow.find(x => x.dataCode === "freeCashFlow")?.value || 0,
-		netCashFlow: item.cashFlow.find(x => x.dataCode === "ncf")?.value || 0,
+		date: item.fiscal_year + " " + item.fiscal_period,
+		freeCashFlow: item.cash_flow.net_cash_flow_continuing.value || 0,
+		netCashFlow: item.cash_flow.net_cash_flow.value || 0,
 	}));
 	const latestQuarter = cashFlow[0];
 	return (
@@ -76,20 +75,22 @@ const CashFlow = ({ cashFlow }: { cashFlow: CashFlowInterface[] }) => {
 					<TableRow>
 						<TableHead>(USD)</TableHead>
 						<TableHead className="text-right">
-							{latestQuarter?.date ?? "N/A"}
+							{latestQuarter.fiscal_year + " " + latestQuarter.fiscal_period}
 						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{latestQuarter?.cashFlow?.map((data, index) => (
+					{Object.values(latestQuarter.cash_flow).map((data, index) => (
 						<TableRow key={index}>
 							<TableCell>
-								{data.dataCode[0]
-									? data.dataCode[0].toUpperCase() + data.dataCode.slice(1)
+								{data.label
+									? data.label[0].toUpperCase() + data.label.slice(1)
 									: "N/A"}
 							</TableCell>
 							<TableCell className="text-right">
-								{data.value ? numberToDispaly(data.value) : "N/A"}
+								{data.value
+									? numberToDispaly(data.value) + " " + data.unit
+									: "N/A"}
 							</TableCell>
 						</TableRow>
 					))}

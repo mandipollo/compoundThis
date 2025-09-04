@@ -102,9 +102,9 @@ const PopularStocks = () => {
 					<div className="flex justify-center items-center bg-white rounded-4xl p-10 h-full w-full font-extralight">
 						<Table className="w-full">
 							<TableCaption className="text-xl font-md text-black caption-top">
-								Market - {marketStatus.data.market}
+								Market - {marketStatus?.data?.market || "N/A"}
 							</TableCaption>
-							{marketStatus.data.market === "closed" ? (
+							{marketStatus?.data?.market === "closed" ? (
 								<PopularStockSnapShot snapshotData={snapshotData.data} />
 							) : (
 								<PopularStockLiveData

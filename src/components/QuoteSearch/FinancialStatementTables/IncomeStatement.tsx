@@ -16,11 +16,11 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
-import { IncomeStatementInterface } from "@/types/Stock.type";
+import { FormattedIncomeStatement } from "@/types/Stock.type";
 // types
 
 export interface ChartDataInterface {
-	date: string;
+	fiscal_period: string;
 	revenue: number;
 	netInc: number;
 }
@@ -30,8 +30,8 @@ const chartConfig = {
 		label: "Revenue",
 		color: "#2563eb",
 	},
-	netInc: {
-		label: "NetInc",
+	grossProfit: {
+		label: "GrossProfit",
 		color: "#60a5fa",
 	},
 } satisfies ChartConfig;
@@ -39,13 +39,12 @@ const chartConfig = {
 const IncomeStatement = ({
 	incomeStatement,
 }: {
-	incomeStatement: IncomeStatementInterface[];
+	incomeStatement: FormattedIncomeStatement[];
 }) => {
-	const chartData: ChartDataInterface[] = incomeStatement.map(item => ({
-		date: item.date,
-		revenue:
-			item.incomeStatement.find(x => x.dataCode === "revenue")?.value || 0,
-		netInc: item.incomeStatement.find(x => x.dataCode === "netinc")?.value || 0,
+	const chartData = incomeStatement.map(item => ({
+		date: item.fiscal_year + " " + item.fiscal_period,
+		revenue: item.income_statement.revenues.value,
+		grossProfit: item.income_statement.gross_profit.value,
 	}));
 	const latestQuarter = incomeStatement[0];
 
@@ -62,7 +61,11 @@ const IncomeStatement = ({
 					/>
 					<ChartTooltip content={<ChartTooltipContent />} />
 					<Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
-					<Bar dataKey="netInc" fill="var(--color-netInc)" radius={4} />
+					<Bar
+						dataKey="grossProfit"
+						fill="var(--color-grossProfit)"
+						radius={4}
+					/>
 				</BarChart>
 			</ChartContainer>
 			<Table>
@@ -70,20 +73,22 @@ const IncomeStatement = ({
 					<TableRow>
 						<TableHead>(USD)</TableHead>
 						<TableHead className="text-right">
-							{latestQuarter?.date ?? "N/A"}
+							{latestQuarter.fiscal_year + " " + latestQuarter.fiscal_period}
 						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{latestQuarter?.incomeStatement?.map((data, index) => (
+					{Object.values(latestQuarter.income_statement).map((data, index) => (
 						<TableRow key={index}>
 							<TableCell>
-								{data.dataCode
-									? data.dataCode[0].toUpperCase() + data.dataCode.slice(1)
+								{data.label
+									? data.label[0].toUpperCase() + data.label.slice(1)
 									: "N/A"}
 							</TableCell>
 							<TableCell className="text-right">
-								{data.value ? numberToDispaly(data.value) : "N/A"}
+								{data.value
+									? numberToDispaly(data.value) + " " + data.unit
+									: "N/A"}
 							</TableCell>
 						</TableRow>
 					))}

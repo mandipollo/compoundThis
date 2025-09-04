@@ -18,7 +18,7 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 //utils
 import numberToDispaly from "@/utils/numberFormatter";
-import { BalanceSheetInterface } from "@/types/Stock.type";
+import { FormattedBalanceSheet } from "@/types/Stock.type";
 
 //types
 
@@ -40,17 +40,14 @@ interface BalanceSheetChartData {
 const BalanceSheet = ({
 	balanceSheet,
 }: {
-	balanceSheet: BalanceSheetInterface[];
+	balanceSheet: FormattedBalanceSheet[];
 }) => {
 	// chart data
 
 	const chartData: BalanceSheetChartData[] = balanceSheet.map(item => ({
-		date: item.date,
-		totalAssets:
-			item.balanceSheet.find(x => x.dataCode === "totalAssets")?.value || 0,
-		totalLiabilities:
-			item.balanceSheet.find(x => x.dataCode === "totalLiabilities")?.value ||
-			0,
+		date: item.fiscal_year + " " + item.fiscal_period,
+		totalAssets: item.balance_sheet.assets.value || 0,
+		totalLiabilities: item.balance_sheet.liabilities.value || 0,
 	}));
 	const latestQuarter = balanceSheet[0];
 	return (
@@ -82,20 +79,22 @@ const BalanceSheet = ({
 					<TableRow>
 						<TableHead>(USD)</TableHead>
 						<TableHead className="text-right">
-							{latestQuarter?.date ?? "N/A"}
+							{latestQuarter.fiscal_year + " " + latestQuarter.fiscal_period}
 						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{latestQuarter?.balanceSheet?.map(data => (
-						<TableRow key={data.dataCode}>
+					{Object.values(latestQuarter.balance_sheet).map((data, index) => (
+						<TableRow key={index}>
 							<TableCell>
-								{data.dataCode[0]
-									? data.dataCode[0].toUpperCase() + data.dataCode.slice(1)
+								{data.label
+									? data.label[0].toUpperCase() + data.label.slice(1)
 									: "N/A"}
 							</TableCell>
 							<TableCell className="text-right">
-								{data.value ? numberToDispaly(data.value) : "N/A"}
+								{data.value
+									? numberToDispaly(data.value) + " " + data.unit
+									: "N/A"}
 							</TableCell>
 						</TableRow>
 					))}

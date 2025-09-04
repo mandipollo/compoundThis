@@ -29,10 +29,10 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 	return (
 		<div className="border rounded-md shadow-md p-2 gap-2">
 			<span className="text-lg py-2 flex gap-2 flex-row">
-				{about.name ?? "N/A"}
+				{about?.name ?? "N/A"}
 			</span>
 			<div className="flex flex-col gap-4">
-				<p className="text-xs">{about.description ?? "N/A"}</p>
+				<p className="text-xs">{about?.description ?? "N/A"}</p>
 				<Separator />
 
 				<div className="flex items-center justify-between">
@@ -73,7 +73,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						/>
 						<span className="text-xs text-muted-foreground">WEBSITE</span>
 					</div>
-					{about.homePageUrl ? (
+					{about?.homePageUrl ? (
 						<a
 							href={about?.homePageUrl}
 							target="_blank"
@@ -110,7 +110,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 						<span className="text-xs text-muted-foreground">MARKET CAP</span>
 					</div>
 					<span>
-						{about.marketCap ? numberToDispaly(about?.marketCap) : "N/A"}
+						{about?.marketCap ? numberToDispaly(about?.marketCap) : "N/A"}
 					</span>
 				</div>
 				<Separator />

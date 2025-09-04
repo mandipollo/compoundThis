@@ -20,7 +20,15 @@ import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
 import { FormattedFinancialStatementData } from "@/types/Stock.type";
 
 const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
-	const { data, error, isLoading } = useQuoteStatement(selectedQuote);
+	const {
+		data,
+		error,
+		isLoading,
+	}: {
+		data: { success: boolean; data: FormattedFinancialStatementData };
+		isLoading: boolean;
+		error: string;
+	} = useQuoteStatement(selectedQuote);
 
 	if (isLoading || !data) {
 		return <div>Loading...</div>;
@@ -30,36 +38,37 @@ const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 		return <div>{error}</div>;
 	}
 
-	console.log(data);
+	const { balance_sheet, cash_flow, income_statement } = data.data;
 
-	// return (
-	// 	<Accordion type="multiple" className="w-full">
-	// 		{incomeStatement && (
-	// 			<AccordionItem value="item-1">
-	// 				<AccordionTrigger>Income Statement</AccordionTrigger>
-	// 				<AccordionContent className="flex flex-col gap-4 text-balance">
-	// 					<IncomeStatement incomeStatement={incomeStatement} />
-	// 				</AccordionContent>
-	// 			</AccordionItem>
-	// 		)}
+	return (
+		<Accordion type="multiple" className="w-full">
+			{income_statement && (
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Income Statement</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-4 text-balance">
+						<IncomeStatement incomeStatement={income_statement} />
+					</AccordionContent>
+				</AccordionItem>
+			)}
+			{balance_sheet && (
+				<AccordionItem value="item-2">
+					<AccordionTrigger>Balance Sheet</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-4 text-balance">
+						<BalanceSheet balanceSheet={balance_sheet} />
+					</AccordionContent>
+				</AccordionItem>
+			)}
 
-	// 		{balanceSheet && (
-	// 			<AccordionItem value="item-2">
-	// 				<AccordionTrigger>Balance Sheet</AccordionTrigger>
-	// 				<AccordionContent className="flex flex-col gap-4 text-balance">
-	// 					<BalanceSheet balanceSheet={balanceSheet} />
-	// 				</AccordionContent>
-	// 			</AccordionItem>
-	// 		)}
-
-	// 		<AccordionItem value="item-3">
-	// 			<AccordionTrigger>Cash Flow</AccordionTrigger>
-	// 			<AccordionContent className="flex flex-col gap-4 text-balance">
-	// 				<CashFlow cashFlow={cashFlow} />
-	// 			</AccordionContent>
-	// 		</AccordionItem>
-	// 	</Accordion>
-	// );
+			{cash_flow && (
+				<AccordionItem value="item-3">
+					<AccordionTrigger>Cash Flow</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-4 text-balance">
+						<CashFlow cashFlow={cash_flow} />
+					</AccordionContent>
+				</AccordionItem>
+			)}
+		</Accordion>
+	);
 };
 
 export default FinancialAccordion;
