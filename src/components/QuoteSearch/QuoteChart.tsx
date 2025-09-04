@@ -42,7 +42,6 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 	}
 
 	const chartBar: ChartBarData[] = data?.data;
-	console.log(chartBar);
 
 	const chartConfig = {
 		desktop: {

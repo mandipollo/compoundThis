@@ -36,8 +36,7 @@ const SelectedQuoteComponent = () => {
 			<div className="grid grid-cols-[2fr_1fr] gap-4">
 				<div className="flex flex-col gap-2 w-full">
 					<QuoteChart selectedQuote={selectedQuote} />
-					<QuoteTopNews />
-					{/* <FinancialAccordion selectedQuote={selectedQuote} /> */}
+					<FinancialAccordion selectedQuote={selectedQuote} />
 				</div>
 				<div className="flex flex-col gap-2">
 					<QuoteDailySummary selectedQuote={selectedQuote} />

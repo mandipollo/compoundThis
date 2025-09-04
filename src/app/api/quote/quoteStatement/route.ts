@@ -1,11 +1,12 @@
 "use server";
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { StatementData } from "@/types/Stock.type";
+import { FormattedFinancialStatementData } from "@/types/Stock.type";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
 	req: NextRequest
-): Promise<NextResponse<ApiResponse<StatementData>>> {
+): Promise<NextResponse<ApiResponse<FormattedFinancialStatementData>>> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 
@@ -41,15 +42,18 @@ export async function GET(
 			);
 		}
 
-		const data: StatementData = await response.json();
-		return NextResponse.json<ApiResponse<StatementData>>({
+		const data: FormattedFinancialStatementData = await response.json();
+		return NextResponse.json<ApiResponse<FormattedFinancialStatementData>>({
 			success: true,
 			data,
 		});
-	} catch (error) {
-		return NextResponse.json<ApiResponse<never>>({
-			success: false,
-			error: "error",
-		});
+	} catch (error: unknown) {
+		// Catch unexpected runtime errors
+		const message =
+			error instanceof Error ? error.message : "Unexpected server error";
+		return NextResponse.json<ApiResponse<never>>(
+			{ success: false, error: message },
+			{ status: 500 }
+		);
 	}
 }

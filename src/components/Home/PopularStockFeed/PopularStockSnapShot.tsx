@@ -1,17 +1,29 @@
-import { TableBody, TableRow, TableCell } from "@/components/ui/table";
-import { PopularTickerData } from "@/types/Stock.type";
-import numberToDispaly from "@/utils/numberFormatter";
 import React from "react";
+import { PopularTickerData } from "@/types/Stock.type";
+
+// ui
+import { TableBody, TableRow, TableCell } from "@/components/ui/table";
+
+// hooks
+import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
+
+//utils
+import numberToDispaly from "@/utils/numberFormatter";
 
 const PopularStockSnapShot = ({
 	snapshotData,
 }: {
 	snapshotData: PopularTickerData;
 }) => {
+	const { setSelectedQuote } = useHomeSelectedQuoteStore();
 	return (
 		<TableBody>
 			{snapshotData?.tickers?.map(ticker => (
-				<TableRow key={ticker.ticker} className="text-center">
+				<TableRow
+					onClick={() => setSelectedQuote(ticker.ticker)}
+					key={ticker.ticker}
+					className="text-center"
+				>
 					<TableCell>{ticker.ticker}</TableCell>
 					<TableCell>
 						${ticker.min.c === 0 ? ticker.prevDay.c : ticker.min.c}

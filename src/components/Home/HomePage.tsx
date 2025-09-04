@@ -6,7 +6,7 @@ import Hero from "./Hero";
 import FeaturesSectionGuide1 from "./FeaturesSectionGuide1";
 import FeaturesSectionGuide2 from "./FeaturesSectionGuide2";
 import PopularStocks from "./PopularStockFeed/PopularStocks";
-import StockOverview from "./StockOverview";
+import StockOverview from "./StockOverview/StockOverview";
 import CtaPage from "./CtaPage";
 
 const Homepage = () => {

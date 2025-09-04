@@ -3,13 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 // ui
-import {
-	TableCaption,
-	TableRow,
-	TableBody,
-	TableCell,
-	Table,
-} from "../../ui/table";
+import { TableCaption, Table } from "../../ui/table";
 import Container from "../../Containers/Container";
 
 // websockets
@@ -18,16 +12,26 @@ import { io } from "socket.io-client";
 // hooks
 import useMarketStatus from "@/hooks/swr/useMarketStatus";
 import usePopularStocks from "@/hooks/swr/usePopularStocks";
-
+import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
 // utils
-import numberToDispaly from "@/utils/numberFormatter";
+
 import { WebSocketPopularStockData } from "@/types/Stock.type";
 
 // components
 import PopularStockLiveData from "./PopularStockLiveData";
 import PopularStockSnapShot from "./PopularStockSnapShot";
+import LoadingStockData from "./LoadingStockData";
+import ErrorStock from "./ErrorStock";
 
 const PopularStocks = () => {
+	//
+	const { clearSelectedQuote } = useHomeSelectedQuoteStore();
+
+	useEffect(() => {
+		return () => {
+			clearSelectedQuote();
+		};
+	}, []);
 	// connect to io
 	const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 
@@ -67,7 +71,6 @@ const PopularStocks = () => {
 				console.log(socket.id);
 			});
 			socket.on("popularStocks", (data: WebSocketPopularStockData[]) => {
-				console.log(data);
 				setWsStockData(prev => {
 					const next = { ...prev };
 
@@ -85,11 +88,11 @@ const PopularStocks = () => {
 	}, [server, marketStatus?.data?.market]);
 
 	if (marketIsLoading || snapshotIsLoading) {
-		return <p>Loading...</p>;
+		return <LoadingStockData />;
 	}
 
 	if (marketError || snapshotError) {
-		return <p>Error fetching stock data</p>;
+		return <ErrorStock />;
 	}
 
 	return (
@@ -104,7 +107,10 @@ const PopularStocks = () => {
 							{marketStatus.data.market === "closed" ? (
 								<PopularStockSnapShot snapshotData={snapshotData.data} />
 							) : (
-								<PopularStockLiveData wsStockData={wsStockData} />
+								<PopularStockLiveData
+									wsStockData={wsStockData}
+									snapshotData={snapshotData.data}
+								/>
 							)}
 						</Table>
 					</div>
