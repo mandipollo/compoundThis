@@ -1,11 +1,16 @@
 "use client";
-
 import React, { useState } from "react";
+
+// components
 import SectionContainer from "@/components/Containers/SectionContainer";
+import Container from "@/components/Containers/Container";
+
+// zod
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+// ui
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -16,7 +21,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Container from "@/components/Containers/Container";
 import {
 	Select,
 	SelectContent,
@@ -25,7 +29,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
 import {
 	Popover,
 	PopoverContent,
@@ -89,9 +92,6 @@ const CreatePortfolioPage = () => {
 											<SelectContent>
 												<SelectItem value="United Kingdom">
 													United Kingdom
-												</SelectItem>
-												<SelectItem value="United States of America">
-													United States of America
 												</SelectItem>
 											</SelectContent>
 										</Select>
