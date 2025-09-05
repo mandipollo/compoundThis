@@ -32,11 +32,6 @@ const items = [
 		icon: LayoutDashboard,
 	},
 	{
-		title: "Portfolio",
-		url: "/user/portfolio",
-		icon: BriefcaseBusinessIcon,
-	},
-	{
 		title: "Search",
 		url: "/user/search",
 		icon: Search,

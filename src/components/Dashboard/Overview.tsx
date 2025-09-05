@@ -1,16 +1,15 @@
 import React from "react";
-import OverviewItem from "./OverviewItem";
 
 const Overview = () => {
 	return (
-		<section className="grid grid-cols-3 gap-2 ">
-			<OverviewItem
-				overviewTitle="My Investment Assets"
-				base={176289}
-				diff={167}
-			/>
-			<OverviewItem overviewTitle="Yearly Profits" base={76289} diff={167} />
-			<OverviewItem overviewTitle="World index" base={289} diff={167} />
+		<section className="flex flex-row justify-between items-center  ">
+			<span>CTHIS demo</span>
+			<span className="flex flex-col text-center">
+				<p className="text-xl">660,649.87</p>
+				<p className="text-[10px] text-accent-foreground">
+					CURRENT PORTFOLIO VALUE
+				</p>
+			</span>
 		</section>
 	);
 };

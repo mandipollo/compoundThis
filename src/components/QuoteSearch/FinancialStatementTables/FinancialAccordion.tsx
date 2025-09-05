@@ -41,7 +41,12 @@ const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 	const { balance_sheet, cash_flow, income_statement } = data.data;
 
 	return (
-		<Accordion type="multiple" className="w-full">
+		<Accordion
+			defaultValue="item-1"
+			type="single"
+			collapsible
+			className="w-full"
+		>
 			{income_statement && (
 				<AccordionItem value="item-1">
 					<AccordionTrigger>Income Statement</AccordionTrigger>
