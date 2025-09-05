@@ -1,13 +1,16 @@
-import SearchBar from "@/components/Layout/search/SearchBar";
 import React from "react";
+
+// components
+import SearchBar from "@/components/Layout/search/SearchBar";
 import SelectedQuoteComponent from "@/components/QuoteSearch/SelectedQuoteComponent";
+import SectionContainer from "@/components/Containers/SectionContainer";
 
 const SearchPage = () => {
 	return (
-		<section className="flex flex-col gap-2 w-full h-full pt-8 pb-2 pr-2">
+		<SectionContainer>
 			<SearchBar />
 			<SelectedQuoteComponent />
-		</section>
+		</SectionContainer>
 	);
 };
 

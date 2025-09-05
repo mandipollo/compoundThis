@@ -1,11 +1,7 @@
 import React from "react";
 
 const MailPage = () => {
-	return (
-		<div>
-			<h1>page</h1>
-		</div>
-	);
+	return <div>Mail</div>;
 };
 
 export default MailPage;

@@ -1,9 +1,12 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
+
+// components
+import SectionContainer from "@/components/Containers/SectionContainer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Loading = () => {
 	return (
-		<section className="flex flex-col gap-2 w-full h-full pt-8 pb-2 pr-2">
+		<SectionContainer>
 			<div className="flex flex-row gap-2 w-full items-center justify-between">
 				<Skeleton className="w-28 h-10"></Skeleton>
 				<Skeleton className="w-full h-10"></Skeleton>
@@ -24,7 +27,7 @@ const Loading = () => {
 				<Skeleton className="h-40 w-full"></Skeleton>
 				<Skeleton className="h-40 w-full"></Skeleton>
 			</div>
-		</section>
+		</SectionContainer>
 	);
 };
 
