@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ResetPasswordOutput } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
+
 // ui
 import { Button } from "@/components/ui/button";
 import {

@@ -1,6 +1,8 @@
-import React from "react";
-import Container from "@/components/Containers/Container";
 import Image from "next/image";
+
+// components
+import Container from "@/components/Containers/Container";
+
 const ErrorStock = () => {
 	return (
 		<section className="flex justify-center items-center w-full h-full bg-primary">

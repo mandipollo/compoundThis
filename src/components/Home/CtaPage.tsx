@@ -1,8 +1,11 @@
 import Image from "next/image";
-import React from "react";
-import Container from "../Containers/Container";
-import { Button } from "../ui/button";
 import Link from "next/link";
+
+// components
+import Container from "../Containers/Container";
+
+// ui
+import { Button } from "../ui/button";
 
 const CtaPage = () => {
 	return (

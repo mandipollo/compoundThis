@@ -1,16 +1,6 @@
-import React from "react";
-
-// ui
-import {
-	Card,
-	CardAction,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
 import Image from "next/image";
+// ui
+import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 
 const GeneralCard = ({

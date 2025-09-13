@@ -1,13 +1,8 @@
 "use client";
+import { MouseEvent, useCallback, useState, useRef } from "react";
 
+// utils
 import { throttle } from "@/utils/throttle";
-import React, {
-	useEffect,
-	MouseEvent,
-	useCallback,
-	useState,
-	useRef,
-} from "react";
 
 //TODO: EXPAND ON THE CARD DETAILS
 const FeatureCard = ({ description }: { description: string }) => {

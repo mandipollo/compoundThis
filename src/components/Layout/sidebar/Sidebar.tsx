@@ -1,4 +1,7 @@
 "use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+// ui
 import {
 	Activity,
 	Mail,
@@ -19,10 +22,12 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
+
+// components
 import DropdownUser from "./DropdownUser";
+
+// store
 import { useUserStore } from "@/store/userStore";
-import { usePathname } from "next/navigation";
 
 // Menu items.
 const items = [

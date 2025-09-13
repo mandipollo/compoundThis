@@ -1,7 +1,8 @@
 "use client";
-
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import Image from "next/image";
+
+// ui
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 const instrument = [
 	{

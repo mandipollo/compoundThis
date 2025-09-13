@@ -1,5 +1,7 @@
-import React from "react";
+// components
 import Container from "@/components/Containers/Container";
+
+// ui
 import {
 	Table,
 	TableBody,

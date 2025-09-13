@@ -1,7 +1,7 @@
 "use client";
 
+// store
 import { useUserStore } from "@/store/userStore";
-import React from "react";
 
 const Footer = () => {
 	const { isAuthenticated } = useUserStore();

@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignUpOutput } from "aws-amplify/auth";
+import Link from "next/link";
 // auth
 import { signUpUser } from "@/libs/cognito/newUser/signupUser";
 import { SignupFormSchema, SignupFormState } from "@/libs/definitions";
-import Link from "next/link";
+
 // ui
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";

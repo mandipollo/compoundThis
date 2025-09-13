@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+// ui
 import { Button } from "../ui/button";
 import {
 	Card,
@@ -9,15 +11,16 @@ import {
 	CardContent,
 	CardFooter,
 } from "../ui/card";
+import { Loader2Icon } from "lucide-react";
 
+// schema
 import {
 	ConfirmSignUpFormSchema,
 	ConfirmSignupFormState,
 } from "@/libs/definitions";
-import { useRouter } from "next/navigation";
+
+// auth
 import { confirmUserEmail } from "@/libs/cognito/newUser/confirmEmailUser";
-import { ConfirmSignUpOutput } from "aws-amplify/auth";
-import { Loader2Icon } from "lucide-react";
 
 const initialState: ConfirmSignupFormState = {
 	formValidationErrors: { code: "", email: "" },
@@ -30,58 +33,67 @@ const ConfirmEmail = () => {
 	const [pending, setPending] = useState(false);
 	const router = useRouter();
 
-	//TODO: Error handling
-	// 		Resend verification code
+	//TODO: 		Resend verification code
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
 
-		const formData = new FormData(e.currentTarget);
+		try {
+			const formData = new FormData(e.currentTarget);
 
-		const email = formData.get("email") as string;
-		const code = formData.get("code") as string;
+			const email = formData.get("email") as string;
+			const code = formData.get("code") as string;
 
-		// ✅ Validate with Zod
-		const validated = ConfirmSignUpFormSchema.safeParse({
-			email,
-			code,
-		});
-		if (!validated.success) {
-			const fieldArrays = validated.error.flatten().fieldErrors;
-
-			setState({
-				...initialState,
-				formValidationErrors: {
-					email: fieldArrays.email?.[0] ?? "",
-					code: fieldArrays.code?.[0] ?? "",
-				},
-				error: "Please fix the highlighted errors",
-				success: false,
+			//  Validate with Zod
+			const validated = ConfirmSignUpFormSchema.safeParse({
+				email,
+				code,
 			});
+			if (!validated.success) {
+				const fieldArrays = validated.error.flatten().fieldErrors;
+
+				setState({
+					...initialState,
+					formValidationErrors: {
+						email: fieldArrays.email?.[0] ?? "",
+						code: fieldArrays.code?.[0] ?? "",
+					},
+					error: "Please fix the highlighted errors",
+					success: false,
+				});
+				setPending(false);
+				return;
+			}
+
+			// Cognito sign up
+			const { success, error, isSignUpComplete } = await confirmUserEmail(
+				email,
+				code
+			);
+
+			if (!success) {
+				setState({ ...initialState, error });
+				setPending(false);
+				return;
+			}
+
+			//
+			if (isSignUpComplete) {
+				router.push("/auth/login");
+			} else {
+				setState({ ...initialState, message: "Check your email to confirm." });
+			}
+
 			setPending(false);
-			return;
-		}
+		} catch (error: unknown) {
+			let message =
+				error instanceof Error
+					? error.message
+					: "Unexpected error. Please try again";
 
-		// Cognito sign up
-		const { success, error, isSignUpComplete } = await confirmUserEmail(
-			email,
-			code
-		);
-
-		if (!success) {
-			setState({ ...initialState, error });
+			setState({ ...initialState, error: message });
 			setPending(false);
-			return;
 		}
-
-		//
-		if (isSignUpComplete) {
-			router.push("/auth/login");
-		} else {
-			setState({ ...initialState, message: "Check your email to confirm." });
-		}
-
-		setPending(false);
 	};
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">

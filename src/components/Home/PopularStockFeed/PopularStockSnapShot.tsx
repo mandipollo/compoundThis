@@ -1,10 +1,10 @@
-import React from "react";
+// types
 import { PopularTickerData } from "@/types/Stock.type";
 
 // ui
 import { TableBody, TableRow, TableCell } from "@/components/ui/table";
 
-// hooks
+// store
 import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
 
 //utils

@@ -1,8 +1,8 @@
 "use client";
-import { useUserStore } from "@/store/userStore";
 import Link from "next/link";
-import React from "react";
 
+// store
+import { useUserStore } from "@/store/userStore";
 const Navbar = () => {
 	const { isAuthenticated } = useUserStore();
 

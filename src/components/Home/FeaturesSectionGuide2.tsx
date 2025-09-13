@@ -1,12 +1,15 @@
-import React from "react";
+import Image from "next/image";
+
+// components
 import Container from "../Containers/Container";
+
+// ui
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "../ui/accordion";
-import Image from "next/image";
 
 const FeatureSectionGuide2 = () => {
 	return (

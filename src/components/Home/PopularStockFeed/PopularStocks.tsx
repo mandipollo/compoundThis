@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // ui
 import { TableCaption, Table } from "../../ui/table";
@@ -12,7 +12,10 @@ import { io } from "socket.io-client";
 // hooks
 import useMarketStatus from "@/hooks/swr/useMarketStatus";
 import usePopularStocks from "@/hooks/swr/usePopularStocks";
+
+// store
 import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
+
 // utils
 
 import { WebSocketPopularStockData } from "@/types/Stock.type";

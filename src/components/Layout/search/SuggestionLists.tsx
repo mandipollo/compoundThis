@@ -12,7 +12,7 @@ import {
 // types
 import { SearchResultItem } from "@/types/Stock.type";
 
-// hooks
+// store
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
 const SuggestionLists = ({ results }: { results: SearchResultItem[] }) => {

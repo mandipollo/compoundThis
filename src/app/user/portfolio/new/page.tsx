@@ -35,6 +35,9 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
+
+// date needs to be formatted as the same as server and client to resolve hydration issues
+import { format } from "date-fns";
 const formSchema = z.object({
 	portfolioName: z
 		.string()
@@ -49,16 +52,18 @@ const formSchema = z.object({
 const CreatePortfolioPage = () => {
 	const [open, setOpen] = useState<boolean>(false);
 	const [date, setDate] = useState<Date | undefined>(new Date());
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			portfolioName: "",
 			residency: "United Kingdom",
-			financialTerm: "2025-04-01",
+			financialTerm: "01-04-2024",
 		},
 	});
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {};
+
 	return (
 		<SectionContainer>
 			<Container>
@@ -115,7 +120,7 @@ const CreatePortfolioPage = () => {
 														id="date"
 														className="w-48 justify-between font-normal"
 													>
-														{date ? date.toLocaleDateString() : "Select date"}
+														{date ? format(date, "dd/mm/yyyy") : "01-04-2024"}
 														<ChevronDownIcon />
 													</Button>
 												</PopoverTrigger>

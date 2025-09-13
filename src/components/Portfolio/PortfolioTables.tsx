@@ -1,4 +1,5 @@
-import React from "react";
+import Link from "next/link";
+//  ui
 import {
 	Table,
 	TableBody,
@@ -7,7 +8,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "../ui/table";
-import Link from "next/link";
 import { Button } from "../ui/button";
 
 const PortfolioTables = () => {

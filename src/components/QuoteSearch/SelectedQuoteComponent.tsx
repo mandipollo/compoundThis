@@ -2,13 +2,9 @@
 
 import React, { useEffect } from "react";
 
-// ui
-import { Separator } from "../ui/separator";
-
 // components
 import FinancialAccordion from "./FinancialStatementTables/FinancialAccordion";
 import QuoteChart from "./QuoteChart";
-import QuoteTopNews from "./QuoteTopNews";
 import QuoteAbout from "./QuoteFundamental/QuoteAbout";
 import QuoteDailySummary from "./QuoteFundamental/QuoteDailySummary";
 

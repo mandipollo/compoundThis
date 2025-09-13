@@ -1,4 +1,4 @@
-import React from "react";
+// types
 import {
 	PopularTickerData,
 	WebSocketPopularStockData,
@@ -7,10 +7,7 @@ import {
 // ui
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 
-// utils
-import numberToDispaly from "@/utils/numberFormatter";
-
-// hooks
+// store
 import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
 
 const PopularStockLiveData = ({

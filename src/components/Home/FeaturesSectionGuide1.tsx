@@ -1,7 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+
+// components
 import Container from "../Containers/Container";
 import FeatureCard from "./FeatureCard";
+
 import { Gradient } from "./gradient";
 const FeaturesSectionGuide1 = () => {
 	// bg gradient

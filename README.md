@@ -13,7 +13,7 @@ eg - proxy handler should not test data formatting
 
 ////////////// misc
 
-• useSWR- need to declare "use client" top of component , nextjs will throw error unspecific error.
+• useSWR- need to declare "use client" top of component , nextjs will throw unspecific error.
 
 /////////////// Server
 

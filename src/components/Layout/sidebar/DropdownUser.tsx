@@ -1,3 +1,7 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+// ui
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -6,17 +10,17 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUserStore } from "@/store/userStore";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { SidebarMenuButton } from "../../ui/sidebar";
 import { ChevronUp, User2 } from "lucide-react";
+import { SidebarMenuButton } from "../../ui/sidebar";
+// store
+import { useUserStore } from "@/store/userStore";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
 const DropdownUser = ({ username }: { username: string | undefined }) => {
 	const { signOutUser } = useUserStore();
 	const { clearSelectedQuote } = useSelectedQuoteStore();
 
+	// Remove cookies from browser
 	// TODO:ERROR HANDLING
 	const handleSignout = async () => {
 		await signOutUser();

@@ -1,11 +1,8 @@
-"use client";
-import React, { useEffect } from "react";
-
-import { Button } from "../ui/button";
 import Image from "next/image";
+import Link from "next/link";
+// Components
 import InfiniteScrollLogo from "./InfiniteScrollLogo";
 import Container from "../Containers/Container";
-import Link from "next/link";
 
 const Hero = () => {
 	return (

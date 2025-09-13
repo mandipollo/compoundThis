@@ -1,5 +1,3 @@
-import React from "react";
-
 const Overview = () => {
 	return (
 		<section className="flex flex-row justify-between items-center  ">
