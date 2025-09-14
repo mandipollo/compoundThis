@@ -1,14 +1,12 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { verifyJWT } from "@/utils/jwt-verifier";
-import { ApiResponse } from "@/types/ApiResponse.type";
-import { UserPortfolio } from "@/types/User.type";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
+export async function GET() {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
-			return NextResponse.json<ApiResponse<never>>(
+			return NextResponse.json(
 				{ success: false, error: "Server error" },
 				{ status: 400 }
 			);
@@ -22,7 +20,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 		const { success, payload, error } = await verifyJWT(idTokenValue);
 
 		if (!success) {
-			return NextResponse.json<ApiResponse<never>>({
+			return NextResponse.json({
 				success: false,
 				error: error,
 			});
@@ -30,20 +28,10 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 
 		const { sub } = payload;
 
-		const response = await fetch(`${server}/user/getUserportfolios`, {
+		const response = await fetch(`${server}/user/getUserStockTotalValue`, {
 			method: "GET",
 			headers: { Authorization: `Bearer ${sub}` },
 		});
-
-		if (!response.ok) {
-			return NextResponse.json<ApiResponse<never>>(
-				{
-					success: false,
-					error: response.statusText,
-				},
-				{ status: response.status }
-			);
-		}
 
 		const data = await response.json();
 
@@ -57,18 +45,14 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 				{ status: 502 }
 			);
 		}
-
-		return NextResponse.json<ApiResponse<UserPortfolio>>(
-			{ success: true, data: data.data },
-			{ status: 200 }
-		);
+		return NextResponse.json({ success: true, data: data.data });
 	} catch (error: unknown) {
 		let message =
 			error instanceof Error
 				? error.message
-				: "Unexpected error. Please try agian";
+				: "Unexpected error. Please try again";
 
-		return NextResponse.json<ApiResponse<never>>(
+		return NextResponse.json(
 			{ success: false, error: message },
 			{ status: 500 }
 		);
