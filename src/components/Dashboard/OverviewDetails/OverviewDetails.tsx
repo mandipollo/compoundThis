@@ -36,8 +36,6 @@ const OverviewDetails = () => {
 		return <div>{errorStocks}</div>;
 	}
 
-	console.log(dataStocks, stockTotalData);
-
 	const stocks = dataStocks?.data?.stocks ?? [];
 	const totalValue = stockTotalData.data;
 	return (

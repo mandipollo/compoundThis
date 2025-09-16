@@ -59,6 +59,11 @@ const ManualAddStockForm = () => {
 	const [open, setOpen] = useState<boolean>(false);
 	const [hideCommandList, setHideCommandList] = useState<boolean>(false);
 
+	// selected stock
+	const [selectedStock, setSelectedStock] = useState<SearchResultItem | null>(
+		null
+	);
+
 	// Forms
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -86,13 +91,25 @@ const ManualAddStockForm = () => {
 		name: "quantity",
 	});
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		try {
+			const stockData = {
+				quantity: values.quantity,
+				companyName: selectedStock?.name,
+				ticker: selectedStock?.ticker,
+				buyPrice: values.price,
+				buyDate: values.tradeDate,
+			};
+			const response = await fetch("/api/user/addStockToPortfolio", {
+				method: "POST",
+				body: JSON.stringify(stockData),
+			});
+			const data = await response.json();
+			console.log(data.data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
-
-	const [selectedStock, setSelectedStock] = useState<SearchResultItem | null>(
-		null
-	);
 
 	// search suggestion list hook
 	const { results, error } = useStockSuggestion({ input });

@@ -96,12 +96,10 @@ const Login = () => {
 			if (isSignedIn) {
 				// Fetch session token and save to backend
 				const sessions = await fetchAuthSession();
-				console.log(sessions);
 
 				const idToken = sessions.tokens?.idToken?.toString();
 
 				const tokenExp = sessions.tokens?.idToken?.payload.exp;
-				console.log(idToken);
 
 				// set tokens in middleware
 				await fetch("/api/auth/setToken", {
