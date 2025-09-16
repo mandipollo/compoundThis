@@ -44,7 +44,7 @@ const formSchema = z.object({
 		.min(2, {
 			message: "Portfolio name must be atleast 2 charaters.",
 		})
-		.max(5),
+		.max(20),
 	residency: z.string().min(2, { message: "Tax residency required." }),
 	financialTerm: z.string().date(),
 });

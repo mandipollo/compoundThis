@@ -30,7 +30,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 
 		const { sub } = payload;
 
-		const response = await fetch(`${server}/user/getUserportfolios`, {
+		const response = await fetch(`${server}/user/getUserPortfolios`, {
 			method: "GET",
 			headers: { Authorization: `Bearer ${sub}` },
 		});

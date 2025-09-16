@@ -11,10 +11,11 @@ import { Loader2Icon } from "lucide-react";
 //hooks
 import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
 import useUserStockTotalValue from "@/hooks/swr/useUserStockTotalValue";
+import OverviewDetailsHeader from "./OverviewDetailsHeader";
 
 const OverviewDetails = () => {
 	// fetch users demo portfolio
-
+	// FIXME: FAILED ASSERTION ON STALE PRISMA DATA
 	const {
 		data: dataStocks,
 		error: errorStocks,
@@ -37,12 +38,16 @@ const OverviewDetails = () => {
 
 	console.log(dataStocks, stockTotalData);
 
-	const { stocks } = dataStocks?.data;
+	const stocks = dataStocks?.data?.stocks ?? [];
 	const totalValue = stockTotalData.data;
 	return (
 		<section className="grid gap-2 grid-cols-1">
-			<InvestmentChart />
-			<InvestmentGroup stocks={stocks} totalValue={totalValue} />
+			<OverviewDetailsHeader />
+			<InvestmentChart totalValue={totalValue} />
+
+			{dataStocks?.data && stockTotalData?.data && (
+				<InvestmentGroup stocks={stocks} totalValue={totalValue} />
+			)}
 		</section>
 	);
 };

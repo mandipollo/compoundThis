@@ -39,7 +39,7 @@ export const chartConfig = {
 	TICKER: { label: "Demo Stock", color: "#1f77b4" },
 } satisfies ChartConfig;
 
-const InvestmentChart = () => {
+const InvestmentChart = ({ totalValue }: { totalValue: number }) => {
 	return (
 		<Card>
 			<CardContent className="bg-white px-0">
@@ -75,23 +75,20 @@ const InvestmentChart = () => {
 							<TableHead>SUMMARY</TableHead>
 							<TableHead>CAPITAL GAIN</TableHead>
 							<TableHead>DIVIDENDS</TableHead>
-							<TableHead>CURRENCY GAIN</TableHead>
 							<TableHead>TOTAL RETURN</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						<TableRow>
 							<TableCell className="font-medium">Your portfolio</TableCell>
-							<TableCell>100,000</TableCell>
-							<TableCell>5,000</TableCell>
-							<TableCell>0.00</TableCell>
-							<TableCell>105,000</TableCell>
+							<TableCell>£100,000</TableCell>
+							<TableCell>TBD</TableCell>
+							<TableCell>£{totalValue}</TableCell>
 						</TableRow>
 						<TableRow>
 							<TableCell className="font-medium">%</TableCell>
 							<TableCell>15.12%</TableCell>
 							<TableCell>0.76%</TableCell>
-							<TableCell>0.00%</TableCell>
 							<TableCell>15.88%</TableCell>
 						</TableRow>
 					</TableBody>
