@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-
+import { useRouter } from "next/navigation";
 // ui
 import { Command } from "../../ui/command";
 import { Separator } from "../../ui/separator";
@@ -55,6 +55,7 @@ const formSchema = z.object({
 
 //TODO:SEARCH COMPANY SUGGESTION
 const ManualAddStockForm = () => {
+	const route = useRouter();
 	// popover
 	const [open, setOpen] = useState<boolean>(false);
 	const [hideCommandList, setHideCommandList] = useState<boolean>(false);
@@ -105,7 +106,9 @@ const ManualAddStockForm = () => {
 				body: JSON.stringify(stockData),
 			});
 			const data = await response.json();
-			console.log(data.data);
+			console.log(data);
+
+			route.push("/user");
 		} catch (error) {
 			console.log(error);
 		}

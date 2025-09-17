@@ -1,7 +1,8 @@
+import ApiError from "@/utils/ApiError";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -11,16 +12,26 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		const body = await req.json();
-		const { idToken } = body;
+		const authHeaders = req.headers.get("Authorization");
+
+		if (!authHeaders) {
+			throw new ApiError("Authorization headers missing", 401);
+		}
+
+		const parts = authHeaders.split(" ");
+
+		if (parts[0] !== "Bearer" || parts.length !== 2) {
+			throw new ApiError("Invalid Authorization header format", 401);
+		}
+
+		const cognitoId = parts[1];
 
 		// verify idToken
-		const { payload, success, error } = await verifyJWT(idToken);
-
+		const { payload, success, error } = await verifyJWT(cognitoId);
 		if (!success) {
 			return NextResponse.json(
 				{ success: false, error: error },
-				{ status: 400 }
+				{ status: 401 }
 			);
 		}
 
@@ -61,6 +72,12 @@ export async function POST(req: NextRequest) {
 			{ status: 200 }
 		);
 	} catch (error: unknown) {
+		if (error instanceof Error) {
+			return NextResponse.json(
+				{ success: false, error: error.message },
+				{ status: 401 }
+			);
+		}
 		return NextResponse.json(
 			{
 				success: false,

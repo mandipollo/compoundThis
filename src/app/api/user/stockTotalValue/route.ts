@@ -20,10 +20,13 @@ export async function GET() {
 		const { success, payload, error } = await verifyJWT(idTokenValue);
 
 		if (!success) {
-			return NextResponse.json({
-				success: false,
-				error: error,
-			});
+			return NextResponse.json(
+				{
+					success: false,
+					error: error,
+				},
+				{ status: 401 }
+			);
 		}
 
 		const { sub } = payload;

@@ -22,10 +22,13 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 		const { success, payload, error } = await verifyJWT(idTokenValue);
 
 		if (!success) {
-			return NextResponse.json<ApiResponse<never>>({
-				success: false,
-				error: error,
-			});
+			return NextResponse.json<ApiResponse<never>>(
+				{
+					success: false,
+					error: error || "Invalid token",
+				},
+				{ status: 401 }
+			);
 		}
 
 		const { sub } = payload;
@@ -63,13 +66,17 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 			{ status: 200 }
 		);
 	} catch (error: unknown) {
-		let message =
-			error instanceof Error
-				? error.message
-				: "Unexpected error. Please try agian";
-
-		return NextResponse.json<ApiResponse<never>>(
-			{ success: false, error: message },
+		if (error instanceof Error) {
+			return NextResponse.json(
+				{ success: false, error: error.message },
+				{ status: 401 }
+			);
+		}
+		return NextResponse.json(
+			{
+				success: false,
+				error: "Unexpected error. Please try again",
+			},
 			{ status: 500 }
 		);
 	}

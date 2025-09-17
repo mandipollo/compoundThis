@@ -111,11 +111,11 @@ const Login = () => {
 				// send idToken to the api route handler to be decoded
 
 				await fetch("/api/user/init", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						idToken,
-					}),
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${idToken}`,
+					},
 				});
 
 				// Update global user state

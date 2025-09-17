@@ -8,16 +8,19 @@ const clientId = String(
 );
 
 //FIXME:DEFINE A PREDICTABLE FUNCTION RESPONSE TYPE
-export async function verifyJWT(
-	idToken: string | undefined
-): Promise<{ payload: any; success: boolean; message: string; error: string }> {
+export async function verifyJWT(idToken: string | undefined): Promise<{
+	payload: any;
+	success: boolean;
+	message: string | null;
+	error: string | null;
+}> {
 	try {
 		if (!idToken) {
 			return {
-				payload: "",
+				payload: null,
 				success: false,
 				error: "idToken missing!",
-				message: "",
+				message: null,
 			};
 		}
 		const verifier = CognitoJwtVerifier.create({
@@ -28,13 +31,21 @@ export async function verifyJWT(
 
 		const payload = await verifier.verify(idToken);
 
-		return { payload, success: true, message: "Token verified", error: "" };
+		return { payload, success: true, message: "Token verified", error: null };
 	} catch (error: any) {
+		if (error instanceof Error) {
+			return {
+				payload: null,
+				success: false,
+				error: error.message,
+				message: null,
+			};
+		}
 		return {
-			payload: "",
+			payload: null,
 			success: false,
-			error: error,
-			message: "",
+			error: "Unauthorized token",
+			message: null,
 		};
 	}
 }

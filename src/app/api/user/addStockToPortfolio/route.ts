@@ -19,10 +19,13 @@ export async function POST(req: NextRequest) {
 		const idTokenValue = idToken?.value;
 		const { success, payload, error } = await verifyJWT(idTokenValue);
 		if (!success) {
-			return NextResponse.json({
-				success: false,
-				error: error,
-			});
+			return NextResponse.json(
+				{
+					success: false,
+					error: error,
+				},
+				{ status: 401 }
+			);
 		}
 
 		const { sub } = payload;
@@ -38,9 +41,16 @@ export async function POST(req: NextRequest) {
 			body: JSON.stringify(body),
 		});
 
+		if (!response.ok) {
+			throw new ApiError("Internal server error", 401);
+		}
+
 		const data = await response.json();
 
-		return NextResponse.json({ success: true, data: data }, { status: 200 });
+		return NextResponse.json(
+			{ success: true, data: data.data },
+			{ status: 200 }
+		);
 	} catch (error: unknown) {
 		if (error instanceof ApiError) {
 			return NextResponse.json(
