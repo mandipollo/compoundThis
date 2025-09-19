@@ -1,8 +1,8 @@
 "use client";
+
 // ui
 import { Loader2Icon } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	ChartConfig,
@@ -11,7 +11,10 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 
+// hooks
 import useQuoteChart from "@/hooks/swr/useQuoteChart";
+
+// types
 import { ChartBarData } from "@/types/Stock.type";
 
 // demo
@@ -63,7 +66,7 @@ const QuoteChart = ({ selectedQuote }: { selectedQuote: string }) => {
 						accessibilityLayer
 						data={chartBar}
 						margin={{
-							left: 12,
+							left: 0,
 							right: 12,
 						}}
 					>

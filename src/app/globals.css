@@ -99,6 +99,11 @@ body {
 	--sidebar-ring: oklch(0.708 0 0);
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
+	--chart-1: #3b82f6; /* blue */
+	--chart-2: #10b981; /* green */
+	--chart-3: #f59e0b; /* amber */
+	--chart-4: #ef4444; /* red */
+	--chart-5: #8b5cf6; /* purple */
 }
 
 .dark {

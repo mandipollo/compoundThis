@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
 				protocol: "https",
 			},
 			{ hostname: "api.polygon.io", protocol: "https" },
+			{ hostname: "img.logo.dev", protocol: "https" },
 		],
 	},
 };

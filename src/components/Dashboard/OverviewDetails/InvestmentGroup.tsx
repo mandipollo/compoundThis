@@ -15,6 +15,7 @@ import { Stock } from "@/types/User.type";
 
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
+import Link from "next/link";
 
 const InvestmentGroup = ({
 	stocks,
@@ -42,7 +43,15 @@ const InvestmentGroup = ({
 			<TableBody>
 				{stocks.map(stock => (
 					<TableRow key={stock.id}>
-						<TableCell className="font-medium">{stock.ticker}</TableCell>
+						<TableCell className="font-medium underline underline-offset-2">
+							<Link
+								href={{
+									pathname: `/user/${stock.ticker}`,
+								}}
+							>
+								{stock.ticker}
+							</Link>
+						</TableCell>
 						<TableCell>£{stock.buyPrice}</TableCell>
 						<TableCell>{stock.quantity}</TableCell>
 						<TableCell>
