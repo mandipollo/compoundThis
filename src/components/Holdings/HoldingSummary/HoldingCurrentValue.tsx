@@ -4,8 +4,9 @@ import React from "react";
 const HoldingCurrentValue = () => {
 	return (
 		<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
+			<span className="text-xl">Current value</span>
 			<div className="flex flex-row justify-between items-center">
-				<span className=" text-xl">GB£176.28</span>
+				<span className=" text-lg">GB£176.28</span>
 				<span>US$237.28</span>
 				<span className="text-muted-foreground">20 shares</span>
 			</div>

@@ -13,7 +13,7 @@ const QuoteDailySummary = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!selectedQuote) {
 		return;
 	}
-	const { data, error, isLoading } = useQuoteDailySummary(`${selectedQuote}`);
+	const { data, error, isLoading } = useQuoteDailySummary(selectedQuote);
 
 	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;

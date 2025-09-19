@@ -1,6 +1,8 @@
 "use client";
+
 import React from "react";
 
+// ui
 import {
 	Select,
 	SelectContent,
@@ -9,18 +11,37 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
+// components
 import DemoChart from "../../Charts/DemoChart";
-
 import DemoHorizontalChart from "../../Charts/DemoHorizontalChart";
 import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
-import QuoteAbout from "@/components/QuoteSearch/QuoteFundamental/QuoteAbout";
-import QuoteDailySummary from "@/components/QuoteSearch/QuoteFundamental/QuoteDailySummary";
+
+//Hooks
+import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
+import { Loader2Icon } from "lucide-react";
+
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
 		return;
 	}
+
+	const {
+		error,
+		data,
+		isLoading,
+	}: { error: string; data: any; isLoading: boolean } =
+		useIndividualStockPortfolio({ ticker });
+
+	if (isLoading) {
+		return <Loader2Icon className="animate-spin" />;
+	}
+	if (error) {
+		return <div>{error}</div>;
+	}
+	console.log(data);
+
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">
 			<div className="grid w-full gap-2 grid-cols-[2fr_1fr]">
