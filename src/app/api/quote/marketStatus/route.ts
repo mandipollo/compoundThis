@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { MarketStatusData } from "@/types/Stock.type";
+import { MarketStatusData } from "@/types/FinancialStatement.type";
 import { NextResponse } from "next/server";
 
 export async function GET(): Promise<

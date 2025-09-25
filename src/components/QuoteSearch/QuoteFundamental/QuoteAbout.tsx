@@ -6,7 +6,7 @@ import { Loader2Icon } from "lucide-react";
 
 // hooks
 import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
-import { AboutData } from "@/types/Stock.type";
+
 import numberToDispaly from "@/utils/numberFormatter";
 
 const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
@@ -24,7 +24,7 @@ const QuoteAbout = ({ selectedQuote }: { selectedQuote: string }) => {
 	if (!data) {
 		return <Loader2Icon className="animate-spin" />;
 	}
-	const about: AboutData = data?.data;
+	const about = data?.data;
 
 	return (
 		<div className="border rounded-md shadow-md p-2 gap-2">

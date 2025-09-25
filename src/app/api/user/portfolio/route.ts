@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { UserPortfolio } from "@/types/User.type";
 
-export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
+import { UserStockDetails } from "@/types/UserPortfolio.type";
+
+export async function GET(): Promise<
+	NextResponse<ApiResponse<UserStockDetails[]>>
+> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -61,7 +64,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<UserPortfolio>>> {
 			);
 		}
 
-		return NextResponse.json<ApiResponse<UserPortfolio>>(
+		return NextResponse.json<ApiResponse<UserStockDetails[]>>(
 			{ success: true, data: data.data },
 			{ status: 200 }
 		);

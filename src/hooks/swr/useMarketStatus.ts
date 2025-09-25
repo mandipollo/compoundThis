@@ -1,6 +1,6 @@
 import { fetcher } from "@/libs/fetcher";
 import useSWR from "swr";
-import { MarketStatusData } from "@/types/Stock.type";
+import { MarketStatusData } from "@/types/MarketStatus.type";
 
 const useMarketStatus = () => {
 	const {

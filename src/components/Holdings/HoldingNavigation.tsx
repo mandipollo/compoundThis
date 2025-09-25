@@ -6,7 +6,6 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
 import NavigationLink from "./NavigationLink";
 
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
@@ -17,9 +16,9 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/user/${ticker}`}
+								href={`/dashboard/${ticker}`}
 								exact
-								className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-accent "
+								className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white"
 							>
 								Summary
 							</NavigationLink>
@@ -27,36 +26,36 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					</NavigationMenuItem>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationLink
-							href={`/user/${ticker}/trades`}
+							href={`/dashboard/${ticker}/financial`}
 							exact
-							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-accent "
+							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 						>
-							Trades & income
+							Financial statements
 						</NavigationLink>
 					</NavigationMenuItem>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationLink
-							href={`/user/${ticker}/notes`}
+							href={`/dashboard/${ticker}/notes`}
 							exact
-							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-accent "
+							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 						>
 							Notes
 						</NavigationLink>
 					</NavigationMenuItem>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationLink
-							href={`/user/${ticker}/news`}
+							href={`/dashboard/${ticker}/news`}
 							exact
-							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-accent "
+							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 						>
 							News
 						</NavigationLink>
 					</NavigationMenuItem>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationLink
-							href={`/user/${ticker}/editHolding`}
+							href={`/dashboard/${ticker}/editHolding`}
 							exact
-							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-accent "
+							className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 						>
 							Edit holding
 						</NavigationLink>

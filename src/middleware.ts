@@ -23,7 +23,9 @@ export async function middleware(request: NextRequest) {
 	}
 
 	// verify id token is valid by calling util function jwt-verify
-	const { success } = await verifyJWT(idTokenValue);
+	const { success, payload } = await verifyJWT(idTokenValue);
+
+	console.log(payload?.sub ?? undefined);
 
 	console.log("middleware running", idTokenValue);
 	if (success && isPublicRoute) {

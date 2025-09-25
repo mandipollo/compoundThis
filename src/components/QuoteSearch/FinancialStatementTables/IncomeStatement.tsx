@@ -16,7 +16,7 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 // utils
 import numberToDispaly from "@/utils/numberFormatter";
-import { FormattedIncomeStatement } from "@/types/Stock.type";
+import { FormattedIncomeStatement } from "@/types/FinancialStatement.type";
 // types
 
 export interface ChartDataInterface {

@@ -1,6 +1,6 @@
 "use server";
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { FormattedFinancialStatementData } from "@/types/Stock.type";
+import { FormattedFinancialStatementData } from "@/types/FinancialStatement.type";
 
 import { NextRequest, NextResponse } from "next/server";
 

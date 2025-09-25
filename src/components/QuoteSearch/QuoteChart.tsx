@@ -15,7 +15,7 @@ import {
 import useQuoteChart from "@/hooks/swr/useQuoteChart";
 
 // types
-import { ChartBarData } from "@/types/Stock.type";
+import { ChartBarData } from "@/types/CustomChartBar.type";
 
 // demo
 export const description = "A simple area chart";

@@ -17,7 +17,7 @@ import CashFlow from "./CashFlow";
 import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
 
 // types
-import { FormattedFinancialStatementData } from "@/types/Stock.type";
+import { FormattedFinancialStatementData } from "@/types/FinancialStatement.type";
 
 const FinancialAccordion = ({ selectedQuote }: { selectedQuote: string }) => {
 	const {

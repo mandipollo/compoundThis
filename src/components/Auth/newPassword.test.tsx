@@ -127,6 +127,6 @@ describe("New password component", () => {
 
 		// assert user has been routed to user page
 
-		expect(mockPush).toBeCalledWith("/auth/login");
+		expect(mockPush).toBeCalledWith("/login");
 	});
 });

@@ -18,7 +18,7 @@ import {
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts";
 //utils
 import numberToDispaly from "@/utils/numberFormatter";
-import { FormattedBalanceSheet } from "@/types/Stock.type";
+import { FormattedBalanceSheet } from "@/types/FinancialStatement.type";
 
 //types
 

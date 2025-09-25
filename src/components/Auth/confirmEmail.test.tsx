@@ -137,7 +137,7 @@ describe("confirm email component", () => {
 		// assertion
 
 		await waitFor(() => {
-			expect(mockPush).toBeCalledWith("/auth/login");
+			expect(mockPush).toBeCalledWith("/login");
 		});
 	});
 });

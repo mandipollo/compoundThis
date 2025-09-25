@@ -10,17 +10,19 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Loader2Icon } from "lucide-react";
 
 // components
 import DemoChart from "../../Charts/DemoChart";
-import DemoHorizontalChart from "../../Charts/DemoHorizontalChart";
+import DemoHorizontalChart from "./HorizontalChart";
 import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
 
 //Hooks
 import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
-import { Loader2Icon } from "lucide-react";
+import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
+import DemoChartPie from "@/components/Charts/DemoPieChart";
 
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
@@ -34,13 +36,29 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	}: { error: string; data: any; isLoading: boolean } =
 		useIndividualStockPortfolio({ ticker });
 
-	if (isLoading) {
+	const {
+		data: dailyData,
+		error: errorDaily,
+		isLoading: isLoadingDaily,
+	} = useQuoteDailySummary(ticker);
+	if (isLoading || isLoadingDaily) {
 		return <Loader2Icon className="animate-spin" />;
 	}
-	if (error) {
+	if (error || errorDaily) {
 		return <div>{error}</div>;
 	}
-	console.log(data);
+
+	// details of the stock from portfolfio
+	const {
+		buyDate,
+		buyPrice,
+		quantity,
+	}: { buyDate: string; buyPrice: number; quantity: number } = data.data;
+
+	// daily summary of the ticker
+
+	const { close, from } = dailyData.data;
+	console.log(dailyData);
 
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">
@@ -57,15 +75,32 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						</SelectContent>
 					</Select>
 
-					<HoldingSummaryTable />
+					<HoldingSummaryTable
+						dailyPrice={close}
+						purchasePrice={buyPrice}
+						buyDate={buyDate}
+					/>
 					<DemoChart />
+					<DemoChartPie />
 				</div>
 				<div className="flex flex-col gap-2">
-					<HoldingCurrentValue />
+					<HoldingCurrentValue
+						dailyPrice={close}
+						price={buyPrice}
+						quantity={quantity}
+					/>
 					<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
-						<DemoHorizontalChart />
+						<DemoHorizontalChart
+							from={from}
+							dailyPrice={close}
+							price={buyPrice}
+						/>
 					</div>
-					<HoldingInvestment />
+					<HoldingInvestment
+						currentPrice={close}
+						buyPrice={buyPrice}
+						quantity={quantity}
+					/>
 				</div>
 			</div>
 			<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">

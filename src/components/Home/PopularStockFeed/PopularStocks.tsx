@@ -18,7 +18,7 @@ import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
 
 // utils
 
-import { WebSocketPopularStockData } from "@/types/Stock.type";
+import { WebSocketPopularStockData } from "@/types/WebSocketPopularTickers.type";
 
 // components
 import PopularStockLiveData from "./PopularStockLiveData";

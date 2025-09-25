@@ -79,7 +79,7 @@ const ConfirmEmail = () => {
 
 			//
 			if (isSignUpComplete) {
-				router.push("/auth/login");
+				router.push("/login");
 			} else {
 				setState({ ...initialState, message: "Check your email to confirm." });
 			}

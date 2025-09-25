@@ -1,5 +1,5 @@
 import { fetcher } from "@/libs/fetcher";
-import { TopMarketMoversTickerData } from "@/types/Stock.type";
+import { TopMarketMoversTickerData } from "@/types/TopMarketMovers.type";
 import useSWR from "swr";
 
 const useTopMarketMovers = () => {

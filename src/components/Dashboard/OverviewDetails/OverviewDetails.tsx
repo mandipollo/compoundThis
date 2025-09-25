@@ -1,51 +1,48 @@
 "use client";
 
 // Component
-
 import InvestmentChart from "./InvestmentChart";
-import InvestmentGroup from "./InvestmentGroup";
+import InvestmentList from "./InvestmentList";
 
 // ui
 import { Loader2Icon } from "lucide-react";
 
 //hooks
 import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
-import useUserStockTotalValue from "@/hooks/swr/useUserStockTotalValue";
 import OverviewDetailsHeader from "./OverviewDetailsHeader";
+import { UserStockDetails } from "@/types/UserPortfolio.type";
+import DemoHorizontalBarChart from "@/components/Charts/DemoHorizontalBarChart";
+import PortfolioAllocationChart from "./PortfolioAllocationChart";
+import BaseAtGlanceChart from "./BaseAtGlanceChart";
 
 const OverviewDetails = () => {
 	// fetch users demo portfolio
 	// FIXME: FAILED ASSERTION ON STALE PRISMA DATA
-	const {
-		data: dataStocks,
-		error: errorStocks,
-		isLoading: isLoadingStocks,
-	} = useUserPortfolios();
-	const {
-		data: stockTotalData,
-		isLoading: isLoadingStockValue,
-		error: errorStockValue,
-	} = useUserStockTotalValue();
+	const { data, error, isLoading } = useUserPortfolios();
 
 	//
-	if (isLoadingStocks || isLoadingStockValue) {
+	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}
 
-	if (errorStocks || errorStockValue) {
-		return <div>{errorStocks}</div>;
+	if (error) {
+		return <div>{error}</div>;
 	}
 
-	const stocks = dataStocks?.data?.stocks ?? [];
-	const totalValue = stockTotalData.data;
+	const stocks: UserStockDetails[] = data?.data ?? [];
+
+	console.log(data);
+
 	return (
 		<section className="grid gap-2 grid-cols-1">
 			<OverviewDetailsHeader />
-			<InvestmentChart totalValue={totalValue} />
+			<InvestmentChart stocks={stocks} />
+			<div className="grid grid-cols-2">
+				<PortfolioAllocationChart portfolio={stocks} />
+				<BaseAtGlanceChart portfolio={stocks} />
+			</div>
 
-			{dataStocks?.data && stockTotalData?.data && (
-				<InvestmentGroup stocks={stocks} totalValue={totalValue} />
-			)}
+			<InvestmentList stocks={stocks} />
 		</section>
 	);
 };

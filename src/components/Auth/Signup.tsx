@@ -76,9 +76,9 @@ const Signup = () => {
 			const { isSignUpComplete, nextStep } = result as SignUpOutput;
 
 			if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
-				router.push("/auth/confirmEmail");
+				router.push("/confirmEmail");
 			} else if (isSignUpComplete) {
-				router.push("/user");
+				router.push("/dashboard");
 			} else {
 				setState({
 					...initialState,
@@ -105,7 +105,7 @@ const Signup = () => {
 			<CardHeader>
 				<CardTitle>Create your account</CardTitle>
 				<CardAction>
-					<Link href={"/auth/login"}>
+					<Link href={"/login"}>
 						<Button variant="link">LOGIN</Button>
 					</Link>
 				</CardAction>

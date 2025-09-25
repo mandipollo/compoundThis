@@ -1,5 +1,5 @@
 import { fetcher } from "@/libs/fetcher";
-import { PopularTickerData } from "@/types/Stock.type";
+import { PopularTickerData } from "@/types/PopularTickers.type";
 import useSWR from "swr";
 
 const usePopularStocks = () => {

@@ -123,6 +123,6 @@ describe("signup component", () => {
 			});
 		});
 
-		expect(mockedPush).toBeCalledWith("/auth/confirmEmail");
+		expect(mockedPush).toBeCalledWith("/confirmEmail");
 	});
 });

@@ -85,7 +85,7 @@ const NewPassword = () => {
 					success: true,
 				});
 				setPending(false);
-				route.push("/auth/login");
+				route.push("/login");
 				return;
 			}
 		} catch (error) {

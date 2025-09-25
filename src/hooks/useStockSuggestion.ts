@@ -1,6 +1,6 @@
 "use client";
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { SearchResultItem } from "@/types/Stock.type";
+import { SearchResultItem } from "@/types/Search.type";
 import getErrorMessage from "@/utils/get-error-message";
 import { useEffect, useState } from "react";
 

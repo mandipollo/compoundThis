@@ -27,7 +27,7 @@ const Navbar = () => {
 					</ul>
 
 					<Link
-						href="/auth/login"
+						href="/login"
 						className="bg-white text-black rounded-md w-full px-6 py-2 "
 					>
 						Login

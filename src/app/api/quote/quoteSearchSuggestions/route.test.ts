@@ -8,7 +8,10 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { vi, expect, describe, afterEach, it } from "vitest";
 
 import * as appHandler from "./route";
-import { SearchResultItem, SearchSuggestionResponse } from "@/types/Stock.type";
+import {
+	SearchResultItem,
+	SearchSuggestionResponse,
+} from "@/types/FinancialStatement.type";
 
 describe("handles quote search suggestions ", () => {
 	//

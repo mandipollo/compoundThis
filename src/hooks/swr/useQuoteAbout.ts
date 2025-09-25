@@ -1,5 +1,5 @@
 import { fetcher } from "@/libs/fetcher";
-import { AboutData } from "@/types/Stock.type";
+import { AboutData } from "@/types/CompanyAbout.type";
 import useSWR from "swr";
 
 const useQuoteAbout = (selectedQuote: string) => {

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/command";
 
 // types
-import { SearchResultItem } from "@/types/Stock.type";
+import { SearchResultItem } from "@/types/Search.type";
 
 const StockSuggestionLists = ({
 	results,

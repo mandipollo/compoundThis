@@ -11,7 +11,7 @@ const OverviewDetailsHeader = () => {
 					Upgrade Account
 				</Button>
 				<Button className="text-xs hover:cursor-pointer">
-					<Link href={"/user/portfolio/onboard/manual"}>Add Investment</Link>
+					<Link href={"/portfolio/onboard/manual"}>Add Investment</Link>
 				</Button>
 			</div>
 		</div>

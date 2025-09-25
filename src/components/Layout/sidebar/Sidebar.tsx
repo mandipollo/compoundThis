@@ -33,33 +33,33 @@ import { useUserStore } from "@/store/userStore";
 const items = [
 	{
 		title: "Dashboard",
-		url: "/user",
+		url: "/dashboard",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Portfolio",
-		url: "/user/portfolio",
+		url: "/portfolio",
 		icon: BriefcaseBusinessIcon,
 	},
 	{
 		title: "Search",
-		url: "/user/search",
+		url: "/search",
 		icon: Search,
 	},
 	{
 		title: "Mail",
-		url: "/user/mail",
+		url: "/mail",
 		icon: Mail,
 	},
 	{
 		title: "Activity",
-		url: "/user/activity",
+		url: "/activity",
 		icon: Activity,
 	},
 
 	{
 		title: "Settings",
-		url: "/user/settings",
+		url: "/settings",
 		icon: Settings,
 	},
 ];
@@ -79,7 +79,13 @@ export function AppSidebar() {
 						<SidebarMenu className="gap-2 mt-4">
 							{items.map(item => (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild isActive={pathname === item.url}>
+									<SidebarMenuButton
+										asChild
+										isActive={
+											pathname === item.url ||
+											pathname.startsWith(`${item.url}`)
+										}
+									>
 										<Link href={item.url}>
 											<item.icon />
 											<span>{item.title}</span>

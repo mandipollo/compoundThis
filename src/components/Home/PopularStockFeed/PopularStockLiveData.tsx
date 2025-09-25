@@ -1,9 +1,7 @@
 // types
-import {
-	PopularTickerData,
-	WebSocketPopularStockData,
-} from "@/types/Stock.type";
 
+import { PopularTickerData } from "@/types/PopularTickers.type";
+import { WebSocketPopularStockData } from "@/types/WebSocketPopularTickers.type";
 // ui
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 

@@ -71,7 +71,7 @@ const ResetPassword = () => {
 
 			// route user to confirmation page
 			if (nextStep.resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
-				router.push("/auth/newPassword");
+				router.push("/newPassword");
 				setState({
 					...initialState,
 					message: `A confirmation code has been sent to your ${
@@ -104,7 +104,7 @@ const ResetPassword = () => {
 					Enter your email below to recieve a code
 				</CardDescription>
 				<CardAction>
-					<Link data-testid="loginLink" href={"/auth/login"}>
+					<Link data-testid="loginLink" href={"/login"}>
 						<Button variant="link">Login</Button>
 					</Link>
 				</CardAction>

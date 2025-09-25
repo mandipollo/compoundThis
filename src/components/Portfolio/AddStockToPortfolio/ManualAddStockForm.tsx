@@ -29,7 +29,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 // Types
-import { SearchResultItem } from "@/types/Stock.type";
+import { SearchResultItem } from "@/types/Search.type";
 
 // Components
 import StockSuggestionLists from "./StockSuggestionList";
@@ -108,7 +108,7 @@ const ManualAddStockForm = () => {
 			const data = await response.json();
 			console.log(data);
 
-			route.push("/user");
+			route.push("/dashboard");
 		} catch (error) {
 			console.log(error);
 		}

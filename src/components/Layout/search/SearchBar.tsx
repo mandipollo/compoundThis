@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import SuggestionLists from "./SuggestionLists";
 
 // types
-import { SearchResultItem } from "@/types/Stock.type";
+import { SearchResultItem } from "@/types/Search.type";
 import { ApiResponse } from "@/types/ApiResponse.type";
 
 // utils

@@ -12,11 +12,29 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import DemoChart from "@/components/Charts/DemoChart";
+import { UserStockDetails } from "@/types/UserPortfolio.type";
+import numberToDispaly from "@/utils/numberFormatter";
 
 // configs
 export const description = "A simple area chart";
 
-const InvestmentChart = ({ totalValue }: { totalValue: number }) => {
+const InvestmentChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
+	const totalValue = stocks.reduce(
+		(acc, stock) =>
+			acc +
+			stock.quantity *
+				(stock.snapshot.day.c === 0
+					? stock.snapshot.prevDay.c
+					: stock.snapshot.day.c),
+		0
+	);
+	const initialInvestment = stocks.reduce(
+		(acc, stock) => acc + stock.buyPrice * stock.quantity,
+		0
+	);
+	const capitalGains = totalValue - initialInvestment;
+	const capitalGainPct =
+		initialInvestment === 0 ? 0 : (capitalGains / initialInvestment) * 100;
 	return (
 		<Card>
 			<CardContent className="bg-white px-0">
@@ -35,15 +53,33 @@ const InvestmentChart = ({ totalValue }: { totalValue: number }) => {
 					<TableBody>
 						<TableRow>
 							<TableCell className="font-medium">Your portfolio</TableCell>
-							<TableCell>£100,000</TableCell>
+							<TableCell
+								className={
+									capitalGains >= 0 ? "text-green-700" : "text-red-700"
+								}
+							>
+								£{capitalGains.toFixed(2)}
+							</TableCell>
 							<TableCell>TBD</TableCell>
-							<TableCell>£{totalValue}</TableCell>
+							<TableCell>£{totalValue.toFixed(2)}</TableCell>
 						</TableRow>
 						<TableRow>
 							<TableCell className="font-medium">%</TableCell>
-							<TableCell>15.12%</TableCell>
-							<TableCell>0.76%</TableCell>
-							<TableCell>15.88%</TableCell>
+							<TableCell
+								className={
+									capitalGainPct >= 0 ? "text-green-700" : "text-red-700"
+								}
+							>
+								{capitalGainPct.toFixed(2)}%
+							</TableCell>
+							<TableCell>TBD</TableCell>
+							<TableCell
+								className={
+									capitalGainPct >= 0 ? "text-green-700" : "text-red-700"
+								}
+							>
+								{capitalGainPct.toFixed(2)}%
+							</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>

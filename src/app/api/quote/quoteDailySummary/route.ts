@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { DailyTickerSummary } from "@/types/Stock.type";
+import { DailyTickerSummary } from "@/types/FinancialStatement.type";
 import { NextRequest, NextResponse } from "next/server";
 
 //

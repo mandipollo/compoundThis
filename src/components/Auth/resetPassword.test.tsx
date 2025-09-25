@@ -53,7 +53,7 @@ describe("Password reset component", () => {
 		expect(submitBtn).toHaveTextContent("Submit");
 		expect(screen.getByTestId(/^loginLink$/i)).toHaveAttribute(
 			"href",
-			"/auth/login"
+			"/login"
 		);
 	});
 
@@ -85,6 +85,6 @@ describe("Password reset component", () => {
 		await user.click(screen.getByRole("button", { name: /^submit$/i }));
 
 		// assertion
-		expect(mockedPush).toBeCalledWith("/auth/newPassword");
+		expect(mockedPush).toBeCalledWith("/newPassword");
 	});
 });

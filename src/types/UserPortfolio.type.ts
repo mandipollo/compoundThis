@@ -1,4 +1,6 @@
-export interface Stock {
+import { TickerSnapshot } from "./TickerSnapshot.type";
+
+export interface UserStockDetails {
 	buyDate: string;
 	buyPrice: number;
 	companyName: string;
@@ -7,6 +9,7 @@ export interface Stock {
 	portfolioId: number;
 	quantity: number;
 	ticker: string;
+	snapshot: TickerSnapshot;
 }
 
 export interface UserPortfolio {
@@ -15,5 +18,5 @@ export interface UserPortfolio {
 	id: number;
 	portfolioHolderId: number;
 	portfolioName: string;
-	stocks: Stock[];
+	stocks: UserStockDetails[];
 }

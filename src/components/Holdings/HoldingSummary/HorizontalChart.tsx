@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import {
@@ -20,34 +19,43 @@ import {
 
 export const description = "Price comparision";
 
-const chartData = [
-	{ data: "currentPrice", price: 275, fill: "var(--color-currentPrice)" },
-	{
-		data: "avgPurchasePrice",
-		price: 200,
-		fill: "var(--color-avgPurchasePrice)",
-	},
-];
+const HorizontalChart = ({
+	price,
+	dailyPrice,
+	from,
+}: {
+	price: number;
+	dailyPrice: number;
+	from: string;
+}) => {
+	const chartData = [
+		{
+			data: "currentPrice",
+			price: dailyPrice,
+			fill: "var(--color-currentPrice)",
+		},
+		{
+			data: "avgPurchasePrice",
+			price: price,
+			fill: "var(--color-avgPurchasePrice)",
+		},
+	];
 
-const chartConfig = {
-	currentPrice: {
-		label: "Current price",
-		color: "var(--chart-2)",
-	},
-	avgPurchasePrice: {
-		label: "Avg purchase price",
-		color: "var(--chart-1)",
-	},
-} satisfies ChartConfig;
-
-const DemoHorizontalChart = () => {
+	const chartConfig = {
+		currentPrice: {
+			label: "Current price",
+			color: "var(--chart-2)",
+		},
+		avgPurchasePrice: {
+			label: "Avg purchase price",
+			color: "var(--chart-1)",
+		},
+	} satisfies ChartConfig;
 	return (
 		<Card>
 			<CardHeader className="px-0 ">
 				<CardTitle className="text-xl font-light">Price comparision</CardTitle>
-				<CardDescription className="text-xs">
-					Updated on 18 september 2025
-				</CardDescription>
+				<CardDescription className="text-xs">Updated on {from}</CardDescription>
 			</CardHeader>
 			<CardContent className="px-0">
 				<ChartContainer config={chartConfig}>
@@ -84,4 +92,4 @@ const DemoHorizontalChart = () => {
 	);
 };
 
-export default DemoHorizontalChart;
+export default HorizontalChart;

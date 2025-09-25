@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { PopularTickerData } from "@/types/Stock.type";
+import { PopularTickerData } from "@/types/FinancialStatement.type";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

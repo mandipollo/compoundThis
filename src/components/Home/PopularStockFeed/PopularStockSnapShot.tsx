@@ -1,5 +1,5 @@
 // types
-import { PopularTickerData } from "@/types/Stock.type";
+import { PopularTickerData } from "@/types/PopularTickers.type";
 
 // ui
 import { TableBody, TableRow, TableCell } from "@/components/ui/table";

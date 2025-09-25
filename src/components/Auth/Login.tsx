@@ -87,7 +87,7 @@ const Login = () => {
 					success: true,
 					message: "Please confirm your email",
 				});
-				router.push("/auth/confirmEmail");
+				router.push("/confirmEmail");
 				setPending(false);
 				return;
 			}
@@ -127,7 +127,7 @@ const Login = () => {
 					success: true,
 					message: "Successfully logged in",
 				});
-				router.push("/user");
+				router.push("/dashboard");
 				setPending(false);
 				return;
 			}
@@ -155,7 +155,7 @@ const Login = () => {
 					Enter your email below to login to your account
 				</CardDescription>
 				<CardAction>
-					<Link href={"/auth/signup"}>
+					<Link href={"/signup"}>
 						<Button variant="link">SIGN UP</Button>
 					</Link>
 				</CardAction>
@@ -183,7 +183,7 @@ const Login = () => {
 						<div className="flex items-center">
 							<Label htmlFor="password">Password</Label>
 							<Link
-								href={"/auth/forgotPassword"}
+								href={"/forgotPassword"}
 								className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
 							>
 								Forgot your password?
