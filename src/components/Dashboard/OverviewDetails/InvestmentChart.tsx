@@ -14,6 +14,7 @@ import {
 import DemoChart from "@/components/Charts/DemoChart";
 import { UserStockDetails } from "@/types/UserPortfolio.type";
 import numberToDispaly from "@/utils/numberFormatter";
+import DemoPortfolioChart from "../DemoPortfolioChart";
 
 // configs
 export const description = "A simple area chart";
@@ -38,7 +39,7 @@ const InvestmentChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 	return (
 		<Card>
 			<CardContent className="bg-white px-0">
-				<DemoChart />
+				<DemoPortfolioChart />
 			</CardContent>
 			<CardFooter className="bg-white text-black px-0">
 				<Table>

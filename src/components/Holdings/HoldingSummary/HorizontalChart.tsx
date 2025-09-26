@@ -51,8 +51,9 @@ const HorizontalChart = ({
 			color: "var(--chart-1)",
 		},
 	} satisfies ChartConfig;
+
 	return (
-		<Card>
+		<Card className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
 			<CardHeader className="px-0 ">
 				<CardTitle className="text-xl font-light">Price comparision</CardTitle>
 				<CardDescription className="text-xs">Updated on {from}</CardDescription>
@@ -64,7 +65,7 @@ const HorizontalChart = ({
 						data={chartData}
 						layout="vertical"
 						margin={{
-							left: 0,
+							left: 12,
 						}}
 						barSize={40}
 					>

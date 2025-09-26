@@ -31,8 +31,6 @@ const OverviewDetails = () => {
 
 	const stocks: UserStockDetails[] = data?.data ?? [];
 
-	console.log(data);
-
 	return (
 		<section className="grid gap-2 grid-cols-1">
 			<OverviewDetailsHeader />
@@ -41,7 +39,6 @@ const OverviewDetails = () => {
 				<PortfolioAllocationChart portfolio={stocks} />
 				<BaseAtGlanceChart portfolio={stocks} />
 			</div>
-
 			<InvestmentList stocks={stocks} />
 		</section>
 	);

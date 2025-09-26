@@ -13,16 +13,17 @@ import {
 import { Loader2Icon } from "lucide-react";
 
 // components
-import DemoChart from "../../Charts/DemoChart";
+
 import DemoHorizontalChart from "./HorizontalChart";
 import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
+import HoldingPieChart from "./HoldingPieChart";
 
 //Hooks
 import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
 import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
-import DemoChartPie from "@/components/Charts/DemoPieChart";
+import HoldingDemoChart from "./HoldingDemoChart";
 
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
@@ -58,7 +59,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	// daily summary of the ticker
 
 	const { close, from } = dailyData.data;
-	console.log(dailyData);
 
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">
@@ -80,8 +80,10 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						purchasePrice={buyPrice}
 						buyDate={buyDate}
 					/>
-					<DemoChart />
-					<DemoChartPie />
+					<HoldingDemoChart />
+					<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
+						<span className="text-xl">AI feature to be added </span>
+					</div>
 				</div>
 				<div className="flex flex-col gap-2">
 					<HoldingCurrentValue
@@ -89,22 +91,20 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						price={buyPrice}
 						quantity={quantity}
 					/>
-					<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
-						<DemoHorizontalChart
-							from={from}
-							dailyPrice={close}
-							price={buyPrice}
-						/>
-					</div>
+					<HoldingPieChart />
+
+					<DemoHorizontalChart
+						from={from}
+						dailyPrice={close}
+						price={buyPrice}
+					/>
+
 					<HoldingInvestment
 						currentPrice={close}
 						buyPrice={buyPrice}
 						quantity={quantity}
 					/>
 				</div>
-			</div>
-			<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
-				<span className="text-xl">AI feature to be added </span>
 			</div>
 		</div>
 	);

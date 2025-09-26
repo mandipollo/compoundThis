@@ -1,7 +1,9 @@
+import SelectPortfolio from "./SelectPortfolio";
+
 const Overview = () => {
 	return (
 		<section className="flex flex-row justify-between items-center  ">
-			<span>CTHIS demo</span>
+			<SelectPortfolio />
 			<span className="flex flex-col text-center">
 				<p className="text-xl">660,649.87</p>
 				<p className="text-[10px] text-accent-foreground">
