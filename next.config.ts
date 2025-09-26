@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
 			},
 			{ hostname: "api.polygon.io", protocol: "https" },
 			{ hostname: "img.logo.dev", protocol: "https" },
+			{ hostname: "s3.polygon.io", protocol: "https" },
 		],
 	},
 };

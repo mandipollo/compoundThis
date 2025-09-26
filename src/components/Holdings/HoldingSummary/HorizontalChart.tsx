@@ -67,7 +67,6 @@ const HorizontalChart = ({
 						margin={{
 							left: 12,
 						}}
-						barSize={40}
 					>
 						<YAxis
 							dataKey="data"

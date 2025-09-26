@@ -1,13 +1,12 @@
-"use server";
-
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { AboutData } from "@/types/CompanyAbout.type";
-import { NextRequest, NextResponse } from "next/server";
 
-//
+import { NextRequest, NextResponse } from "next/server";
+import { NewsApiResponse } from "@/types/NewsApiResponse.type";
 export async function GET(
 	request: NextRequest
-): Promise<NextResponse<ApiResponse<AboutData>>> {
+): Promise<
+	NextResponse<ApiResponse<{ success: boolean; data: NewsApiResponse }>>
+> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -19,6 +18,7 @@ export async function GET(
 
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
+
 		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json<ApiResponse<never>>(
 				{ success: false, error: "Ticker is required" },
@@ -26,10 +26,14 @@ export async function GET(
 			);
 		}
 
-		const response = await fetch(`${server}/quote/about?ticker=${ticker}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json" },
-		});
+		const response = await fetch(
+			`${server}/quote/holding-news?ticker=${ticker}`,
+			{
+				method: "GET",
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+
 		if (!response.ok) {
 			return NextResponse.json<ApiResponse<never>>(
 				{
@@ -41,6 +45,7 @@ export async function GET(
 		}
 
 		const data = await response.json();
+
 		//  Check if the external API's own success flag is false
 		if (!data.success) {
 			return NextResponse.json<ApiResponse<never>>(
@@ -52,19 +57,15 @@ export async function GET(
 			);
 		}
 
-		return NextResponse.json<ApiResponse<AboutData>>(
-			{
-				success: true,
-				data: data.data,
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		// Catch unexpected runtime errors
-		const message =
-			error instanceof Error ? error.message : "Unexpected server error";
+		return NextResponse.json<
+			ApiResponse<{ success: boolean; data: NewsApiResponse }>
+		>({ success: true, data: data.data }, { status: 200 });
+	} catch (error: unknown) {
 		return NextResponse.json<ApiResponse<never>>(
-			{ success: false, error: message },
+			{
+				success: false,
+				error: "Unexpected error. Please try again",
+			},
 			{ status: 500 }
 		);
 	}

@@ -1,6 +1,3 @@
-import HoldingAbout from "@/components/Holdings/HoldingFinancialStatements/HoldingAbout";
-import HoldingDailySummary from "@/components/Holdings/HoldingFinancialStatements/HoldingDailySummary";
-import HoldingLiveChart from "@/components/Holdings/HoldingFinancialStatements/HoldingLiveChart";
 import HoldingStatement from "@/components/Holdings/HoldingFinancialStatements/HoldingStatement";
 import React from "react";
 
