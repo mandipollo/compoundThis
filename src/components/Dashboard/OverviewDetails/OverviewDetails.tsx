@@ -11,7 +11,6 @@ import { Loader2Icon } from "lucide-react";
 import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
 import OverviewDetailsHeader from "./OverviewDetailsHeader";
 import { UserStockDetails } from "@/types/UserPortfolio.type";
-import DemoHorizontalBarChart from "@/components/Charts/DemoHorizontalBarChart";
 import PortfolioAllocationChart from "./PortfolioAllocationChart";
 import BaseAtGlanceChart from "./BaseAtGlanceChart";
 
