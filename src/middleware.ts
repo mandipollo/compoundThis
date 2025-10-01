@@ -32,8 +32,8 @@ export async function middleware(request: NextRequest) {
 	const idToken = request.cookies?.get("idToken");
 	const idTokenValue = idToken?.value;
 	const { success, payload } = await verifyJWT(idTokenValue);
-	console.log(payload?.sub ?? undefined);
-	console.log("middleware running", idTokenValue);
+	// console.log(payload?.sub ?? undefined);
+	// console.log("middleware running", idTokenValue);
 
 	// 4 . Redirect to /login if the user is unauthenticated
 	if (!idTokenValue && isProtectedRoute) {
