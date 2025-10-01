@@ -2,20 +2,15 @@
 
 import useGetHoldingNotes from "@/hooks/swr/useGetHoldingNotes";
 import React from "react";
-import {
-	Table,
-	TableCaption,
-	TableHeader,
-	TableRow,
-	TableHead,
-	TableBody,
-	TableCell,
-	TableFooter,
-} from "@/components/ui/table";
-import { format, formatDistanceToNow } from "date-fns";
+import { Table, TableRow, TableBody, TableCell } from "@/components/ui/table";
+import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
+import { useSWRConfig } from "swr";
+import { Button } from "@/components/ui/button";
 
 const NoteList = ({ slug }: { slug: string }) => {
+	// mutate
+	const { mutate } = useSWRConfig();
 	const { data, isLoading, error } = useGetHoldingNotes(slug);
 
 	if (isLoading) {
@@ -25,6 +20,25 @@ const NoteList = ({ slug }: { slug: string }) => {
 		return <div>Error</div>;
 	}
 
+	// handle delete
+
+	const handleDeleteNote = async ({ noteId }: { noteId: number }) => {
+		try {
+			const response = await fetch(
+				`/api/user/deleteNoteFromHolding?ticker=${slug}&noteId=${noteId}`,
+				{
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
+				}
+			);
+
+			const data = await response.json();
+			console.log(data);
+			mutate(`/api/user/getHoldingNotes?ticker=${slug}`);
+		} catch (error: unknown) {
+			console.log(error);
+		}
+	};
 	console.log(data);
 
 	return (
@@ -36,12 +50,12 @@ const NoteList = ({ slug }: { slug: string }) => {
 							<TableCell>{note.noteSummary}</TableCell>
 							<TableCell className="flex flex-row gap-2">
 								{formatDistanceToNow(note.createdAt)}
-								<Image
-									src={"/iconActions/delete.svg"}
-									alt="Delete icon"
-									width={20}
-									height={20}
-								></Image>
+								<Button
+									onClick={() => handleDeleteNote({ noteId: note.id })}
+									variant="destructive"
+								>
+									Delete
+								</Button>
 							</TableCell>
 						</TableRow>
 					))}
