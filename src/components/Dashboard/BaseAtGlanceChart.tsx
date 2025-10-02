@@ -1,6 +1,7 @@
 "use client";
 
 // Ui
+
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts";
 import {
 	Card,
@@ -16,36 +17,22 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Types
-import { UserStockDetails } from "@/types/UserPortfolio.type";
 type ChartDataKey = "base" | "current";
 const BaseAtGlanceChart = ({
-	portfolio,
+	currentValue,
+	baseValue,
 }: {
-	portfolio: UserStockDetails[];
+	currentValue: number;
+	baseValue: number;
 }) => {
-	const basePrice = portfolio.reduce(
-		(acc, item) => acc + item.buyPrice * item.quantity,
-		0
-	);
-	const currentValue = portfolio.reduce(
-		(acc, item) =>
-			acc +
-			(item.snapshot.day.c === 0
-				? item.snapshot.prevDay.c
-				: item.snapshot.day.c) *
-				item.quantity,
-		0
-	);
-
 	const chartData: { key: ChartDataKey; label: String; value: number }[] = [
-		{ key: "base", label: "Base price", value: basePrice },
+		{ key: "base", label: "Base Value", value: baseValue },
 		{ key: "current", label: "Current value", value: currentValue },
 	];
 
 	const chartConfig = {
 		base: {
-			label: "Base price",
+			label: "Base Value",
 			color: "#3b82f6",
 		},
 		current: {

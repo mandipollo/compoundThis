@@ -11,31 +11,27 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import DemoChart from "@/components/Charts/DemoChart";
+
+// Types
+
 import { UserStockDetails } from "@/types/UserPortfolio.type";
-import numberToDispaly from "@/utils/numberFormatter";
-import DemoPortfolioChart from "../DemoPortfolioChart";
+// Components
+import DemoPortfolioChart from "./DemoPortfolioChart";
 
 // configs
 export const description = "A simple area chart";
 
-const InvestmentChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
-	const totalValue = stocks.reduce(
-		(acc, stock) =>
-			acc +
-			stock.quantity *
-				(stock.snapshot.day.c === 0
-					? stock.snapshot.prevDay.c
-					: stock.snapshot.day.c),
-		0
-	);
-	const initialInvestment = stocks.reduce(
-		(acc, stock) => acc + stock.buyPrice * stock.quantity,
-		0
-	);
-	const capitalGains = totalValue - initialInvestment;
-	const capitalGainPct =
-		initialInvestment === 0 ? 0 : (capitalGains / initialInvestment) * 100;
+const InvestmentChart = ({
+	currentValue,
+
+	capitalGainPct,
+	capitalGains,
+}: {
+	currentValue: number;
+
+	capitalGains: number;
+	capitalGainPct: number;
+}) => {
 	return (
 		<Card>
 			<CardContent className="bg-white px-0">
@@ -62,7 +58,7 @@ const InvestmentChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 								£{capitalGains.toFixed(2)}
 							</TableCell>
 							<TableCell>TBD</TableCell>
-							<TableCell>£{totalValue.toFixed(2)}</TableCell>
+							<TableCell>£{currentValue.toFixed(2)}</TableCell>
 						</TableRow>
 						<TableRow>
 							<TableCell className="font-medium">%</TableCell>

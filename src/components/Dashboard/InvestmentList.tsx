@@ -17,16 +17,13 @@ import { UserStockDetails } from "@/types/UserPortfolio.type";
 import numberToDispaly from "@/utils/numberFormatter";
 import Link from "next/link";
 
-const InvestmentList = ({ stocks }: { stocks: UserStockDetails[] }) => {
-	const totalValue = stocks.reduce(
-		(acc, stock) =>
-			acc +
-			stock.quantity *
-				(stock.snapshot.day.c === 0
-					? stock.snapshot.prevDay.c
-					: stock.snapshot.day.c),
-		0
-	);
+const InvestmentList = ({
+	stocks,
+	currentValue,
+}: {
+	stocks: UserStockDetails[];
+	currentValue: number;
+}) => {
 	return (
 		<Table>
 			<TableCaption className="caption-top text-left text-xl text-black">
@@ -88,7 +85,7 @@ const InvestmentList = ({ stocks }: { stocks: UserStockDetails[] }) => {
 			<TableFooter className="w-full bg-accent">
 				<TableRow className="w-full">
 					<TableCell colSpan={6}>Total</TableCell>
-					<TableCell className="">£{totalValue.toFixed(2)}</TableCell>
+					<TableCell className="">£{currentValue.toFixed(2)}</TableCell>
 				</TableRow>
 			</TableFooter>
 		</Table>

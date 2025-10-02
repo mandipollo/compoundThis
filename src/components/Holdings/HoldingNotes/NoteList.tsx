@@ -1,12 +1,17 @@
 "use client";
+import React from "react";
+
+// hooks
 
 import useGetHoldingNotes from "@/hooks/swr/useGetHoldingNotes";
-import React from "react";
-import { Table, TableRow, TableBody, TableCell } from "@/components/ui/table";
-import { formatDistanceToNow } from "date-fns";
-import Image from "next/image";
 import { useSWRConfig } from "swr";
+
+// UI
+import { Table, TableRow, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+
+// Utils
+import { formatDistanceToNow } from "date-fns";
 
 const NoteList = ({ slug }: { slug: string }) => {
 	// mutate
@@ -32,8 +37,8 @@ const NoteList = ({ slug }: { slug: string }) => {
 				}
 			);
 
-			const data = await response.json();
-			console.log(data);
+			await response.json();
+
 			mutate(`/api/user/getHoldingNotes?ticker=${slug}`);
 		} catch (error: unknown) {
 			console.log(error);
@@ -44,11 +49,11 @@ const NoteList = ({ slug }: { slug: string }) => {
 	return (
 		<div className="flex w-full">
 			<Table>
-				<TableBody className="gap-2 flex flex-col">
+				<TableBody>
 					{data.data.map(note => (
 						<TableRow className="flex justify-between" key={note.id}>
 							<TableCell>{note.noteSummary}</TableCell>
-							<TableCell className="flex flex-row gap-2">
+							<TableCell className="flex flex-row gap-2 items-center">
 								{formatDistanceToNow(note.createdAt)}
 								<Button
 									onClick={() => handleDeleteNote({ noteId: note.id })}

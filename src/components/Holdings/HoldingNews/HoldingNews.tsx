@@ -14,9 +14,6 @@ const HoldingNews = ({ holding }: { holding: string }) => {
 		return <div>Error</div>;
 	}
 
-	console.log(error);
-
-	console.log(data);
 	const newsData = data.data;
 	return (
 		<ul role="list" className="flex flex-col w-full gap-4 ">
