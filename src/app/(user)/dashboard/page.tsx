@@ -3,23 +3,21 @@
 import React from "react";
 
 // Types
-
 import { UserStockDetails } from "@/types/UserPortfolio.type";
 // Ui
-
 import { Loader2Icon } from "lucide-react";
 // Components
-
 import SectionContainer from "@/components/Containers/SectionContainer";
 import Overview from "@/components/Dashboard/Overview";
 import OverviewDetailsHeader from "@/components/Dashboard/OverviewDetailsHeader";
-import InvestmentChart from "@/components/Dashboard/InvestmentChart";
 import PortfolioAllocationChart from "@/components/Dashboard/PortfolioAllocationChart";
 import BaseAtGlanceChart from "@/components/Dashboard/BaseAtGlanceChart";
 import InvestmentList from "@/components/Dashboard/InvestmentList";
+import InvestmentSummary from "@/components/Dashboard/InvestmentSummary";
+import PortfolioChart from "@/components/Dashboard/PortfolioChart";
 // Hooks
-
 import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
+import { Separator } from "@/components/ui/separator";
 
 const DashboardPage = () => {
 	const { data, error, isLoading } = useUserPortfolios();
@@ -34,6 +32,7 @@ const DashboardPage = () => {
 	}
 
 	const stocks: UserStockDetails[] = data?.data ?? [];
+	console.log(stocks);
 
 	const currentValue = stocks.reduce(
 		(acc, stock) =>
@@ -55,7 +54,9 @@ const DashboardPage = () => {
 		<SectionContainer>
 			<Overview currentValue={currentValue} />
 			<OverviewDetailsHeader />
-			<InvestmentChart
+			<Separator />
+			<PortfolioChart stocks={stocks} />
+			<InvestmentSummary
 				capitalGains={capitalGains}
 				capitalGainPct={capitalGainPct}
 				currentValue={currentValue}

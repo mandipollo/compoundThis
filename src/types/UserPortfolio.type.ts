@@ -20,3 +20,9 @@ export interface UserPortfolio {
 	portfolioName: string;
 	stocks: UserStockDetails[];
 }
+
+export interface timeSeriesChartData {
+	date: string;
+	baseValue: number;
+	currentValue: number;
+}
