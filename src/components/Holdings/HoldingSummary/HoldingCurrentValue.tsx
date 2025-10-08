@@ -1,7 +1,8 @@
-import { Separator } from "@/components/ui/separator";
-import numberToDispaly from "@/utils/numberFormatter";
 import React from "react";
-
+// Ui
+import { Separator } from "@/components/ui/separator";
+// Utils
+import numberToDispaly from "@/utils/numberFormatter";
 const HoldingCurrentValue = ({
 	price,
 	quantity,
@@ -11,7 +12,6 @@ const HoldingCurrentValue = ({
 	quantity: number;
 	dailyPrice: number;
 }) => {
-	const totalGainNumber = dailyPrice - price;
 	return (
 		<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
 			<span className="text-xl">Current value</span>
@@ -27,7 +27,7 @@ const HoldingCurrentValue = ({
 					<span
 						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}
 					>
-						£{dailyPrice - price}
+						£{(dailyPrice - price).toFixed(2)}
 					</span>
 					<span
 						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}

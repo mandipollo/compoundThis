@@ -11,19 +11,16 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Loader2Icon } from "lucide-react";
-
 // components
-
 import DemoHorizontalChart from "./HorizontalChart";
 import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
-import HoldingPieChart from "./HoldingPieChart";
-
+import HoldingPortfolioAllocation from "./HoldingPortfolioAllocation";
+import HoldingDemoChart from "./HoldingDemoChart";
 //Hooks
 import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
 import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
-import HoldingDemoChart from "./HoldingDemoChart";
 
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
@@ -66,7 +63,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 				<div className="flex flex-col gap-4">
 					<Select>
 						<SelectTrigger className="w-[180px]">
-							<SelectValue placeholder="Timespan" />
+							<SelectValue placeholder="Since first purchase" />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="first">Since first purchase</SelectItem>
@@ -91,7 +88,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						price={buyPrice}
 						quantity={quantity}
 					/>
-					<HoldingPieChart />
+					<HoldingPortfolioAllocation />
 
 					<DemoHorizontalChart
 						from={from}

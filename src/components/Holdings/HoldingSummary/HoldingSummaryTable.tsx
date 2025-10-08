@@ -43,20 +43,20 @@ const HoldingSummaryTable = ({
 					>
 						{(((dailyPrice - purchasePrice) / purchasePrice) * 100).toFixed(2)}%
 					</TableCell>
-					<TableCell className="font-semibold">0.00%</TableCell>
+					<TableCell className="font-semibold">TBD</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell
 						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} text-xs `}
 					>
-						GB£ {dailyPrice - purchasePrice}
+						GB£ {(dailyPrice - purchasePrice).toFixed(2)}
 					</TableCell>
 					<TableCell
 						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} text-xs `}
 					>
-						GB£ {dailyPrice - purchasePrice}
+						GB£ {(dailyPrice - purchasePrice).toFixed(2)}
 					</TableCell>
-					<TableCell className="text-xs">GB£0.00</TableCell>
+					<TableCell className="text-xs">TBD</TableCell>
 				</TableRow>
 			</TableBody>
 		</Table>

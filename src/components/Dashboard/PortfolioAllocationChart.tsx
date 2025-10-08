@@ -13,6 +13,8 @@ import {
 import {
 	ChartConfig,
 	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -42,19 +44,25 @@ const PortfolioAllocationChart = ({
 	}, {} as ChartConfig);
 
 	return (
-		<Card className="flex flex-col max-w-xl w-full">
+		<Card className="flex flex-col max-w-full w-full">
 			<CardHeader className="items-center pb-0">
 				<CardTitle>Portfolio</CardTitle>
 				<CardDescription>Stock allocation</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-1 pb-0">
+			<CardContent className="flex-1 items-center justify-center pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[350px] pb-0"
+					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[50rem] pb-0"
 				>
 					<PieChart>
 						<ChartTooltip content={<ChartTooltipContent hideLabel />} />
 						<Pie data={chartDataMap} dataKey="value" label nameKey="ticker" />
+						<ChartLegend
+							content={
+								<ChartLegendContent nameKey="ticker" payload={undefined} />
+							}
+							className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+						/>
 					</PieChart>
 				</ChartContainer>
 			</CardContent>

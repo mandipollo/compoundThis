@@ -1,7 +1,7 @@
 "use client";
 
+// Ui
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
-
 import {
 	Card,
 	CardContent,
@@ -16,7 +16,6 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
-
 export const description = "Price comparision";
 
 const HorizontalChart = ({
@@ -53,9 +52,11 @@ const HorizontalChart = ({
 	} satisfies ChartConfig;
 
 	return (
-		<Card className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
+		<Card className="flex flex-col gap-2 ">
 			<CardHeader className="px-0 ">
-				<CardTitle className="text-xl font-light">Price comparision</CardTitle>
+				<CardTitle className="text-md font-semibold">
+					Price comparision
+				</CardTitle>
 				<CardDescription className="text-xs">Updated on {from}</CardDescription>
 			</CardHeader>
 			<CardContent className="px-0">

@@ -3,8 +3,7 @@
 import * as React from "react";
 
 // Ui
-
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
 	Card,
 	CardContent,
@@ -15,6 +14,8 @@ import {
 import {
 	ChartConfig,
 	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -25,17 +26,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { UserStockDetails } from "@/types/UserPortfolio.type";
-
-import usePortfolioTimeSeries from "@/hooks/swr/usePortfolioTimeSeries";
 import { Loader2Icon } from "lucide-react";
-
+// Hooks
+import usePortfolioTimeSeries from "@/hooks/swr/usePortfolioTimeSeries";
+// Configs
 export const description = "An interactive area chart";
-
 const chartConfig = {
-	visitors: {
-		label: "Visitors",
-	},
 	baseValue: {
 		label: "BaseValue",
 		color: "var(--chart-2)",
@@ -46,7 +42,7 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
+const PortfolioChart = () => {
 	const [timeRange, setTimeRange] = React.useState("90d");
 	const { data, isLoading, error } = usePortfolioTimeSeries();
 
@@ -59,21 +55,19 @@ const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 		return <div>{error}</div>;
 	}
 
-	console.log(data);
-
-	const filteredData = data.data.filter(item => {
-		const date = new Date(item.date);
-		const referenceDate = data.data[0].date;
-		let daysToSubtract = 90;
-		if (timeRange === "30d") {
-			daysToSubtract = 30;
-		} else if (timeRange === "7d") {
-			daysToSubtract = 7;
-		}
-		const startDate = new Date(referenceDate);
-		startDate.setDate(startDate.getDate() - daysToSubtract);
-		return date >= startDate;
-	});
+	// const filteredData = data.data.filter(item => {
+	// 	const date = new Date(item.date);
+	// 	const referenceDate = data.data[0].date;
+	// 	let daysToSubtract = 90;
+	// 	if (timeRange === "30d") {
+	// 		daysToSubtract = 30;
+	// 	} else if (timeRange === "7d") {
+	// 		daysToSubtract = 7;
+	// 	}
+	// 	const startDate = new Date(referenceDate);
+	// 	startDate.setDate(startDate.getDate() - daysToSubtract);
+	// 	return date >= startDate;
+	// });
 
 	return (
 		<Card className="pt-0">
@@ -86,14 +80,14 @@ const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 				</div>
 				<Select value={timeRange} onValueChange={setTimeRange}>
 					<SelectTrigger
-						className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+						className="hidden w-sm rounded-lg sm:ml-auto sm:flex"
 						aria-label="Select a value"
 					>
-						<SelectValue placeholder="Last 3 months" />
+						<SelectValue placeholder="Since first purchase" />
 					</SelectTrigger>
 					<SelectContent className="rounded-xl">
 						<SelectItem value="90d" className="rounded-lg">
-							Last 3 months
+							Since first purchase
 						</SelectItem>
 						<SelectItem value="30d" className="rounded-lg">
 							Last 30 days
@@ -109,7 +103,7 @@ const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 					config={chartConfig}
 					className="aspect-auto h-[250px] w-full"
 				>
-					<AreaChart data={filteredData}>
+					<AreaChart data={data.data}>
 						<defs>
 							<linearGradient id="fillBaseValue" x1="0" y1="0" x2="0" y2="1">
 								<stop
@@ -151,6 +145,12 @@ const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 								});
 							}}
 						/>
+						<YAxis
+							tickLine={false}
+							axisLine={false}
+							tickMargin={8}
+							tickCount={3}
+						/>
 						<ChartTooltip
 							cursor={false}
 							content={
@@ -170,14 +170,16 @@ const PortfolioChart = ({ stocks }: { stocks: UserStockDetails[] }) => {
 							type="natural"
 							fill="url(#fillBaseValue)"
 							stroke="var(--color-baseValue)"
-							stackId="a"
 						/>
 						<Area
 							dataKey="currentValue"
 							type="natural"
 							fill="url(#fillCurrentValue)"
 							stroke="var(--color-currentValue)"
-							stackId="a"
+						/>
+						<ChartLegend
+							content={<ChartLegendContent payload={undefined} />}
+							className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
 						/>
 					</AreaChart>
 				</ChartContainer>

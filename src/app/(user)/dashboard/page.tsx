@@ -6,18 +6,17 @@ import React from "react";
 import { UserStockDetails } from "@/types/UserPortfolio.type";
 // Ui
 import { Loader2Icon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 // Components
 import SectionContainer from "@/components/Containers/SectionContainer";
-import Overview from "@/components/Dashboard/Overview";
-import OverviewDetailsHeader from "@/components/Dashboard/OverviewDetailsHeader";
 import PortfolioAllocationChart from "@/components/Dashboard/PortfolioAllocationChart";
 import BaseAtGlanceChart from "@/components/Dashboard/BaseAtGlanceChart";
 import InvestmentList from "@/components/Dashboard/InvestmentList";
 import InvestmentSummary from "@/components/Dashboard/InvestmentSummary";
 import PortfolioChart from "@/components/Dashboard/PortfolioChart";
+import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 // Hooks
 import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
-import { Separator } from "@/components/ui/separator";
 
 const DashboardPage = () => {
 	const { data, error, isLoading } = useUserPortfolios();
@@ -52,10 +51,9 @@ const DashboardPage = () => {
 
 	return (
 		<SectionContainer>
-			<Overview currentValue={currentValue} />
-			<OverviewDetailsHeader />
+			<DashboardHeader currentValue={currentValue} />
 			<Separator />
-			<PortfolioChart stocks={stocks} />
+			<PortfolioChart />
 			<InvestmentSummary
 				capitalGains={capitalGains}
 				capitalGainPct={capitalGainPct}

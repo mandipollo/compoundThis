@@ -1,7 +1,6 @@
 "use client";
 
 // Ui
-
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts";
 import {
 	Card,
@@ -47,14 +46,14 @@ const BaseAtGlanceChart = ({
 				<CardTitle>Base at glance</CardTitle>
 				<CardDescription>Avg investment price vs current value</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-1">
+			<CardContent className="flex-1 ">
 				<ChartContainer config={chartConfig}>
 					<BarChart
 						accessibilityLayer
 						data={chartData}
 						layout="vertical"
 						margin={{
-							left: 10,
+							left: 50,
 						}}
 					>
 						<XAxis type="number" hide />
@@ -69,6 +68,7 @@ const BaseAtGlanceChart = ({
 							cursor={false}
 							content={<ChartTooltipContent hideLabel />}
 						/>
+
 						<Bar dataKey="value" radius={5}>
 							{chartData.map(entry => (
 								<Cell key={entry.key} fill={chartConfig[entry.key].color} />
