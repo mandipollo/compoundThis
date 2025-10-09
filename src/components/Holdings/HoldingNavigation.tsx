@@ -10,10 +10,7 @@ import NavigationLink from "./NavigationLink";
 
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 	return (
-		<div
-			role="navigation"
-			className="flex w-full py-4 sticky top-0 bg-white z-10"
-		>
+		<div className="flex w-full py-4">
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem className="hover:cursor-pointer">

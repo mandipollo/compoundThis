@@ -12,7 +12,7 @@ const useHoldingAllocation = (holding: string) => {
 		error: string | undefined;
 		isLoading: boolean;
 	} = useSWR(
-		`/api/user/holdingPortfolioAllocation?ticker=${holding}`,
+		`/api/user/holdingPortfolioAllocation?holding=${holding}`,
 		fetcher,
 		{
 			revalidateOnFocus: false,

@@ -26,3 +26,8 @@ export interface timeSeriesChartData {
 	baseValue: number;
 	currentValue: number;
 }
+
+export interface timeSeriesholding {
+	date: string;
+	value: number;
+}

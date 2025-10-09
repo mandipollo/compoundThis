@@ -17,7 +17,7 @@ import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
 import HoldingPortfolioAllocation from "./HoldingPortfolioAllocation";
-import HoldingDemoChart from "./HoldingDemoChart";
+import HoldingTimeSeriesChart from "./HoldingTimeSeriesChart";
 //Hooks
 import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
 import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
@@ -77,7 +77,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						purchasePrice={buyPrice}
 						buyDate={buyDate}
 					/>
-					<HoldingDemoChart />
+					<HoldingTimeSeriesChart holding={ticker} />
 					<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
 						<span className="text-xl">AI feature to be added </span>
 					</div>
@@ -88,7 +88,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						price={buyPrice}
 						quantity={quantity}
 					/>
-					<HoldingPortfolioAllocation />
+					<HoldingPortfolioAllocation ticker={ticker} />
 
 					<DemoHorizontalChart
 						from={from}

@@ -43,11 +43,11 @@ const HorizontalChart = ({
 	const chartConfig = {
 		currentPrice: {
 			label: "Current price",
-			color: "var(--chart-2)",
+			color: "var(--chart-1)",
 		},
 		avgPurchasePrice: {
 			label: "Avg purchase price",
-			color: "var(--chart-1)",
+			color: "var(--chart-4)",
 		},
 	} satisfies ChartConfig;
 

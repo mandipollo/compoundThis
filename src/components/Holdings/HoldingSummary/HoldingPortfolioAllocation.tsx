@@ -1,7 +1,7 @@
 "use client";
 
+// UI
 import { Pie, PieChart, Sector } from "recharts";
-
 import {
 	Card,
 	CardContent,
@@ -15,13 +15,14 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
-import useHoldingAllocation from "@/hooks/swr/useHoldingAllocation";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
+// Hooks
+import useHoldingAllocation from "@/hooks/swr/useHoldingAllocation";
 
 export const description = "A pie chart with a label";
 
-const HoldingPortfolioAllocation = () => {
-	const { data, isLoading, error } = useHoldingAllocation("AAPL");
+const HoldingPortfolioAllocation = ({ ticker }: { ticker: string }) => {
+	const { data, isLoading, error } = useHoldingAllocation(ticker);
 
 	if (isLoading) {
 		return <div>loading...</div>;

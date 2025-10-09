@@ -1,12 +1,10 @@
 "use client";
 
 import { use } from "react";
-
 // components
 import SectionContainer from "@/components/Containers/SectionContainer";
 import HoldingNavigation from "@/components/Holdings/HoldingNavigation";
 import HoldingCompany from "@/components/Holdings/HoldingCompany";
-
 // hooks
 import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
 
