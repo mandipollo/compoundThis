@@ -15,7 +15,7 @@ const mockedUseSWR =
 import { renderHook } from "@testing-library/react";
 import { vi, expect, describe, it, afterEach } from "vitest";
 import useSWR, { SWRResponse } from "swr";
-import useUserPortfolios from "./useUserPortfolio";
+import usePortfolio from "./usePortfolio";
 import { fetcher } from "@/libs/fetcher";
 
 //
@@ -39,7 +39,7 @@ describe("Unit test useUserPortfolio swr hook", () => {
 		// Act
 		const ticker = "AAPL";
 
-		const { result } = renderHook(() => useUserPortfolios());
+		const { result } = renderHook(() => usePortfolio());
 		const { isLoading, data, error } = result.current;
 
 		// Assert hook output
@@ -64,7 +64,7 @@ describe("Unit test useUserPortfolio swr hook", () => {
 			mutate: vi.fn(),
 		} as SWRResponse<any, any>);
 
-		const { result } = renderHook(() => useUserPortfolios());
+		const { result } = renderHook(() => usePortfolio());
 		const { error, isLoading, data } = result.current;
 
 		expect(isLoading).toEqual(true);
@@ -81,7 +81,7 @@ describe("Unit test useUserPortfolio swr hook", () => {
 			mutate: vi.fn(),
 		} as SWRResponse<any, any>);
 
-		const { result } = renderHook(() => useUserPortfolios());
+		const { result } = renderHook(() => usePortfolio());
 
 		const { isLoading, error, data } = result.current;
 

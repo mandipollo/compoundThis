@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-// ui
-
+// Ui
 import {
 	Dialog,
 	DialogClose,
@@ -22,12 +21,9 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-
-// swr
-
+// Swr
 import { useSWRConfig } from "swr";
 // zod
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -59,20 +55,17 @@ const HoldingNoteForm = ({ slug }: { slug: string }) => {
 		console.log("Submit start");
 
 		try {
-			const response = await fetch(
-				`/api/user/addNoteToHolding?ticker=${slug}`,
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(values),
-				}
-			);
+			const response = await fetch(`/api/holding/note/add?ticker=${slug}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(values),
+			});
 			await response.json();
 			form.reset({ noteSummary: "" });
 			setOpen(false);
 
 			// revalidate the parents SWR key
-			mutate(`/api/user/getHoldingNotes?ticker=${slug}`);
+			mutate(`/api/holding/note/get?ticker=${slug}`);
 		} catch (error) {
 			console.log(error);
 		}

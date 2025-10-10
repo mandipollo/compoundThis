@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
 		const { sub, email, name } = payload;
 
 		//
-		const response = await fetch(`${server}/user/signup`, {
+		const response = await fetch(`${server}/user/user`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ cognitoId: sub, username: name, email }),

@@ -1,10 +1,11 @@
-import { HoldingAllocation } from "@/types/HoldingAllocation.type";
+"use server";
+
 import ApiError from "@/utils/ApiError";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -31,29 +32,31 @@ export async function GET(req: NextRequest) {
 
 		const { sub } = payload;
 
-		// holding
+		const body = await req.json();
 
+		// Ticker
 		const { searchParams } = new URL(req.url);
-		const holding = searchParams.get("holding");
 
-		const response = await fetch(
-			`${server}/user/holding-allocation?holding=${holding}`,
-			{
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${sub}`,
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		const ticker = searchParams.get("ticker");
+		if (!ticker) {
+			throw new Error("Ticker required");
+		}
+
+		const response = await fetch(`${server}/holding/notes?ticker=${ticker}`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${sub}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		});
 
 		if (!response.ok) {
 			throw new ApiError("Internal server error", 401);
 		}
 
-		const data: { success: boolean; data: HoldingAllocation[] } =
-			await response.json();
-		console.log(data);
+		const data = await response.json();
+
 		return NextResponse.json(
 			{ success: true, data: data.data },
 			{ status: 200 }

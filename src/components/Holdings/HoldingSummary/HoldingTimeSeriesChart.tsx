@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
+// Ui
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
 import {
 	Card,
 	CardContent,
@@ -23,7 +23,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import useHoldingTimeSeries from "@/hooks/swr/user/useHoldingTimeSeries";
+// Hooks
+import useHoldingTimeSeries from "@/hooks/swr/holding/useHoldingTimeSeries";
 
 export const description = "An interactive area chart";
 
@@ -44,38 +45,26 @@ const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
 	if (error) {
 		return <div>Error</div>;
 	}
-	// const filteredData = data.data.filter(item => {
-	// 	const date = new Date(item.date);
-	// 	const referenceDate = new Date("2024-06-30");
-	// 	let daysToSubtract = 90;
-	// 	if (timeRange === "30d") {
-	// 		daysToSubtract = 30;
-	// 	} else if (timeRange === "7d") {
-	// 		daysToSubtract = 7;
-	// 	}
-	// 	const startDate = new Date(referenceDate);
-	// 	startDate.setDate(startDate.getDate() - daysToSubtract);
-	// 	return date >= startDate;
-	// });
+
 	return (
 		<Card className="pt-0">
 			<CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
 				<div className="grid flex-1 gap-1">
-					<CardTitle>Area Chart - Interactive</CardTitle>
+					<CardTitle>{holding}</CardTitle>
 					<CardDescription>
-						Showing total visitors for the last 3 months
+						Showing holding value since first purchase
 					</CardDescription>
 				</div>
 				<Select value={timeRange} onValueChange={setTimeRange}>
 					<SelectTrigger
-						className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+						className="hidden w-sm rounded-lg sm:ml-auto sm:flex"
 						aria-label="Select a value"
 					>
-						<SelectValue placeholder="Last 3 months" />
+						<SelectValue placeholder="Since first purchase" />
 					</SelectTrigger>
 					<SelectContent className="rounded-xl">
 						<SelectItem value="90d" className="rounded-lg">
-							Last 3 months
+							Since first purchase
 						</SelectItem>
 						<SelectItem value="30d" className="rounded-lg">
 							Last 30 days
@@ -116,6 +105,7 @@ const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
 							tickFormatter={value => {
 								const date = new Date(value);
 								return date.toLocaleDateString("en-US", {
+									year: "2-digit",
 									month: "short",
 									day: "numeric",
 								});
@@ -127,6 +117,7 @@ const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
 								<ChartTooltipContent
 									labelFormatter={value => {
 										return new Date(value).toLocaleDateString("en-US", {
+											year: "2-digit",
 											month: "short",
 											day: "numeric",
 										});

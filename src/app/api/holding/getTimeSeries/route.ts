@@ -3,11 +3,11 @@ import { cookies } from "next/headers";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { ApiResponse } from "@/types/ApiResponse.type";
 
-import { UserStockDetails } from "@/types/UserPortfolio.type";
+import { timeSeriesholding } from "@/types/UserPortfolio.type";
 
-export async function GET(): Promise<
-	NextResponse<ApiResponse<UserStockDetails[]>>
-> {
+export async function GET(
+	req: NextResponse
+): Promise<NextResponse<ApiResponse<timeSeriesholding[]>>> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -36,10 +36,27 @@ export async function GET(): Promise<
 
 		const { sub } = payload;
 
-		const response = await fetch(`${server}/user/getUserPortfolios`, {
-			method: "GET",
-			headers: { Authorization: `Bearer ${sub}` },
-		});
+		// holding
+
+		const { searchParams } = new URL(req.url);
+
+		const holding = searchParams.get("holding");
+		if (!holding) {
+			return NextResponse.json<ApiResponse<never>>(
+				{
+					success: false,
+					error: "Holding required",
+				},
+				{ status: 401 }
+			);
+		}
+		const response = await fetch(
+			`${server}/holding/time-series?holding=${holding}`,
+			{
+				method: "GET",
+				headers: { Authorization: `Bearer ${sub}` },
+			}
+		);
 
 		if (!response.ok) {
 			return NextResponse.json<ApiResponse<never>>(
@@ -55,7 +72,7 @@ export async function GET(): Promise<
 
 		//  Check if the external API's own success flag is false
 		if (!data.success) {
-			return NextResponse.json(
+			return NextResponse.json<ApiResponse<never>>(
 				{
 					success: false,
 					error: data.error,
@@ -64,7 +81,7 @@ export async function GET(): Promise<
 			);
 		}
 
-		return NextResponse.json<ApiResponse<UserStockDetails[]>>(
+		return NextResponse.json<ApiResponse<timeSeriesholding[]>>(
 			{ success: true, data: data.data },
 			{ status: 200 }
 		);

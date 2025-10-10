@@ -5,7 +5,7 @@ import { verifyJWT } from "@/utils/jwt-verifier";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -32,25 +32,27 @@ export async function POST(req: NextRequest) {
 
 		const { sub } = payload;
 
-		const body = await req.json();
-
 		// Ticker
 		const { searchParams } = new URL(req.url);
 
 		const ticker = searchParams.get("ticker");
+
 		if (!ticker) {
 			throw new Error("Ticker required");
 		}
+		const noteId = searchParams.get("noteId");
 
+		if (!noteId) {
+			throw new Error("Note id required!");
+		}
 		const response = await fetch(
-			`${server}/user/add-note-to-holding?ticker=${ticker}`,
+			`${server}/holding/notes?ticker=${ticker}&noteId=${noteId}`,
 			{
-				method: "POST",
+				method: "DELETE",
 				headers: {
 					Authorization: `Bearer ${sub}`,
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(body),
 			}
 		);
 

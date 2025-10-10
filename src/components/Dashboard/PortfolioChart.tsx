@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Loader2Icon } from "lucide-react";
 // Hooks
-import usePortfolioTimeSeries from "@/hooks/swr/usePortfolioTimeSeries";
+import usePortfolioTimeSeries from "@/hooks/swr/portfolio/usePortfolioTimeSeries";
 // Configs
 export const description = "An interactive area chart";
 const chartConfig = {
@@ -54,20 +54,6 @@ const PortfolioChart = () => {
 	if (error) {
 		return <div>{error}</div>;
 	}
-
-	// const filteredData = data.data.filter(item => {
-	// 	const date = new Date(item.date);
-	// 	const referenceDate = data.data[0].date;
-	// 	let daysToSubtract = 90;
-	// 	if (timeRange === "30d") {
-	// 		daysToSubtract = 30;
-	// 	} else if (timeRange === "7d") {
-	// 		daysToSubtract = 7;
-	// 	}
-	// 	const startDate = new Date(referenceDate);
-	// 	startDate.setDate(startDate.getDate() - daysToSubtract);
-	// 	return date >= startDate;
-	// });
 
 	return (
 		<Card className="pt-0">

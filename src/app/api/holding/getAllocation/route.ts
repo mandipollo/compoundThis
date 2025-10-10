@@ -1,11 +1,10 @@
-"use server";
-
+import { HoldingAllocation } from "@/types/HoldingAllocation.type";
 import ApiError from "@/utils/ApiError";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest) {
+export async function GET(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -32,23 +31,15 @@ export async function DELETE(req: NextRequest) {
 
 		const { sub } = payload;
 
-		// Ticker
+		// holding
+
 		const { searchParams } = new URL(req.url);
+		const holding = searchParams.get("holding");
 
-		const ticker = searchParams.get("ticker");
-
-		if (!ticker) {
-			throw new Error("Ticker required");
-		}
-		const noteId = searchParams.get("noteId");
-
-		if (!noteId) {
-			throw new Error("Note id required!");
-		}
 		const response = await fetch(
-			`${server}/user/delete-note?ticker=${ticker}&noteId=${noteId}`,
+			`${server}/holding/holding-allocation?holding=${holding}`,
 			{
-				method: "DELETE",
+				method: "GET",
 				headers: {
 					Authorization: `Bearer ${sub}`,
 					"Content-Type": "application/json",
@@ -60,8 +51,9 @@ export async function DELETE(req: NextRequest) {
 			throw new ApiError("Internal server error", 401);
 		}
 
-		const data = await response.json();
-
+		const data: { success: boolean; data: HoldingAllocation[] } =
+			await response.json();
+		console.log(data);
 		return NextResponse.json(
 			{ success: true, data: data.data },
 			{ status: 200 }

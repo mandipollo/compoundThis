@@ -36,7 +36,7 @@ export async function GET(): Promise<
 
 		const { sub } = payload;
 
-		const response = await fetch(`${server}/user/time-series`, {
+		const response = await fetch(`${server}/portfolio/time-series`, {
 			method: "GET",
 			headers: { Authorization: `Bearer ${sub}` },
 		});

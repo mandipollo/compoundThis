@@ -16,10 +16,10 @@ import InvestmentSummary from "@/components/Dashboard/InvestmentSummary";
 import PortfolioChart from "@/components/Dashboard/PortfolioChart";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 // Hooks
-import useUserPortfolios from "@/hooks/swr/useUserPortfolio";
+import usePortfolio from "@/hooks/swr/portfolio/usePortfolio";
 
 const DashboardPage = () => {
-	const { data, error, isLoading } = useUserPortfolios();
+	const { data, error, isLoading } = usePortfolio();
 
 	//
 	if (isLoading) {

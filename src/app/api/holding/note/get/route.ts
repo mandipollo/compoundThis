@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 			throw new Error("Ticker required");
 		}
 
-		const response = await fetch(`${server}/user/get-notes?ticker=${ticker}`, {
+		const response = await fetch(`${server}/holding/notes?ticker=${ticker}`, {
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${sub}`,

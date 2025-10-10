@@ -3,7 +3,7 @@ import { timeSeriesChartData } from "@/types/UserPortfolio.type";
 
 import useSWR from "swr";
 
-const useHoldingTimeSeries = ({ holding }: { holding: string }) => {
+const usePortfolioTimeSeries = () => {
 	const {
 		data,
 		error,
@@ -12,7 +12,7 @@ const useHoldingTimeSeries = ({ holding }: { holding: string }) => {
 		data: { success: boolean; data: timeSeriesChartData[] };
 		isLoading: boolean;
 		error: string | undefined;
-	} = useSWR(`/api/user/timeSeriesHolding?holding=${holding}`, fetcher, {
+	} = useSWR(`/api/portfolio/getTimeSeries`, fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
@@ -25,4 +25,4 @@ const useHoldingTimeSeries = ({ holding }: { holding: string }) => {
 	};
 };
 
-export default useHoldingTimeSeries;
+export default usePortfolioTimeSeries;

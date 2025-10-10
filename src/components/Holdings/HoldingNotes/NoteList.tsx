@@ -2,21 +2,18 @@
 import React from "react";
 
 // hooks
-
-import useGetHoldingNotes from "@/hooks/swr/useGetHoldingNotes";
+import useHoldingNotes from "@/hooks/swr/holding/useHoldingNotes";
 import { useSWRConfig } from "swr";
-
 // UI
 import { Table, TableRow, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
 // Utils
 import { formatDistanceToNow } from "date-fns";
 
 const NoteList = ({ slug }: { slug: string }) => {
 	// mutate
 	const { mutate } = useSWRConfig();
-	const { data, isLoading, error } = useGetHoldingNotes(slug);
+	const { data, isLoading, error } = useHoldingNotes(slug);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -26,11 +23,10 @@ const NoteList = ({ slug }: { slug: string }) => {
 	}
 
 	// handle delete
-
 	const handleDeleteNote = async ({ noteId }: { noteId: number }) => {
 		try {
 			const response = await fetch(
-				`/api/user/deleteNoteFromHolding?ticker=${slug}&noteId=${noteId}`,
+				`/api/holding/note/delete?ticker=${slug}&noteId=${noteId}`,
 				{
 					method: "DELETE",
 					headers: { "Content-Type": "application/json" },
@@ -39,12 +35,11 @@ const NoteList = ({ slug }: { slug: string }) => {
 
 			await response.json();
 
-			mutate(`/api/user/getHoldingNotes?ticker=${slug}`);
+			mutate(`/api/holding/note/get?ticker=${slug}`);
 		} catch (error: unknown) {
 			console.log(error);
 		}
 	};
-	console.log(data);
 
 	return (
 		<div className="flex w-full">

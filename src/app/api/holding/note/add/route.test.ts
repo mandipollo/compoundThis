@@ -21,7 +21,7 @@ import { cookies } from "next/headers";
 import * as appHandler from "./route";
 import { verifyJWT } from "@/utils/jwt-verifier";
 
-describe("Add stock to portfolio api route", () => {
+describe("Add note to the holding api route", () => {
 	const mockServer = "http://localhost:8080";
 	beforeEach(() => {
 		vi.resetAllMocks();
@@ -35,7 +35,6 @@ describe("Add stock to portfolio api route", () => {
 			appHandler,
 			test: async ({ fetch }) => {
 				const res = await fetch({ method: "POST" });
-
 				const jsonBody = await res.json();
 				expect(jsonBody).toStrictEqual({
 					success: false,
@@ -84,7 +83,7 @@ describe("Add stock to portfolio api route", () => {
 		});
 	});
 
-	it("shoudl return error when no auth token provided", async () => {
+	it("should return error when no auth token provided", async () => {
 		vi.mock("next/headers", () => ({
 			cookies: vi.fn(),
 		}));
@@ -146,10 +145,14 @@ describe("Add stock to portfolio api route", () => {
 
 		await testApiHandler({
 			appHandler,
+			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
 				const res = await fetch({
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer mocked-id",
+					},
 					body: JSON.stringify({ stock: "AAPL" }),
 				});
 
@@ -185,17 +188,21 @@ describe("Add stock to portfolio api route", () => {
 
 		await testApiHandler({
 			appHandler,
+			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
 				const res = await fetch({
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer mocked-id",
+					},
 					body: JSON.stringify({ stock: "AAPL" }),
 				});
 				const jsonBody = await res.json();
 
 				// assert that handler called fetch with correct URL and headers
 				expect(mockedFetch).toHaveBeenCalledWith(
-					`${mockServer}/user/addStockToPortfolio`,
+					`${mockServer}/holding/notes?ticker=AAPL`,
 					expect.objectContaining({
 						headers: {
 							"Content-Type": "application/json",

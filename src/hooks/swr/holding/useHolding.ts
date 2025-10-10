@@ -1,9 +1,9 @@
 import { fetcher } from "@/libs/fetcher";
 import useSWR from "swr";
 
-const useIndividualStockPortfolio = ({ ticker }: { ticker: String }) => {
+const useHolding = ({ ticker }: { ticker: String }) => {
 	const { error, data, isLoading } = useSWR(
-		`/api/user/getStock?ticker=${ticker}`,
+		`/api/holding/get?ticker=${ticker}`,
 		fetcher,
 		{
 			revalidateOnFocus: false,
@@ -15,4 +15,4 @@ const useIndividualStockPortfolio = ({ ticker }: { ticker: String }) => {
 	return { data, error, isLoading };
 };
 
-export default useIndividualStockPortfolio;
+export default useHolding;

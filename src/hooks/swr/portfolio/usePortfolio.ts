@@ -3,7 +3,7 @@ import { UserStockDetails } from "@/types/UserPortfolio.type";
 
 import useSWR from "swr";
 
-const useUserPortfolios = () => {
+const usePortfolio = () => {
 	const {
 		data,
 		isLoading,
@@ -12,7 +12,7 @@ const useUserPortfolios = () => {
 		data: { success: boolean; data: UserStockDetails[] };
 		isLoading: boolean;
 		error: String | undefined;
-	} = useSWR("/api/user/portfolio", fetcher, {
+	} = useSWR("/api/portfolio/get", fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
@@ -25,4 +25,4 @@ const useUserPortfolios = () => {
 	};
 };
 
-export default useUserPortfolios;
+export default usePortfolio;

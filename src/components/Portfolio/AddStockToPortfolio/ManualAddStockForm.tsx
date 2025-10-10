@@ -101,7 +101,7 @@ const ManualAddStockForm = () => {
 				buyPrice: values.price,
 				buyDate: values.tradeDate,
 			};
-			const response = await fetch("/api/user/addStockToPortfolio", {
+			const response = await fetch("/api/holding/add", {
 				method: "POST",
 				body: JSON.stringify(stockData),
 			});

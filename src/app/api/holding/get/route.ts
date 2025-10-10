@@ -1,9 +1,8 @@
-import ApiError from "@/utils/ApiError";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -17,7 +16,9 @@ export async function POST(req: NextRequest) {
 		const cookieStore = await cookies();
 		const idToken = cookieStore.get("idToken");
 		const idTokenValue = idToken?.value;
+
 		const { success, payload, error } = await verifyJWT(idTokenValue);
+
 		if (!success) {
 			return NextResponse.json(
 				{
@@ -30,37 +31,45 @@ export async function POST(req: NextRequest) {
 
 		const { sub } = payload;
 
-		const body = await req.json();
+		//
+		const { searchParams } = new URL(req.url);
 
-		const response = await fetch(`${server}/user/addStockToPortfolio`, {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${sub}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(body),
+		const ticker = searchParams.get("ticker");
+		if (!ticker) {
+			throw new Error("Ticker required");
+		}
+
+		const response = await fetch(`${server}/holding/holding?ticker=${ticker}`, {
+			method: "GET",
+			headers: { Authorization: `Bearer ${sub}` },
 		});
 
 		if (!response.ok) {
-			throw new ApiError("Internal server error", 401);
+			throw new Error(`Failed request : ${response.statusText}`);
 		}
 
 		const data = await response.json();
 
-		return NextResponse.json(
-			{ success: true, data: data.data },
-			{ status: 200 }
-		);
-	} catch (error: unknown) {
-		if (error instanceof ApiError) {
+		//  Check if the external API's own success flag is false
+		if (!data.success) {
 			return NextResponse.json(
-				{ success: false, error: error.message },
-				{ status: error.statusCode }
+				{
+					success: false,
+					error: data.error,
+				},
+				{ status: 502 }
 			);
 		}
-		return NextResponse.json({
-			success: false,
-			error: "Unexpected error. Please try again",
-		});
+		return NextResponse.json({ success: true, data: data.data });
+	} catch (error: unknown) {
+		let message =
+			error instanceof Error
+				? error.message
+				: "Unexpected error. Please try again";
+
+		return NextResponse.json(
+			{ success: false, error: message },
+			{ status: 500 }
+		);
 	}
 }

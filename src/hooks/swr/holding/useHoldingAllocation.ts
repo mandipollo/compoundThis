@@ -1,20 +1,17 @@
 import { fetcher } from "@/libs/fetcher";
-import { Note } from "@/types/Note.type";
+import { HoldingAllocation } from "@/types/HoldingAllocation.type";
 import useSWR from "swr";
 
-const useGetHoldingNotes = (holding: string) => {
+const useHoldingAllocation = (holding: string) => {
 	const {
 		data,
 		error,
 		isLoading,
 	}: {
-		data: {
-			success: boolean;
-			data: Note[];
-		};
+		data: { success: boolean; data: HoldingAllocation[] };
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR(`/api/user/getHoldingNotes?ticker=${holding}`, fetcher, {
+	} = useSWR(`/api/holding/getAllocation?holding=${holding}`, fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
@@ -27,4 +24,4 @@ const useGetHoldingNotes = (holding: string) => {
 	};
 };
 
-export default useGetHoldingNotes;
+export default useHoldingAllocation;

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-// ui
+// Ui
 import {
 	Select,
 	SelectContent,
@@ -11,16 +11,16 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Loader2Icon } from "lucide-react";
-// components
+// Components
 import DemoHorizontalChart from "./HorizontalChart";
 import HoldingSummaryTable from "./HoldingSummaryTable";
 import HoldingCurrentValue from "./HoldingCurrentValue";
 import HoldingInvestment from "./HoldingInvestment";
 import HoldingPortfolioAllocation from "./HoldingPortfolioAllocation";
 import HoldingTimeSeriesChart from "./HoldingTimeSeriesChart";
-//Hooks
-import useIndividualStockPortfolio from "@/hooks/swr/useIndividualStockPortfolio";
+// Hooks
 import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
+import useHolding from "@/hooks/swr/holding/useHolding";
 
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
@@ -31,8 +31,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		error,
 		data,
 		isLoading,
-	}: { error: string; data: any; isLoading: boolean } =
-		useIndividualStockPortfolio({ ticker });
+	}: { error: string; data: any; isLoading: boolean } = useHolding({ ticker });
 
 	const {
 		data: dailyData,

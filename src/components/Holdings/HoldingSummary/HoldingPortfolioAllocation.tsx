@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
 // Hooks
-import useHoldingAllocation from "@/hooks/swr/useHoldingAllocation";
+import useHoldingAllocation from "@/hooks/swr/holding/useHoldingAllocation";
 
 export const description = "A pie chart with a label";
 

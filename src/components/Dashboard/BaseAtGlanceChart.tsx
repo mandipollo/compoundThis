@@ -46,7 +46,7 @@ const BaseAtGlanceChart = ({
 				<CardTitle>Base at glance</CardTitle>
 				<CardDescription>Avg investment price vs current value</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-1 ">
+			<CardContent className="flex-1">
 				<ChartContainer config={chartConfig}>
 					<BarChart
 						accessibilityLayer

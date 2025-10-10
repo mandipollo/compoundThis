@@ -21,7 +21,7 @@ import { cookies } from "next/headers";
 import * as appHandler from "./route";
 import { verifyJWT } from "@/utils/jwt-verifier";
 
-describe("Add note to the holding api route", () => {
+describe("Add stock to portfolio api route", () => {
 	const mockServer = "http://localhost:8080";
 	beforeEach(() => {
 		vi.resetAllMocks();
@@ -35,6 +35,7 @@ describe("Add note to the holding api route", () => {
 			appHandler,
 			test: async ({ fetch }) => {
 				const res = await fetch({ method: "POST" });
+
 				const jsonBody = await res.json();
 				expect(jsonBody).toStrictEqual({
 					success: false,
@@ -83,7 +84,7 @@ describe("Add note to the holding api route", () => {
 		});
 	});
 
-	it("should return error when no auth token provided", async () => {
+	it("shoudl return error when no auth token provided", async () => {
 		vi.mock("next/headers", () => ({
 			cookies: vi.fn(),
 		}));
@@ -145,14 +146,10 @@ describe("Add note to the holding api route", () => {
 
 		await testApiHandler({
 			appHandler,
-			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
 				const res = await fetch({
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: "Bearer mocked-id",
-					},
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ stock: "AAPL" }),
 				});
 
@@ -188,21 +185,17 @@ describe("Add note to the holding api route", () => {
 
 		await testApiHandler({
 			appHandler,
-			url: "?ticker=AAPL",
 			test: async ({ fetch }) => {
 				const res = await fetch({
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: "Bearer mocked-id",
-					},
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ stock: "AAPL" }),
 				});
 				const jsonBody = await res.json();
 
 				// assert that handler called fetch with correct URL and headers
 				expect(mockedFetch).toHaveBeenCalledWith(
-					`${mockServer}/user/add-note-to-holding?ticker=AAPL`,
+					`${mockServer}/holding/holding`,
 					expect.objectContaining({
 						headers: {
 							"Content-Type": "application/json",
