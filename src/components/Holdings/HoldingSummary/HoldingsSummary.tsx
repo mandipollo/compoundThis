@@ -19,7 +19,7 @@ import HoldingInvestment from "./HoldingInvestment";
 import HoldingPortfolioAllocation from "./HoldingPortfolioAllocation";
 import HoldingTimeSeriesChart from "./HoldingTimeSeriesChart";
 // Hooks
-import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
+import useDailySummary from "@/hooks/swr/holding/useSummary";
 import useHolding from "@/hooks/swr/holding/useHolding";
 
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
@@ -37,7 +37,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		data: dailyData,
 		error: errorDaily,
 		isLoading: isLoadingDaily,
-	} = useQuoteDailySummary(ticker);
+	} = useDailySummary(ticker);
 	if (isLoading || isLoadingDaily) {
 		return <Loader2Icon className="animate-spin" />;
 	}

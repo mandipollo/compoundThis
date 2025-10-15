@@ -1,6 +1,6 @@
 "use client";
 
-import useHoldingNews from "@/hooks/swr/useHoldingNews";
+import useHoldingNews from "@/hooks/swr/holding/useHoldingNews";
 import React from "react";
 import HoldingItem from "./HoldingItem";
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
+import useQuoteAbout from "@/hooks/swr/holding/useAbout";
 
 const HoldingCompany = ({
 	ticker,

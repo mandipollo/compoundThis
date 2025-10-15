@@ -5,7 +5,7 @@ import { Separator } from "../../ui/separator";
 import { Loader2Icon } from "lucide-react";
 
 // hooks
-import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
+import useQuoteAbout from "@/hooks/swr/holding/useAbout";
 
 import numberToDispaly from "@/utils/numberFormatter";
 

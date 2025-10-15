@@ -142,7 +142,7 @@ describe("Init user portfolio ", () => {
 
 				//  assert that handler called fetch with correct URL and headers
 				expect(mockedFetch).toHaveBeenCalledWith(
-					`${mockServer}/user/signup`,
+					`${mockServer}/user/user`,
 					expect.objectContaining({
 						headers: {
 							"Content-Type": "application/json",

@@ -1,31 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-// ui
+// Ui
 import { TableCaption, Table } from "../../ui/table";
-import Container from "../../Containers/Container";
-
-// websockets
+// Websockets
 import { io } from "socket.io-client";
-
-// hooks
-import useMarketStatus from "@/hooks/swr/useMarketStatus";
-import usePopularStocks from "@/hooks/swr/usePopularStocks";
-
-// store
+// Hooks
+import useMarketStatus from "@/hooks/swr/market/useMarketStatus";
+import usePopularStocks from "@/hooks/swr/market/usePopularStocks";
+// Store
 import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
-
-// utils
-
+// Types
 import { WebSocketPopularStockData } from "@/types/WebSocketPopularTickers.type";
-
-// components
+// Components
 import PopularStockLiveData from "./PopularStockLiveData";
 import PopularStockSnapShot from "./PopularStockSnapShot";
 import LoadingStockData from "./LoadingStockData";
 import ErrorStock from "./ErrorStock";
-
+import Container from "../../Containers/Container";
 const PopularStocks = () => {
 	//
 	const { clearSelectedQuote } = useHomeSelectedQuoteStore();

@@ -9,7 +9,7 @@ const DashboardHeader = ({ currentValue }: { currentValue: number }) => {
 					CThis demo
 				</span>
 				<div className="flex flex-col">
-					<p className="text-xl">GB£{currentValue.toFixed(2)}</p>
+					<p className="text-xl">USD{currentValue.toFixed(2)}</p>
 					<p className="text-[10px] text-accent-foreground">
 						CURRENT PORTFOLIO VALUE
 					</p>

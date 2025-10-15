@@ -1,22 +1,19 @@
 "use client";
 
-// ui
+// Ui
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-
-// components
+// Components
 import IncomeStatement from "./IncomeStatement";
 import BalanceSheet from "./BalanceSheet";
 import CashFlow from "./CashFlow";
-
-// hooks
-import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
-
-// types
+// Hooks
+import useHoldingStatement from "@/hooks/swr/holding/useStatement";
+// Types
 import { FormattedFinancialStatementData } from "@/types/FinancialStatement.type";
 
 const HoldingStatement = ({ selectedQuote }: { selectedQuote: string }) => {
@@ -28,7 +25,7 @@ const HoldingStatement = ({ selectedQuote }: { selectedQuote: string }) => {
 		data: { success: boolean; data: FormattedFinancialStatementData };
 		isLoading: boolean;
 		error: string;
-	} = useQuoteStatement(selectedQuote);
+	} = useHoldingStatement(selectedQuote);
 
 	if (isLoading || !data) {
 		return <div>Loading...</div>;

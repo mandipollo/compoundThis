@@ -1,11 +1,9 @@
 import { ApiResponse } from "@/types/ApiResponse.type";
+import { MarketStatusData } from "@/types/MarketStatus.type";
+import { NextResponse } from "next/server";
 
-import { NextRequest, NextResponse } from "next/server";
-import { NewsApiResponse } from "@/types/NewsApiResponse.type";
-export async function GET(
-	request: NextRequest
-): Promise<
-	NextResponse<ApiResponse<{ success: boolean; data: NewsApiResponse }>>
+export async function GET(): Promise<
+	NextResponse<ApiResponse<MarketStatusData>>
 > {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
@@ -16,23 +14,10 @@ export async function GET(
 			);
 		}
 
-		const { searchParams } = new URL(request.url);
-		const ticker = searchParams.get("ticker");
-
-		if (!ticker || typeof ticker !== "string") {
-			return NextResponse.json<ApiResponse<never>>(
-				{ success: false, error: "Ticker is required" },
-				{ status: 400 }
-			);
-		}
-
-		const response = await fetch(
-			`${server}/quote/holding-news?ticker=${ticker}`,
-			{
-				method: "GET",
-				headers: { "Content-Type": "application/json" },
-			}
-		);
+		const response = await fetch(`${server}/market/status`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" },
+		});
 
 		if (!response.ok) {
 			return NextResponse.json<ApiResponse<never>>(
@@ -57,9 +42,10 @@ export async function GET(
 			);
 		}
 
-		return NextResponse.json<
-			ApiResponse<{ success: boolean; data: NewsApiResponse }>
-		>({ success: true, data: data.data }, { status: 200 });
+		return NextResponse.json<ApiResponse<MarketStatusData>>(
+			{ success: true, data: data.data },
+			{ status: 200 }
+		);
 	} catch (error: unknown) {
 		return NextResponse.json<ApiResponse<never>>(
 			{

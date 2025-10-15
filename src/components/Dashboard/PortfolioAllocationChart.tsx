@@ -55,8 +55,11 @@ const PortfolioAllocationChart = ({
 					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[50rem] pb-0"
 				>
 					<PieChart>
-						<ChartTooltip content={<ChartTooltipContent hideLabel />} />
-						<Pie data={chartDataMap} dataKey="value" label nameKey="ticker" />
+						<ChartTooltip
+							cursor={false}
+							content={<ChartTooltipContent hideLabel />}
+						/>
+						<Pie data={chartDataMap} dataKey="value" nameKey="ticker" />
 						<ChartLegend
 							content={
 								<ChartLegendContent nameKey="ticker" payload={undefined} />

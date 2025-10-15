@@ -30,13 +30,10 @@ const SearchBar = () => {
 		}
 		const delayDebounce = setTimeout(async () => {
 			try {
-				const res = await fetch(
-					`/api/quote/quoteSearchSuggestions?ticker=${input}`,
-					{
-						method: "GET",
-						headers: { "Content-Type": "application/json" },
-					}
-				);
+				const res = await fetch(`/api/holding/suggestions?ticker=${input}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" },
+				});
 
 				const data: ApiResponse<SearchResultItem[]> = await res.json();
 

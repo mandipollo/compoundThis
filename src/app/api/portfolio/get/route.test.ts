@@ -156,7 +156,7 @@ describe("Add stock to portfolio api route", () => {
 
 				//  assert that handler called fetch with correct URL and headers
 				expect(mockedFetch).toHaveBeenCalledWith(
-					`${mockServer}/user/getUserPortfolios`,
+					`${mockServer}/portfolio/portfolio`,
 					expect.objectContaining({
 						headers: {
 							Authorization: "Bearer mocked-id",

@@ -37,15 +37,11 @@ describe("hook for fetching popular stocks ", () => {
 		expect(isLoading).toBe(false);
 		expect(error).toBe(undefined);
 		// Assert useSWR call
-		expect(mockedUseSWR).toHaveBeenCalledWith(
-			`/api/quote/popularStocks`,
-			fetcher,
-			{
-				revalidateOnFocus: false,
-				revalidateOnReconnect: true,
-				refreshInterval: 0,
-			}
-		);
+		expect(mockedUseSWR).toHaveBeenCalledWith(`/api/market/popular`, fetcher, {
+			revalidateOnFocus: false,
+			revalidateOnReconnect: true,
+			refreshInterval: 0,
+		});
 	});
 	//
 

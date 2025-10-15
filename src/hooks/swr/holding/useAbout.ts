@@ -2,7 +2,7 @@ import { fetcher } from "@/libs/fetcher";
 import { AboutData } from "@/types/CompanyAbout.type";
 import useSWR from "swr";
 
-const useQuoteAbout = (selectedQuote: string) => {
+const useAbout = (selectedQuote: string) => {
 	const {
 		data,
 		error,
@@ -11,7 +11,7 @@ const useQuoteAbout = (selectedQuote: string) => {
 		data: { success: boolean; data: AboutData };
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR(`/api/quote/quoteAbout?ticker=${selectedQuote}`, fetcher, {
+	} = useSWR(`/api/holding/about?ticker=${selectedQuote}`, fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
@@ -24,4 +24,4 @@ const useQuoteAbout = (selectedQuote: string) => {
 	};
 };
 
-export default useQuoteAbout;
+export default useAbout;

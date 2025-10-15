@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2Icon } from "lucide-react";
 
 // hooks
-import useQuoteDailySummary from "@/hooks/swr/useQuoteDailySummary";
+import useQuoteDailySummary from "@/hooks/swr/holding/useSummary";
 
 // utils
 

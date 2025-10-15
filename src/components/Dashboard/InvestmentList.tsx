@@ -61,16 +61,16 @@ const InvestmentList = ({
 									{stock.ticker}
 								</Link>
 							</TableCell>
-							<TableCell>£{stock.buyPrice}</TableCell>
-							<TableCell>£{numberToDispaly(price)}</TableCell>
+							<TableCell>{stock.buyPrice.toFixed(2)}</TableCell>
+							<TableCell>{price.toFixed(2)}</TableCell>
 							<TableCell>{stock.quantity}</TableCell>
-							<TableCell>£{numberToDispaly(value)}</TableCell>
+							<TableCell>{value.toFixed(2)}</TableCell>
 							<TableCell
 								className={
 									capitalGains >= 0 ? "text-green-700" : "text-red-700"
 								}
 							>
-								{numberToDispaly(capitalGains)}
+								{capitalGains.toFixed(2)}
 							</TableCell>
 
 							<TableCell
@@ -85,7 +85,7 @@ const InvestmentList = ({
 			<TableFooter className="w-full bg-accent">
 				<TableRow className="w-full">
 					<TableCell colSpan={6}>Total</TableCell>
-					<TableCell className="">£{currentValue.toFixed(2)}</TableCell>
+					<TableCell>${currentValue.toFixed(2)}</TableCell>
 				</TableRow>
 			</TableFooter>
 		</Table>

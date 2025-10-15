@@ -15,7 +15,7 @@ const mockedUseSWR =
 import { renderHook } from "@testing-library/react";
 import { vi, expect, describe, it, afterEach } from "vitest";
 import useSWR, { SWRResponse } from "swr";
-import useQuoteStatement from "./useQuoteStatement";
+import useHoldingStatement from "./useStatement";
 import { fetcher } from "@/libs/fetcher";
 
 //
@@ -45,7 +45,7 @@ describe("quote statement hook", () => {
 		// Act
 		const ticker = "AAPL";
 
-		const { result } = renderHook(() => useQuoteStatement("AAPL"));
+		const { result } = renderHook(() => useHoldingStatement("AAPL"));
 		const { isLoading, data, error } = result.current;
 
 		// Assert hook output
@@ -55,7 +55,7 @@ describe("quote statement hook", () => {
 
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
-			`/api/quote/quoteStatement?ticker=${ticker}`,
+			`/api/holding/statement?ticker=${ticker}`,
 			fetcher,
 			{
 				revalidateOnFocus: false,
@@ -75,7 +75,7 @@ describe("quote statement hook", () => {
 
 		//
 
-		const { result } = renderHook(() => useQuoteStatement(""));
+		const { result } = renderHook(() => useHoldingStatement(""));
 		const { error, isLoading, data } = result.current;
 
 		expect(error).toEqual("Ticker is required and must be string");
@@ -92,7 +92,7 @@ describe("quote statement hook", () => {
 			mutate: vi.fn(),
 		} as SWRResponse<any, any>);
 
-		const { result } = renderHook(() => useQuoteStatement("AAPL"));
+		const { result } = renderHook(() => useHoldingStatement("AAPL"));
 		const { error, isLoading, data } = result.current;
 
 		expect(isLoading).toEqual(true);
@@ -109,7 +109,7 @@ describe("quote statement hook", () => {
 			mutate: vi.fn(),
 		} as SWRResponse<any, any>);
 
-		const { result } = renderHook(() => useQuoteStatement("AAPL"));
+		const { result } = renderHook(() => useHoldingStatement("AAPL"));
 
 		const { isLoading, error, data } = result.current;
 

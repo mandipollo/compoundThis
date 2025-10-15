@@ -2,7 +2,7 @@ import { fetcher } from "@/libs/fetcher";
 import { DailyTickerSummary } from "@/types/DailyTickerSummary.type";
 import useSWR from "swr";
 
-const useQuoteDailySummary = (selectedQuote: string) => {
+const useDailySummary = (selectedQuote: string) => {
 	const {
 		data,
 		error,
@@ -11,7 +11,7 @@ const useQuoteDailySummary = (selectedQuote: string) => {
 		data: { success: boolean; data: DailyTickerSummary };
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR(`/api/quote/quoteDailySummary?ticker=${selectedQuote}`, fetcher, {
+	} = useSWR(`/api/holding/summary?ticker=${selectedQuote}`, fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
@@ -24,4 +24,4 @@ const useQuoteDailySummary = (selectedQuote: string) => {
 	};
 };
 
-export default useQuoteDailySummary;
+export default useDailySummary;

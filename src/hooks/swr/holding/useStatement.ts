@@ -1,9 +1,9 @@
 import { fetcher } from "@/libs/fetcher";
 import useSWR from "swr";
 
-const useQuoteStatement = (selectedQuote: string) => {
+const useHoldingStatement = (selectedQuote: string) => {
 	const { data, error, isLoading } = useSWR(
-		`/api/quote/quoteStatement?ticker=${selectedQuote}`,
+		`/api/holding/statement?ticker=${selectedQuote}`,
 		fetcher,
 		{
 			revalidateOnFocus: false,
@@ -19,4 +19,4 @@ const useQuoteStatement = (selectedQuote: string) => {
 	};
 };
 
-export default useQuoteStatement;
+export default useHoldingStatement;

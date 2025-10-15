@@ -14,7 +14,7 @@ import BalanceSheet from "./BalanceSheet";
 import CashFlow from "./CashFlow";
 
 // hooks
-import useQuoteStatement from "@/hooks/swr/useQuoteStatement";
+import useQuoteStatement from "@/hooks/swr/holding/useStatement";
 
 // types
 import { FormattedFinancialStatementData } from "@/types/FinancialStatement.type";

@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { PopularTickerData } from "@/types/FinancialStatement.type";
+import { PopularTickerData } from "@/types/PopularTickers.type";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -15,7 +15,7 @@ export async function GET(
 			);
 		}
 
-		const response = await fetch(`${server}/quote/popular-stocks`);
+		const response = await fetch(`${server}/market/popular`);
 
 		if (!response.ok) {
 			return NextResponse.json(

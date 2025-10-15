@@ -1,13 +1,10 @@
-// types
+// Types
 import { PopularTickerData } from "@/types/PopularTickers.type";
-
-// ui
+// Ui
 import { TableBody, TableRow, TableCell } from "@/components/ui/table";
-
-// store
+// Store
 import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
-
-//utils
+// Utils
 import numberToDispaly from "@/utils/numberFormatter";
 
 const PopularStockSnapShot = ({

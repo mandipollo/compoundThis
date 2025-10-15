@@ -36,7 +36,7 @@ import StockSuggestionLists from "./StockSuggestionList";
 import SelectedStockDisplay from "./SelectedStockDisplay";
 
 // Hooks
-import useStockSuggestion from "@/hooks/useStockSuggestion";
+import useSearchSuggestion from "@/hooks/useSearchSuggestion";
 
 // date needs to be formatted as the same as server and client to resolve hydration issues
 import { format } from "date-fns";
@@ -115,7 +115,7 @@ const ManualAddStockForm = () => {
 	};
 
 	// search suggestion list hook
-	const { results, error } = useStockSuggestion({ input });
+	const { results, error } = useSearchSuggestion({ input });
 
 	return (
 		<Form {...form}>

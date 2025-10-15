@@ -54,6 +54,9 @@ const PortfolioChart = () => {
 	if (error) {
 		return <div>{error}</div>;
 	}
+	if (!data.data) {
+		return <div>Ohoo </div>;
+	}
 
 	return (
 		<Card className="pt-0">
@@ -126,6 +129,7 @@ const PortfolioChart = () => {
 							tickFormatter={value => {
 								const date = new Date(value);
 								return date.toLocaleDateString("en-US", {
+									year: "2-digit",
 									month: "short",
 									day: "numeric",
 								});

@@ -6,7 +6,7 @@ import SectionContainer from "@/components/Containers/SectionContainer";
 import HoldingNavigation from "@/components/Holdings/HoldingNavigation";
 import HoldingCompany from "@/components/Holdings/HoldingCompany";
 // hooks
-import useQuoteAbout from "@/hooks/swr/useQuoteAbout";
+import useAbout from "@/hooks/swr/holding/useAbout";
 
 export default function HoldingLayout({
 	children,
@@ -18,7 +18,7 @@ export default function HoldingLayout({
 	const { slug } = use(params);
 
 	if (!slug) return;
-	const { data, isLoading, error } = useQuoteAbout(slug);
+	const { data, isLoading, error } = useAbout(slug);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -30,6 +30,7 @@ export default function HoldingLayout({
 	if (!data) {
 		return <div>Oho oh</div>;
 	}
+	console.log(data);
 
 	const { primaryExchange, name } = data.data;
 	return (

@@ -47,10 +47,14 @@ const InvestmentSummary = ({
 					<TableCell
 						className={capitalGains >= 0 ? "text-green-700" : "text-red-700"}
 					>
-						£{capitalGains.toFixed(2)}
+						{capitalGains.toFixed(2)}
 					</TableCell>
 					<TableCell>TBD</TableCell>
-					<TableCell>£{currentValue.toFixed(2)}</TableCell>
+					<TableCell
+						className={capitalGains >= 0 ? "text-green-700" : "text-red-700"}
+					>
+						{capitalGains.toFixed(2)}
+					</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell className="font-medium">%</TableCell>

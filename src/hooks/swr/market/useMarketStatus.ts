@@ -11,7 +11,7 @@ const useMarketStatus = () => {
 		data: { success: boolean; data: MarketStatusData };
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR("/api/quote/marketStatus", fetcher, {
+	} = useSWR("/api/market/status", fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: true,
 		refreshInterval: 0,

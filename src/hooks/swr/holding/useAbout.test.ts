@@ -9,26 +9,22 @@ vi.mock("swr", () => {
 // Imports after mocking
 import { renderHook } from "@testing-library/react";
 import useSWR from "swr";
-import { SWRResponse } from "swr";
 import { vi, describe, it, expect } from "vitest";
+import { SWRResponse } from "swr";
 import { fetcher } from "@/libs/fetcher";
-import useMarketStatus from "./useMarketStatus";
+import useAbout from "./useAbout";
 
 // mocked version
 const mockedUseSWR = vi.mocked(useSWR);
 
-describe("market status  ", () => {
-	const mockMarketStatusData = {
-		afterHours: true,
-		earlyHours: false,
-		exchanges: {
-			nasdaq: "extended-hours",
-			nyse: "extended-hours",
-		},
-		serverTime: "2018-08-20",
-		market: "extended-hours",
+describe("Quote hooks ", () => {
+	const mockQuoteAboutData = {
+		ticker: "AAPL",
+		name: "Apple Inc.",
+		marketCap: 3000000000000,
+		description: "Apple Inc. designs and manufactures consumer electronics.",
 	};
-	it("calls useSWR with the correct API URL and fetcher", async () => {
+	it("calls useSWR with the correct API URL and fetcher", () => {
 		// Arrange
 		mockedUseSWR.mockReturnValue({
 			data: "mock-data",
@@ -40,25 +36,39 @@ describe("market status  ", () => {
 
 		// Act
 
-		const { result } = renderHook(() => useMarketStatus());
-		const { data, isLoading, error } = result.current;
+		const { result } = renderHook(() => useAbout("AAPL"));
+		const { error, isLoading, data } = result.current;
 		// Assert hook output
 		expect(data).toBe("mock-data");
 		expect(isLoading).toBe(false);
 		expect(error).toBe(undefined);
 		// Assert useSWR call
 		expect(mockedUseSWR).toHaveBeenCalledWith(
-			`/api/quote/marketStatus`,
+			`/api/holding/about?ticker=AAPL`,
 			fetcher,
 			{
 				revalidateOnFocus: false,
-				revalidateOnReconnect: true,
+				revalidateOnReconnect: false,
 				refreshInterval: 0,
 			}
 		);
 	});
 	//
+	it("returns on error on invalid ticker", async () => {
+		mockedUseSWR.mockReturnValue({
+			data: undefined,
+			isLoading: false,
+			error: "Ticker required",
+			mutate: vi.fn(),
+			isValidating: false,
+		}) as unknown as SWRResponse;
 
+		const { result } = renderHook(() => useAbout("AAPL"));
+		const { error, isLoading, data } = result.current;
+		expect(data).toBeUndefined();
+		expect(error).toBe("Ticker required");
+		expect(isLoading).toBe(false);
+	});
 	it("returns isloading on load stage", async () => {
 		mockedUseSWR.mockReturnValue({
 			data: undefined,
@@ -67,7 +77,7 @@ describe("market status  ", () => {
 			mutate: vi.fn(),
 			isValidating: false,
 		}) as unknown as SWRResponse;
-		const { result } = renderHook(() => useMarketStatus());
+		const { result } = renderHook(() => useAbout("AAPL"));
 		const { error, isLoading, data } = result.current;
 		expect(data).toBeUndefined();
 		expect(error).toBeUndefined();
@@ -78,16 +88,16 @@ describe("market status  ", () => {
 
 	it("should return correctly formatted data on success", async () => {
 		mockedUseSWR.mockReturnValue({
-			data: mockMarketStatusData,
+			data: mockQuoteAboutData,
 			isLoading: false,
 			error: undefined,
 			mutate: vi.fn(),
 			isValidating: false,
 		}) as unknown as SWRResponse;
 
-		const { result } = renderHook(() => useMarketStatus());
+		const { result } = renderHook(() => useAbout("AAPL"));
 		const { error, isLoading, data } = result.current;
-		expect(data).toEqual(mockMarketStatusData);
+		expect(data).toEqual(mockQuoteAboutData);
 		expect(error).toBeUndefined();
 		expect(isLoading).toBe(false);
 	});

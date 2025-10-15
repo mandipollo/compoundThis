@@ -27,10 +27,13 @@ export async function GET(
 			);
 		}
 
-		const response = await fetch(`${server}/quote/statement?ticker=${ticker}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json" },
-		});
+		const response = await fetch(
+			`${server}/holding/statement?ticker=${ticker}`,
+			{
+				method: "GET",
+				headers: { "Content-Type": "application/json" },
+			}
+		);
 
 		if (!response.ok) {
 			return NextResponse.json<ApiResponse<never>>(

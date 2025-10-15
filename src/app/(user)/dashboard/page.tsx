@@ -31,7 +31,6 @@ const DashboardPage = () => {
 	}
 
 	const stocks: UserStockDetails[] = data?.data ?? [];
-	console.log(stocks);
 
 	const currentValue = stocks.reduce(
 		(acc, stock) =>

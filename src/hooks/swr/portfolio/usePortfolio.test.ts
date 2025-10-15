@@ -48,7 +48,7 @@ describe("Unit test useUserPortfolio swr hook", () => {
 		expect(error).toBe(undefined);
 
 		// Assert useSWR call
-		expect(mockedUseSWR).toHaveBeenCalledWith(`/api/user/portfolio`, fetcher, {
+		expect(mockedUseSWR).toHaveBeenCalledWith(`/api/portfolio/get`, fetcher, {
 			revalidateOnFocus: false,
 			revalidateOnReconnect: false,
 			refreshInterval: 0,

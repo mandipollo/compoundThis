@@ -4,7 +4,7 @@ import { SearchResultItem } from "@/types/Search.type";
 import getErrorMessage from "@/utils/get-error-message";
 import { useEffect, useState } from "react";
 
-const useStockSuggestion = ({ input }: { input: string }) => {
+const useSearchSuggestion = ({ input }: { input: string }) => {
 	const [error, setError] = useState<string>("");
 	const [results, setResults] = useState<SearchResultItem[]>([]);
 	useEffect(() => {
@@ -14,13 +14,10 @@ const useStockSuggestion = ({ input }: { input: string }) => {
 		}
 		const delayDebounce = setTimeout(async () => {
 			try {
-				const res = await fetch(
-					`/api/quote/quoteSearchSuggestions?ticker=${input}`,
-					{
-						method: "GET",
-						headers: { "Content-Type": "application/json" },
-					}
-				);
+				const res = await fetch(`/api/holding/suggestions?ticker=${input}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" },
+				});
 
 				const data: ApiResponse<SearchResultItem[]> = await res.json();
 
@@ -54,4 +51,4 @@ const useStockSuggestion = ({ input }: { input: string }) => {
 	};
 };
 
-export default useStockSuggestion;
+export default useSearchSuggestion;

@@ -1,5 +1,4 @@
 import { fetcher } from "@/libs/fetcher";
-import { AboutData } from "@/types/CompanyAbout.type";
 import { NewsApiResponse } from "@/types/NewsApiResponse.type";
 import useSWR from "swr";
 
@@ -15,7 +14,7 @@ const useHoldingNews = (holding: string) => {
 		};
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR(`/api/quote/holdingNews?ticker=${holding}`, fetcher, {
+	} = useSWR(`/api/holding/news?ticker=${holding}`, fetcher, {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 		refreshInterval: 0,
