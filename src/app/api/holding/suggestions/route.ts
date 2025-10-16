@@ -27,12 +27,16 @@ export async function GET(
 			);
 		}
 		const response = await fetch(
-			`${server}/holding/suggestions?ticker=${ticker}`,
+			`${server}/holding/suggestion?ticker=${ticker}`,
 			{
 				method: "GET",
 				headers: { "Content-Type": "application/json" },
 			}
 		);
+
+		if (!response.ok) {
+			throw new Error(`Status - ${response.status} `);
+		}
 
 		const data = await response.json();
 		console.log(data);
