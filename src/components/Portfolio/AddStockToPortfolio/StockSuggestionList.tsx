@@ -1,6 +1,6 @@
 import React, { SetStateAction } from "react";
 
-//ui
+// Ui
 import {
 	CommandList,
 	CommandEmpty,
@@ -9,7 +9,7 @@ import {
 	CommandShortcut,
 } from "@/components/ui/command";
 
-// types
+// Types
 import { SearchResultItem } from "@/types/Search.type";
 
 const StockSuggestionLists = ({

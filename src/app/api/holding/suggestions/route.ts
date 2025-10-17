@@ -33,14 +33,10 @@ export async function GET(
 				headers: { "Content-Type": "application/json" },
 			}
 		);
-
 		if (!response.ok) {
 			throw new Error(`Status - ${response.status} `);
 		}
-
 		const data = await response.json();
-		console.log(data);
-
 		//  Check if the external API's own success flag is false
 		if (data.success === "false") {
 			return NextResponse.json(

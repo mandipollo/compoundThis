@@ -1,5 +1,8 @@
-import Link from "next/link";
+// Ui
 import { Button } from "../ui/button";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+// Components
+import HoldingDialog from "./HoldingDialogue";
 
 const DashboardHeader = ({ currentValue }: { currentValue: number }) => {
 	return (
@@ -20,9 +23,14 @@ const DashboardHeader = ({ currentValue }: { currentValue: number }) => {
 					<Button className="bg-orange-600 hover:bg-orange-700 text-xs hover:cursor-pointer">
 						Upgrade Account
 					</Button>
-					<Button className="text-xs hover:cursor-pointer">
-						<Link href={"/portfolio/onboard/manual"}>Add Investment</Link>
-					</Button>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button className=" font-extralight text-xs" variant="outline">
+								Add investments
+							</Button>
+						</DialogTrigger>
+						<HoldingDialog />
+					</Dialog>
 				</div>
 			</div>
 		</div>

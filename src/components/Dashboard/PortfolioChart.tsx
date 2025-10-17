@@ -78,12 +78,6 @@ const PortfolioChart = () => {
 						<SelectItem value="90d" className="rounded-lg">
 							Since first purchase
 						</SelectItem>
-						<SelectItem value="30d" className="rounded-lg">
-							Last 30 days
-						</SelectItem>
-						<SelectItem value="7d" className="rounded-lg">
-							Last 7 days
-						</SelectItem>
 					</SelectContent>
 				</Select>
 			</CardHeader>

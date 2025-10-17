@@ -1,5 +1,5 @@
-import { SearchResultItem } from "@/types/Search.type";
 import React from "react";
+import { SearchResultItem } from "@/types/Search.type";
 
 const SelectedStockDisplay = ({
 	selectedStock,

@@ -21,23 +21,17 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
-
 // zod
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
-
 import { z } from "zod";
-
 // Types
 import { SearchResultItem } from "@/types/Search.type";
-
 // Components
 import StockSuggestionLists from "./StockSuggestionList";
 import SelectedStockDisplay from "./SelectedStockDisplay";
-
 // Hooks
 import useSearchSuggestion from "@/hooks/useSearchSuggestion";
-
 // date needs to be formatted as the same as server and client to resolve hydration issues
 import { format } from "date-fns";
 
@@ -53,7 +47,6 @@ const formSchema = z.object({
 	price: z.number(),
 });
 
-//TODO:SEARCH COMPANY SUGGESTION
 const ManualAddStockForm = () => {
 	const route = useRouter();
 	// popover
@@ -105,9 +98,7 @@ const ManualAddStockForm = () => {
 				method: "POST",
 				body: JSON.stringify(stockData),
 			});
-			const data = await response.json();
-			console.log(data);
-
+			await response.json();
 			route.push("/dashboard");
 		} catch (error) {
 			console.log(error);
