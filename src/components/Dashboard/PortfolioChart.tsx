@@ -129,12 +129,6 @@ const PortfolioChart = () => {
 								});
 							}}
 						/>
-						<YAxis
-							tickLine={false}
-							axisLine={false}
-							tickMargin={8}
-							tickCount={3}
-						/>
 						<ChartTooltip
 							cursor={false}
 							content={
