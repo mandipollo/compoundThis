@@ -57,9 +57,7 @@ const ManualAddStockForm = () => {
 	const [selectedStock, setSelectedStock] = useState<SearchResultItem | null>(
 		null
 	);
-
 	// Forms
-
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {

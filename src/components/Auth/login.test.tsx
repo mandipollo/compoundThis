@@ -172,7 +172,7 @@ describe("Login component", () => {
 
 		// assert user has been routed to user page
 
-		expect(mockPush).toBeCalledWith("/dashboard");
+		expect(mockPush).toBeCalledWith("/portfolio");
 	});
 
 	it("redirects unconfirmed users to /auth/confirmEmail", async () => {

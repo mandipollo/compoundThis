@@ -1,13 +1,14 @@
 import React from "react";
 
+// UI
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+// COMPONENTS
 import NavigationLink from "./NavigationLink";
-
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 	return (
 		<div className="flex w-full py-4">
@@ -16,7 +17,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/dashboard/${ticker}`}
+								href={`/portfolio/${ticker}`}
 								exact
 								className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white"
 							>
@@ -27,7 +28,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/dashboard/${ticker}/financial`}
+								href={`/portfolio/${ticker}/financial`}
 								exact
 								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 							>
@@ -38,7 +39,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/dashboard/${ticker}/notes`}
+								href={`/portfolio/${ticker}/notes`}
 								exact
 								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 							>
@@ -49,7 +50,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/dashboard/${ticker}/news`}
+								href={`/portfolio/${ticker}/news`}
 								exact
 								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 							>
@@ -60,7 +61,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
-								href={`/dashboard/${ticker}/editHolding`}
+								href={`/portfolio/${ticker}/editHolding`}
 								exact
 								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 							>

@@ -127,7 +127,7 @@ const Login = () => {
 					success: true,
 					message: "Successfully logged in",
 				});
-				router.push("/dashboard");
+				router.push("/portfolio");
 				setPending(false);
 				return;
 			}

@@ -1,4 +1,5 @@
-// ui
+import Link from "next/link";
+// UI
 import {
 	TableCaption,
 	TableHeader,
@@ -10,13 +11,8 @@ import {
 	TableFooter,
 } from "@/components/ui/table";
 
-// types
+// TYPES
 import { UserStockDetails } from "@/types/UserPortfolio.type";
-
-// utils
-import numberToDispaly from "@/utils/numberFormatter";
-import Link from "next/link";
-
 const InvestmentList = ({
 	stocks,
 	currentValue,
@@ -57,7 +53,7 @@ const InvestmentList = ({
 					return (
 						<TableRow key={stock.id}>
 							<TableCell className="font-medium underline underline-offset-2">
-								<Link href={{ pathname: `/dashboard/${stock.ticker}` }}>
+								<Link href={{ pathname: `/portfolio/${stock.ticker}` }}>
 									{stock.ticker}
 								</Link>
 							</TableCell>

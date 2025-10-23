@@ -32,14 +32,14 @@ import { useUserStore } from "@/store/userStore";
 // Menu items.
 const items = [
 	{
-		title: "Dashboard",
-		url: "/dashboard",
-		icon: LayoutDashboard,
-	},
-	{
 		title: "Portfolio",
 		url: "/portfolio",
 		icon: BriefcaseBusinessIcon,
+	},
+	{
+		title: "Dashboard",
+		url: "/dashboard",
+		icon: LayoutDashboard,
 	},
 	{
 		title: "Search",
