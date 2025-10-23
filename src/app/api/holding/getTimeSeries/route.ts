@@ -36,22 +36,22 @@ export async function GET(
 
 		const { sub } = payload;
 
-		// holding
-
+		// holding and customDate
 		const { searchParams } = new URL(req.url);
 
 		const holding = searchParams.get("holding");
+		const timeRange = searchParams.get("timeRange");
 		if (!holding) {
 			return NextResponse.json<ApiResponse<never>>(
 				{
 					success: false,
-					error: "Holding required",
+					error: "Holding & date required",
 				},
 				{ status: 401 }
 			);
 		}
 		const response = await fetch(
-			`${server}/holding/time-series?holding=${holding}`,
+			`${server}/holding/time-series?holding=${holding}&timeRange=${timeRange}`,
 			{
 				method: "GET",
 				headers: { Authorization: `Bearer ${sub}` },

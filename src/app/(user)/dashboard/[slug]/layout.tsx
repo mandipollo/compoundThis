@@ -30,8 +30,6 @@ export default function HoldingLayout({
 	if (!data) {
 		return <div>Oho oh</div>;
 	}
-	console.log(data);
-
 	const { primaryExchange, name } = data.data;
 	return (
 		<SectionContainer>

@@ -3,13 +3,6 @@
 import React from "react";
 
 // Ui
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Loader2Icon } from "lucide-react";
 // Components
 import DemoHorizontalChart from "./HorizontalChart";
@@ -60,17 +53,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		<div className="flex flex-col w-full gap-2 h-full ">
 			<div className="grid w-full gap-2 grid-cols-[2fr_1fr]">
 				<div className="flex flex-col gap-4">
-					<Select>
-						<SelectTrigger className="w-[180px]">
-							<SelectValue placeholder="Since first purchase" />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="first">Since first purchase</SelectItem>
-							<SelectItem value="month">In this month</SelectItem>
-							<SelectItem value="week">In last week</SelectItem>
-						</SelectContent>
-					</Select>
-
 					<HoldingSummaryTable
 						dailyPrice={close}
 						purchasePrice={buyPrice}
@@ -88,13 +70,11 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						quantity={quantity}
 					/>
 					<HoldingPortfolioAllocation ticker={ticker} />
-
 					<DemoHorizontalChart
 						from={from}
 						dailyPrice={close}
 						price={buyPrice}
 					/>
-
 					<HoldingInvestment
 						currentPrice={close}
 						buyPrice={buyPrice}

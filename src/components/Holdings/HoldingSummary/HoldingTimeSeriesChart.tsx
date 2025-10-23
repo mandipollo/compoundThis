@@ -25,9 +25,6 @@ import {
 } from "@/components/ui/select";
 // Hooks
 import useHoldingTimeSeries from "@/hooks/swr/holding/useHoldingTimeSeries";
-
-export const description = "An interactive area chart";
-
 const chartConfig = {
 	value: {
 		label: "Value",
@@ -36,8 +33,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
-	const { data, isLoading, error } = useHoldingTimeSeries({ holding });
-	const [timeRange, setTimeRange] = React.useState("90d");
+	const [timeRange, setTimeRange] = React.useState("firstPurchase");
+	const { data, isLoading, error } = useHoldingTimeSeries({
+		holding,
+		timeRange,
+	});
+
+	console.log(timeRange);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -45,7 +47,6 @@ const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
 	if (error) {
 		return <div>Error</div>;
 	}
-
 	return (
 		<Card className="pt-0">
 			<CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
@@ -63,8 +64,14 @@ const HoldingTimeSeriesChart = ({ holding }: { holding: string }) => {
 						<SelectValue placeholder="Since first purchase" />
 					</SelectTrigger>
 					<SelectContent className="rounded-xl">
-						<SelectItem value="90d" className="rounded-lg">
+						<SelectItem value="firstPurchase" className="rounded-lg">
 							Since first purchase
+						</SelectItem>
+						<SelectItem value="year" className="rounded-lg">
+							Year
+						</SelectItem>
+						<SelectItem value="quarter" className="rounded-lg">
+							Quarter
 						</SelectItem>
 						<SelectItem value="30d" className="rounded-lg">
 							Last 30 days
