@@ -1,5 +1,5 @@
-import HoldingsSummary from "@/components/Holdings/HoldingSummary/HoldingsSummary";
 import React from "react";
+import HoldingsSummary from "@/components/Holdings/Summary/Summary";
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 	const { slug } = await params;

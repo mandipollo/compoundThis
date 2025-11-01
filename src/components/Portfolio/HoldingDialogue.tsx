@@ -1,11 +1,11 @@
+import Link from "next/link";
+//COMPONENTS
 import {
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import Link from "next/link";
-
 const HoldingDialog = () => {
 	return (
 		<DialogContent className="sm:max-w-md md:max-w-xl ">

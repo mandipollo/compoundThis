@@ -1,9 +1,7 @@
 "use server";
-
 import { ApiResponse } from "@/types/ApiResponse.type";
 import { DailyTickerSummary } from "@/types/DailyTickerSummary.type";
 import { NextRequest, NextResponse } from "next/server";
-
 //
 export async function GET(
 	request: NextRequest
@@ -19,10 +17,8 @@ export async function GET(
 				{ status: 400 }
 			);
 		}
-
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
-
 		if (!ticker || typeof ticker !== "string") {
 			return NextResponse.json<ApiResponse<never>>(
 				{
@@ -32,11 +28,23 @@ export async function GET(
 				{ status: 400 }
 			);
 		}
-		const response = await fetch(`${server}/holding/summary?ticker=${ticker}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json" },
-		});
-
+		const date = searchParams.get("date");
+		if (!date) {
+			return NextResponse.json<ApiResponse<never>>(
+				{
+					success: false,
+					error: "Date is required",
+				},
+				{ status: 400 }
+			);
+		}
+		const response = await fetch(
+			`${server}/holding/summary?ticker=${ticker}&date=${date}`,
+			{
+				method: "GET",
+				headers: { "Content-Type": "application/json" },
+			}
+		);
 		const data = await response.json();
 		//  Check if the external API's own success flag is false
 		if (data.success === "false") {
@@ -45,7 +53,6 @@ export async function GET(
 				error: data,
 			});
 		}
-
 		return NextResponse.json<ApiResponse<DailyTickerSummary>>({
 			success: true,
 			data: data.data,

@@ -1,27 +1,22 @@
 "use client";
-
 import React from "react";
-
-// Types
+//TYPES
 import { UserStockDetails } from "@/types/UserPortfolio.type";
-// Ui
+//UI
 import { Loader2Icon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-// Components
+//COMPONENTS
 import SectionContainer from "@/components/Containers/SectionContainer";
-
-// Hooks
 import usePortfolio from "@/hooks/swr/portfolio/usePortfolio";
-import DashboardHeader from "@/components/Portfolio/PortfolioHeader";
+import DashboardHeader from "@/components/Portfolio/Header";
 import InvestmentSummary from "@/components/Portfolio/InvestmentSummary";
-import PortfolioChart from "@/components/Portfolio/PortfolioChart";
-import PortfolioAllocationChart from "@/components/Portfolio/PortfolioAllocationChart";
+import PortfolioChart from "@/components/Portfolio/TimeSeriesChart";
+import PortfolioAllocationChart from "@/components/Portfolio/AllocationChart";
 import BaseAtGlanceChart from "@/components/Portfolio/BaseAtGlanceChart";
 import InvestmentList from "@/components/Portfolio/InvestmentList";
 
 const DashboardPage = () => {
 	const { data, error, isLoading } = usePortfolio();
-
 	//
 	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;

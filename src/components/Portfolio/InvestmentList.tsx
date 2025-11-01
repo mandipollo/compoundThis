@@ -1,5 +1,5 @@
 import Link from "next/link";
-// UI
+//UI
 import {
 	TableCaption,
 	TableHeader,
@@ -10,8 +10,7 @@ import {
 	Table,
 	TableFooter,
 } from "@/components/ui/table";
-
-// TYPES
+//TYPES
 import { UserStockDetails } from "@/types/UserPortfolio.type";
 const InvestmentList = ({
 	stocks,

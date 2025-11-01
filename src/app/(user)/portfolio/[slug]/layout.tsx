@@ -1,13 +1,12 @@
 "use client";
 
 import { use } from "react";
-// components
+// COMPONENTS
 import SectionContainer from "@/components/Containers/SectionContainer";
-import HoldingNavigation from "@/components/Holdings/HoldingNavigation";
-import HoldingCompany from "@/components/Holdings/HoldingCompany";
-// hooks
+import HoldingNavigation from "@/components/Holdings/Navigation";
+import HoldingCompany from "@/components/Holdings/Company";
+// HOOKS
 import useAbout from "@/hooks/swr/holding/useAbout";
-
 export default function HoldingLayout({
 	children,
 	params,

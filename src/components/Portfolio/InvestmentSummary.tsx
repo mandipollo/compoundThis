@@ -1,8 +1,6 @@
 "use client";
 
-// ui
-
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+//UI
 import {
 	Table,
 	TableBody,
@@ -11,17 +9,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-
-// Types
-
-import { UserStockDetails } from "@/types/UserPortfolio.type";
-// Components
-
-import PortfolioChart from "./PortfolioChart";
-
-// configs
+//CONFIGS
 export const description = "A simple area chart";
-
 const InvestmentSummary = ({
 	currentValue,
 	capitalGainPct,

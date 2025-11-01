@@ -1,6 +1,6 @@
 import React, { SetStateAction } from "react";
 
-// Ui
+//UI
 import {
 	CommandList,
 	CommandEmpty,
@@ -8,8 +8,7 @@ import {
 	CommandItem,
 	CommandShortcut,
 } from "@/components/ui/command";
-
-// Types
+//TYPES
 import { SearchResultItem } from "@/types/Search.type";
 
 const StockSuggestionLists = ({
@@ -20,7 +19,7 @@ const StockSuggestionLists = ({
 	setSelectedStock: React.Dispatch<SetStateAction<SearchResultItem | null>>;
 }) => {
 	if (!results || results.length === 0) {
-		return;
+		return null;
 	}
 
 	return (

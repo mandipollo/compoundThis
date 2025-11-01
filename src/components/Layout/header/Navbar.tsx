@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
 
-// store
+//STORE
 import { useUserStore } from "@/store/userStore";
 const Navbar = () => {
 	const { isAuthenticated } = useUserStore();
-
 	if (isAuthenticated) {
 		return;
 	}

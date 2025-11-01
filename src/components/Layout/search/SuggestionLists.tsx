@@ -1,6 +1,6 @@
 import React from "react";
 
-//ui
+//UI
 import {
 	CommandList,
 	CommandEmpty,
@@ -8,11 +8,9 @@ import {
 	CommandItem,
 	CommandShortcut,
 } from "@/components/ui/command";
-
-// types
+//TYPES
 import { SearchResultItem } from "@/types/Search.type";
-
-// store
+//STORE
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 
 const SuggestionLists = ({ results }: { results: SearchResultItem[] }) => {

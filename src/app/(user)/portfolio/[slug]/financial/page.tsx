@@ -1,6 +1,6 @@
-import HoldingStatement from "@/components/Holdings/HoldingFinancialStatements/HoldingStatement";
 import React from "react";
-
+//COMPONENTS
+import HoldingStatement from "@/components/Holdings/FinancialStatements/FinancialStatement";
 const FinancialStatementPage = async ({
 	params,
 }: {

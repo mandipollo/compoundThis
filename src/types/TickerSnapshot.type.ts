@@ -32,3 +32,8 @@ export interface TickerSnapshot {
 	todaysChangePerc: number | null;
 	updated: number | null;
 }
+
+export interface SingleTickerResponse {
+	price: number;
+	updated: number;
+}

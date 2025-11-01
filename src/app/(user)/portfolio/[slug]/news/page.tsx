@@ -1,6 +1,5 @@
-import HoldingNews from "@/components/Holdings/HoldingNews/HoldingNews";
 import React from "react";
-
+import HoldingNews from "@/components/Holdings/News/News";
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 	const { slug } = await params;
 	return (

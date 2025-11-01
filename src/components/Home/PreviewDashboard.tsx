@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-// components
+//COMPONENTS
 import Container from "../Containers/Container";
 
 const PreviewDashboard = () => {

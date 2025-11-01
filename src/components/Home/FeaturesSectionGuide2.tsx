@@ -1,9 +1,8 @@
 import Image from "next/image";
 
-// components
+//COMPONENTS
 import Container from "../Containers/Container";
-
-// ui
+//UI
 import {
 	Accordion,
 	AccordionContent,

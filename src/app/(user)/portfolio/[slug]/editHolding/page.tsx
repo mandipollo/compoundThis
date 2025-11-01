@@ -1,4 +1,4 @@
-import HoldingTradesList from "@/components/Holdings/HoldingEdit/HoldingTradesList";
+import HoldingTradesList from "@/components/Holdings/Edit/HoldingTradesList";
 import React from "react";
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {

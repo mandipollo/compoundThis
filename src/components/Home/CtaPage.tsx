@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// components
+//COMPONENTS
 import Container from "../Containers/Container";
-
-// ui
+//UI
 import { Button } from "../ui/button";
 
 const CtaPage = () => {

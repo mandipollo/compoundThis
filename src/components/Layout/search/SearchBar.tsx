@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-// ui
+//UI
 import { Command } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-
-// components
+//COMPONENTS
 import SuggestionLists from "./SuggestionLists";
-
-// types
+//TYPES
 import { SearchResultItem } from "@/types/Search.type";
 import { ApiResponse } from "@/types/ApiResponse.type";
-
-// utils
+//UTILS
 import getErrorMessage from "@/utils/get-error-message";
 
 const SearchBar = () => {

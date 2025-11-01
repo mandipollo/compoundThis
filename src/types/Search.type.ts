@@ -1,18 +1,18 @@
 import { Dispatch, SetStateAction } from "react";
 // search suggestion types
 export interface SearchResultItem {
-	ticker: string | null;
-	name: string | null;
-	market: string | null;
-	primary_exchange: string | null;
-	type: string | null;
+	ticker: string;
+	name: string;
+	market: string;
+	primary_exchange: string;
+	type: string;
 }
 
 interface SearchSuggestionItem {
-	ticker: string | null;
-	name: string | null;
-	market: string | null;
-	locale: string | null;
+	ticker: string;
+	name: string;
+	market: string;
+	locale: string;
 	cik: string | null;
 	primary_exchange: string | null;
 	type: string | null;
@@ -23,10 +23,10 @@ interface SearchSuggestionItem {
 	last_updated_utc: string | null;
 }
 export interface SearchSuggestionResponse {
-	count: number | null;
-	next_url: string | null;
-	request_id: string | null;
-	status: string | null;
+	count: number;
+	next_url: string;
+	request_id: string;
+	status: string;
 	results: SearchSuggestionItem[] | [];
 }
 

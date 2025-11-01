@@ -3,7 +3,7 @@ import React from "react";
 //components
 import FullWidthContainer from "@/components/Containers/FullWidthContainer";
 import SectionContainer from "@/components/Containers/SectionContainer";
-import ManualAddStockForm from "@/components/Portfolio/AddHolding/ManualAddStockForm";
+import ManualAddStockForm from "@/components/Portfolio/AddHolding/ManualForm";
 
 const page = () => {
 	return (

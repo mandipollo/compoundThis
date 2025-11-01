@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// ui
+//UI
 import {
 	Activity,
 	Mail,
@@ -10,7 +10,6 @@ import {
 	LayoutDashboard,
 	BriefcaseBusinessIcon,
 } from "lucide-react";
-
 import {
 	Sidebar,
 	SidebarContent,
@@ -22,13 +21,10 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-// components
+//COMPONENTS
 import DropdownUser from "./DropdownUser";
-
-// store
+//STORE
 import { useUserStore } from "@/store/userStore";
-
 // Menu items.
 const items = [
 	{
@@ -66,7 +62,6 @@ const items = [
 
 export function AppSidebar() {
 	const pathname = usePathname();
-
 	const { name } = useUserStore();
 	return (
 		<Sidebar>

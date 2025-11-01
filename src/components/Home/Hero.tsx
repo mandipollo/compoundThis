@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-// Components
+//COMPONENTS
 import InfiniteScrollLogo from "./InfiniteScrollLogo";
 import Container from "../Containers/Container";
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-// ui
+//UI
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronUp, User2 } from "lucide-react";
 import { SidebarMenuButton } from "../../ui/sidebar";
-// store
+//STORE
 import { useUserStore } from "@/store/userStore";
 import { useSelectedQuoteStore } from "@/store/selectedQuoteStore";
 

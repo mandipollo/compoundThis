@@ -1,6 +1,6 @@
 "use client";
 
-// Ui
+//UI
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts";
 import {
 	Card,

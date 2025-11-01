@@ -1,7 +1,7 @@
 "use client";
 import { MouseEvent, useCallback, useState, useRef } from "react";
 
-// utils
+//UTILS
 import { throttle } from "@/utils/throttle";
 
 //TODO: EXPAND ON THE CARD DETAILS
