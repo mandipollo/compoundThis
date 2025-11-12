@@ -5,9 +5,6 @@ import { WebSocketPopularStockData } from "@/types/WebSocketPopularTickers.type"
 // ui
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 
-// store
-import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
-
 const PopularStockLiveData = ({
 	wsStockData,
 	snapshotData,
@@ -15,13 +12,9 @@ const PopularStockLiveData = ({
 	wsStockData: Record<string, WebSocketPopularStockData>;
 	snapshotData: PopularTickerData;
 }) => {
-	const { setSelectedQuote, selectedQuote } = useHomeSelectedQuoteStore();
 	return (
 		<TableBody>
-			<TableRow
-				onClick={() => setSelectedQuote("AAPL")}
-				className={`${selectedQuote === "AAPL" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
-			>
+			<TableRow>
 				<TableCell>AAPL</TableCell>
 				<TableCell>{wsStockData["AAPL"]?.c.toFixed(2) ?? "N/A"}</TableCell>
 				<TableCell>
@@ -30,10 +23,7 @@ const PopularStockLiveData = ({
 							.c}
 				</TableCell>
 			</TableRow>
-			<TableRow
-				onClick={() => setSelectedQuote("TSLA")}
-				className={`${selectedQuote === "TSLA" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
-			>
+			<TableRow>
 				<TableCell>TSLA</TableCell>
 				<TableCell>{wsStockData["TSLA"]?.c.toFixed(2) ?? "N/A"}</TableCell>
 				<TableCell>
@@ -42,10 +32,7 @@ const PopularStockLiveData = ({
 							.c}
 				</TableCell>
 			</TableRow>
-			<TableRow
-				onClick={() => setSelectedQuote("GOOG")}
-				className={`${selectedQuote === "GOOG" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
-			>
+			<TableRow>
 				<TableCell>GOOG</TableCell>
 				<TableCell>{wsStockData["GOOG"]?.c.toFixed(2) ?? "N/A"}</TableCell>
 				<TableCell>
@@ -54,10 +41,7 @@ const PopularStockLiveData = ({
 							.c}
 				</TableCell>
 			</TableRow>
-			<TableRow
-				onClick={() => setSelectedQuote("MSFT")}
-				className={`${selectedQuote === "MSFT" && "bg-primaryBlue"} text-center hover:bg-primaryBlue hover:cursor-pointer`}
-			>
+			<TableRow>
 				<TableCell>MSFT</TableCell>
 				<TableCell>{wsStockData["MSFT"]?.c.toFixed(2) ?? "N/A"}</TableCell>
 				<TableCell>

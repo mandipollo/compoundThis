@@ -34,6 +34,7 @@ import SelectedStockDisplay from "./SelectedStockDisplay";
 import useSearchSuggestion from "@/hooks/useSearchSuggestion";
 // date needs to be formatted as the same as server and client to resolve hydration issues
 import { format } from "date-fns";
+import Link from "next/link";
 const formSchema = z.object({
 	stock: z
 		.string()
@@ -227,10 +228,16 @@ const ManualAddStockForm = () => {
 					<span>Total</span>
 					<span>GB£ {Number(stockPrice) * Number(quantityStock)}</span>
 				</div>
-				<Button variant="ghost" className="w-full hover:cursor-pointer border">
+				<Link
+					className="w-full hover:cursor-pointer border p-2 text-center rounded-md"
+					href={"/portfolio"}
+				>
 					CANCEL
+				</Link>
+
+				<Button type="submit" className="w-full hover:cursor-pointer">
+					ADD
 				</Button>
-				<Button className="w-full hover:cursor-pointer">ADD</Button>
 			</form>
 		</Form>
 	);

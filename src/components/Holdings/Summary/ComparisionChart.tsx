@@ -1,5 +1,5 @@
 "use client";
-
+import { format } from "date-fns";
 //UI
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -16,6 +16,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
+
 const ComparisionChart = ({
 	price,
 	dailyPrice,
@@ -23,7 +24,7 @@ const ComparisionChart = ({
 }: {
 	price: number;
 	dailyPrice: number;
-	from: string;
+	from: number;
 }) => {
 	const chartData = [
 		{
@@ -55,7 +56,10 @@ const ComparisionChart = ({
 				<CardTitle className="text-md font-semibold">
 					Price comparision
 				</CardTitle>
-				<CardDescription className="text-xs">Updated on {from}</CardDescription>
+				<CardDescription className="text-xs">
+					Updated on{" "}
+					{format(new Date(from / 1_000_000), "k:mm aaa 'of' dd-MM-yyyy")}
+				</CardDescription>
 			</CardHeader>
 			<CardContent className="px-0">
 				<ChartContainer config={chartConfig}>

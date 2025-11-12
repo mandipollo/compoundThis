@@ -2,8 +2,6 @@
 import { PopularTickerData } from "@/types/PopularTickers.type";
 // Ui
 import { TableBody, TableRow, TableCell } from "@/components/ui/table";
-// Store
-import { useHomeSelectedQuoteStore } from "@/store/homeSelectedQuoteStore";
 // Utils
 import numberToDispaly from "@/utils/numberFormatter";
 
@@ -12,15 +10,10 @@ const PopularStockSnapShot = ({
 }: {
 	snapshotData: PopularTickerData;
 }) => {
-	const { setSelectedQuote } = useHomeSelectedQuoteStore();
 	return (
 		<TableBody>
 			{snapshotData?.tickers?.map(ticker => (
-				<TableRow
-					onClick={() => setSelectedQuote(ticker.ticker)}
-					key={ticker.ticker}
-					className="text-center"
-				>
+				<TableRow key={ticker.ticker} className="text-center">
 					<TableCell>{ticker.ticker}</TableCell>
 					<TableCell>
 						${ticker.min.c === 0 ? ticker.prevDay.c : ticker.min.c}

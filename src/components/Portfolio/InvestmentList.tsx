@@ -11,12 +11,12 @@ import {
 	TableFooter,
 } from "@/components/ui/table";
 //TYPES
-import { UserStockDetails } from "@/types/UserPortfolio.type";
+import { UserStock } from "@/types/UserPortfolio.type";
 const InvestmentList = ({
 	stocks,
 	currentValue,
 }: {
-	stocks: UserStockDetails[];
+	stocks: UserStock[];
 	currentValue: number;
 }) => {
 	return (

@@ -14,18 +14,14 @@ export async function GET(
 				{ status: 400 }
 			);
 		}
-
 		const response = await fetch(`${server}/market/popular`);
-
 		if (!response.ok) {
 			return NextResponse.json(
 				{ success: false, error: response.statusText },
 				{ status: response.status }
 			);
 		}
-
 		const data = await response.json();
-
 		return NextResponse.json<ApiResponse<PopularTickerData[]>>({
 			success: true,
 			data: data.data,

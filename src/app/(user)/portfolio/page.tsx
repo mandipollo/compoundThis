@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 //TYPES
-import { UserStockDetails } from "@/types/UserPortfolio.type";
+import { UserStock } from "@/types/UserPortfolio.type";
 //UI
 import { Loader2Icon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -16,18 +16,15 @@ import BaseAtGlanceChart from "@/components/Portfolio/BaseAtGlanceChart";
 import InvestmentList from "@/components/Portfolio/InvestmentList";
 
 const DashboardPage = () => {
+	//TODO: check if the market is open ? establish socket cc and send the user portfolio tickers : fetch and display the latest current price of the holdings
 	const { data, error, isLoading } = usePortfolio();
-	//
 	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}
-
 	if (error) {
 		return <div>{error}</div>;
 	}
-
-	const stocks: UserStockDetails[] = data?.data ?? [];
-
+	const stocks: UserStock[] = data?.data ?? [];
 	const currentValue = stocks.reduce(
 		(acc, stock) =>
 			acc +
@@ -43,7 +40,6 @@ const DashboardPage = () => {
 	);
 	const capitalGains = currentValue - baseValue;
 	const capitalGainPct = baseValue === 0 ? 0 : (capitalGains / baseValue) * 100;
-
 	return (
 		<SectionContainer>
 			<DashboardHeader currentValue={currentValue} />
