@@ -10,7 +10,6 @@ import HoldingInvestment from "./Investment";
 import HoldingPortfolioAllocation from "./Allocation";
 import HoldingTimeSeriesChart from "./TimeSeriesChart";
 // HOOKS
-import useDailySummary from "@/hooks/swr/holding/useSummary";
 import useHolding from "@/hooks/swr/holding/useHolding";
 import useSnapshot from "@/hooks/swr/holding/useSnapshot";
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
@@ -22,11 +21,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		data,
 		isLoading,
 	}: { error: string; data: any; isLoading: boolean } = useHolding({ ticker });
-	// const {
-	// 	data: dailyData,
-	// 	error: errorDaily,
-	// 	isLoading: isLoadingDaily,
-	// } = useDailySummary({ ticker, date: new Date() });
 
 	const {
 		data: snapshotData,
@@ -47,7 +41,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		buyPrice,
 		quantity,
 	}: { buyDate: string; buyPrice: number; quantity: number } = data.data;
-	// daily summary of the ticker
+	// latest holding snapshot
 	const { price, updated } = snapshotData.data;
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">

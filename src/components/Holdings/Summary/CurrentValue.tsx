@@ -16,8 +16,8 @@ const HoldingCurrentValue = ({
 		<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
 			<span className="text-xl">Current value</span>
 			<div className="flex flex-row justify-between items-center">
-				<span className=" text-lg">GB£{dailyPrice}</span>
-				<span>US${(dailyPrice * 1.35).toFixed(2)}</span>
+				<span className=" text-lg">GB£</span>
+				<span>US${dailyPrice.toFixed(2)}</span>
 				<span className="text-muted-foreground">{quantity} shares</span>
 			</div>
 			<Separator />
@@ -27,7 +27,7 @@ const HoldingCurrentValue = ({
 					<span
 						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}
 					>
-						£{(dailyPrice - price).toFixed(2)}
+						${(dailyPrice - price).toFixed(2)}
 					</span>
 					<span
 						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}

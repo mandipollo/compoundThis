@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 
 // store
 import { useUserStore } from "@/store/userStore";
-
+import { useFxStore } from "@/store/fxRateStore";
 // zod
 import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
 
@@ -35,26 +35,22 @@ const initialState: LoginFormState = {
 	message: "",
 	success: false,
 };
-
 const Login = () => {
 	const router = useRouter();
-	// zustand user state function
+	// zustand state functions
 	const { fetchUser } = useUserStore();
-
+	const { fetchFxRate } = useFxStore();
 	// local states
 	const [state, setState] = useState(initialState);
 	const [pending, setPending] = useState(false);
-
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
-
 		try {
 			// Extract form data
 			const formData = new FormData(e.currentTarget);
 			const email = formData.get("email") as string;
 			const password = formData.get("password") as string;
-
 			// Validate form with Zod
 			const validated = LoginFormSchema.safeParse({ email, password });
 			if (!validated.success) {
@@ -66,20 +62,16 @@ const Login = () => {
 				setPending(false);
 				return;
 			}
-
 			// Call Cognito login service
 			const { success, error, result } = await loginUser(email, password);
-
 			// on failure return
 			if (!success) {
 				setState(prev => ({ ...prev, error: error }));
 				setPending(false);
 				return;
 			}
-
 			// success
 			const { nextStep, isSignedIn } = result as SignInOutput;
-
 			// Route unconfirmed users
 			if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
 				setState({
@@ -91,25 +83,19 @@ const Login = () => {
 				setPending(false);
 				return;
 			}
-
 			// Signed-in users
 			if (isSignedIn) {
 				// Fetch session token and save to backend
 				const sessions = await fetchAuthSession();
-
 				const idToken = sessions.tokens?.idToken?.toString();
-
 				const tokenExp = sessions.tokens?.idToken?.payload.exp;
-
 				// set tokens in middleware
 				await fetch("/api/auth/setToken", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ idToken, tokenExp }),
 				});
-
 				// send idToken to the api route handler to be decoded
-
 				await fetch("/api/user/init", {
 					method: "GET",
 					headers: {
@@ -117,10 +103,9 @@ const Login = () => {
 						Authorization: `Bearer ${idToken}`,
 					},
 				});
-
-				// Update global user state
+				// Update global state
 				await fetchUser();
-
+				await fetchFxRate();
 				// Redirect to protected page
 				setState({
 					...initialState,
@@ -131,7 +116,6 @@ const Login = () => {
 				setPending(false);
 				return;
 			}
-
 			// Fallback if login somehow incomplete
 			setState({
 				...initialState,
@@ -146,7 +130,6 @@ const Login = () => {
 			setPending(false);
 		}
 	};
-
 	return (
 		<Card className="w-full max-w-sm bg-white border shadow-md py-4 rounded-md gap-2">
 			<CardHeader>

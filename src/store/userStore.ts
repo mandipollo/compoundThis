@@ -9,7 +9,6 @@ interface UserState {
 	fetchUser: () => Promise<void>;
 	signOutUser: () => Promise<void>;
 }
-
 export const useUserStore = create<UserState>()(
 	persist(
 		set => ({
