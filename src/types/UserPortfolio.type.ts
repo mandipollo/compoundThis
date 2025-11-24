@@ -1,4 +1,7 @@
-import { TickerSnapshot } from "./TickerSnapshot.type";
+import {
+	FormattedSingleTickerSnapshot,
+	TickerSnapshot,
+} from "./TickerSnapshot.type";
 
 export interface UserStock {
 	buyDate: string;
@@ -9,7 +12,7 @@ export interface UserStock {
 	portfolioId: number;
 	quantity: number;
 	ticker: string;
-	snapshot: TickerSnapshot;
+	snapshot: FormattedSingleTickerSnapshot;
 }
 
 export interface UserPortfolio {

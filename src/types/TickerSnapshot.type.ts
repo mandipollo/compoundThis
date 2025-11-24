@@ -37,3 +37,11 @@ export interface SingleTickerResponse {
 	price: number;
 	updated: number;
 }
+
+export interface FormattedSingleTickerSnapshot {
+	close: number;
+	ticker: string;
+	todaysChangePerc: number;
+	todaysChange: number;
+	updated: number;
+}

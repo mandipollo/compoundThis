@@ -39,12 +39,7 @@ const InvestmentList = ({
 			</TableHeader>
 			<TableBody>
 				{stocks.map(stock => {
-					const price =
-						stock.snapshot.day.c === 0
-							? stock.snapshot.prevDay.c
-							: stock.snapshot.day.c;
-
-					const value = price * stock.quantity;
+					const value = stock.snapshot.close * stock.quantity;
 					const invested = stock.buyPrice * stock.quantity;
 					const capitalGains = value - invested;
 
@@ -59,7 +54,7 @@ const InvestmentList = ({
 								</Link>
 							</TableCell>
 							<TableCell>$ {stock.buyPrice.toFixed(2)}</TableCell>
-							<TableCell>$ {price.toFixed(2)}</TableCell>
+							<TableCell>$ {stock.snapshot.close.toFixed(2)}</TableCell>
 							<TableCell>{stock.quantity}</TableCell>
 							<TableCell>$ {value.toFixed(2)}</TableCell>
 							<TableCell

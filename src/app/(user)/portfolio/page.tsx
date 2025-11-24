@@ -30,7 +30,7 @@ const DashboardPage = () => {
 	}
 	const stocks: UserStock[] = data?.data ?? [];
 	const currentValue = stocks.reduce(
-		(acc, stock) => acc + stock.quantity * stock.snapshot.day.c,
+		(acc, stock) => acc + stock.quantity * stock.snapshot.close,
 		0
 	);
 	const baseValue = stocks.reduce(

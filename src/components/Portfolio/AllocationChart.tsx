@@ -30,7 +30,7 @@ const PortfolioAllocationChart = ({
 	const chartDataMap = portfolio.map(item => ({
 		ticker: item.ticker,
 		value:
-			(fxRate ? fxRate * item.snapshot.day.c : item.snapshot.day.c) *
+			(fxRate ? fxRate * item.snapshot.close : item.snapshot.close) *
 			item.quantity,
 		fill: `var(--color-${item.ticker})`,
 	}));
