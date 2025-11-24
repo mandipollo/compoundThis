@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { fetchAuthSession, SignInOutput } from "aws-amplify/auth";
-
-// ui
+// UI
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon } from "lucide-react";
@@ -19,14 +18,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-// store
+// STORE
 import { useUserStore } from "@/store/userStore";
 import { useFxStore } from "@/store/fxRateStore";
-// zod
+// ZOD
 import { LoginFormSchema, LoginFormState } from "@/libs/definitions";
-
-// auth
+// AUTH
 import { loginUser } from "@/libs/cognito/existingUser/loginUser";
 
 const initialState: LoginFormState = {

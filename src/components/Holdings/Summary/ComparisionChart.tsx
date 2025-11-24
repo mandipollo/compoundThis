@@ -46,7 +46,7 @@ const ComparisionChart = ({
 		},
 		avgPurchasePrice: {
 			label: "Avg purchase price",
-			color: "var(--chart-4)",
+			color: "var(--chart-5)",
 		},
 	} satisfies ChartConfig;
 

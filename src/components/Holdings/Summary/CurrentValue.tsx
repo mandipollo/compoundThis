@@ -6,18 +6,22 @@ import numberToDispaly from "@/utils/numberFormatter";
 const HoldingCurrentValue = ({
 	price,
 	quantity,
-	dailyPrice,
+	totalReturn,
+	percentageReturn,
+	fxRate,
 }: {
 	price: number;
 	quantity: number;
-	dailyPrice: number;
+	totalReturn: number;
+	percentageReturn: number;
+	fxRate: number | null;
 }) => {
 	return (
 		<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
 			<span className="text-xl">Current value</span>
 			<div className="flex flex-row justify-between items-center">
-				<span className=" text-lg">GB£</span>
-				<span>US${dailyPrice.toFixed(2)}</span>
+				<span className=" text-lg">USD {price}</span>
+				<span>{fxRate && `GBP ${(price * fxRate).toFixed(2)}`}</span>
 				<span className="text-muted-foreground">{quantity} shares</span>
 			</div>
 			<Separator />
@@ -25,14 +29,16 @@ const HoldingCurrentValue = ({
 				<div className="flex flex-row justify-between items-center">
 					<span className="text-muted-foreground">Total gain</span>
 					<span
-						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}
+						className={`${totalReturn ? "text-green-700" : "text-red-700"}`}
 					>
-						${(dailyPrice - price).toFixed(2)}
+						{fxRate
+							? `£ ${(totalReturn * fxRate).toFixed(2)}`
+							: `$ ${totalReturn.toFixed(2)}`}
 					</span>
 					<span
-						className={`${dailyPrice < price ? "text-red-700" : "text-green-700"}`}
+						className={`${totalReturn ? "text-green-700" : "text-red-700"}`}
 					>
-						{numberToDispaly(((dailyPrice - price) / price) * 100)}%
+						{percentageReturn.toFixed(2)}%
 					</span>
 				</div>
 			</div>

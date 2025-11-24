@@ -12,10 +12,14 @@ import HoldingTimeSeriesChart from "./TimeSeriesChart";
 // HOOKS
 import useHolding from "@/hooks/swr/holding/useHolding";
 import useSnapshot from "@/hooks/swr/holding/useSnapshot";
+//STORE
+import { useFxStore } from "@/store/fxRateStore";
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
 		return;
 	}
+	// fxRate
+	const { fxRate } = useFxStore();
 	const {
 		error,
 		data,
@@ -28,7 +32,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		isLoading: snapshotLoading,
 	} = useSnapshot({ ticker });
 	console.log(snapshotData);
-
 	if (isLoading || snapshotLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}
@@ -43,14 +46,24 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	}: { buyDate: string; buyPrice: number; quantity: number } = data.data;
 	// latest holding snapshot
 	const { price, updated } = snapshotData.data;
+	//
+	const percentageReturn = ((price - buyPrice) / buyPrice) * 100;
+	const totalReturn = fxRate
+		? fxRate * (price - buyPrice) * quantity
+		: price - buyPrice * quantity;
+	const localCurrencyPrice = fxRate && fxRate * price;
+	const localCurrencyReturn = fxRate && fxRate * totalReturn;
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">
 			<div className="grid w-full gap-2 grid-cols-[2fr_1fr]">
 				<div className="flex flex-col gap-4">
 					<HoldingSummaryTable
-						dailyPrice={price}
-						purchasePrice={buyPrice}
+						localCurrencyPrice={localCurrencyPrice}
+						localCurrencyReturn={localCurrencyReturn}
 						buyDate={buyDate}
+						totalReturn={totalReturn}
+						percentageReturn={percentageReturn}
+						fxRate={fxRate}
 					/>
 					<HoldingTimeSeriesChart holding={ticker} />
 					<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
@@ -59,9 +72,11 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 				</div>
 				<div className="flex flex-col gap-2">
 					<HoldingCurrentValue
-						dailyPrice={price}
-						price={buyPrice}
+						price={price}
 						quantity={quantity}
+						totalReturn={totalReturn}
+						percentageReturn={percentageReturn}
+						fxRate={fxRate}
 					/>
 					<HoldingPortfolioAllocation ticker={ticker} />
 					<ComparisionChart
@@ -70,6 +85,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						price={buyPrice}
 					/>
 					<HoldingInvestment
+						fxRate={fxRate}
 						currentPrice={price}
 						buyPrice={buyPrice}
 						quantity={quantity}

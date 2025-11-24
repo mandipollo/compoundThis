@@ -15,9 +15,11 @@ import { UserStock } from "@/types/UserPortfolio.type";
 const InvestmentList = ({
 	stocks,
 	currentValue,
+	fxRate,
 }: {
 	stocks: UserStock[];
 	currentValue: number;
+	fxRate: number | null;
 }) => {
 	return (
 		<Table>
@@ -56,16 +58,16 @@ const InvestmentList = ({
 									{stock.ticker}
 								</Link>
 							</TableCell>
-							<TableCell>{stock.buyPrice.toFixed(2)}</TableCell>
-							<TableCell>{price.toFixed(2)}</TableCell>
+							<TableCell>$ {stock.buyPrice.toFixed(2)}</TableCell>
+							<TableCell>$ {price.toFixed(2)}</TableCell>
 							<TableCell>{stock.quantity}</TableCell>
-							<TableCell>{value.toFixed(2)}</TableCell>
+							<TableCell>$ {value.toFixed(2)}</TableCell>
 							<TableCell
 								className={
 									capitalGains >= 0 ? "text-green-700" : "text-red-700"
 								}
 							>
-								{capitalGains.toFixed(2)}
+								$ {capitalGains.toFixed(2)}
 							</TableCell>
 
 							<TableCell
@@ -78,9 +80,17 @@ const InvestmentList = ({
 				})}
 			</TableBody>
 			<TableFooter className="w-full bg-accent">
+				<TableRow className="">
+					<TableCell colSpan={6}></TableCell>
+					<TableCell className="">$ {currentValue.toFixed(2)}</TableCell>
+				</TableRow>
 				<TableRow className="w-full">
 					<TableCell colSpan={6}>Total</TableCell>
-					<TableCell>${currentValue.toFixed(2)}</TableCell>
+					<TableCell>
+						{fxRate
+							? `£ ${(currentValue * fxRate).toFixed(2)}`
+							: currentValue.toFixed(2)}
+					</TableCell>
 				</TableRow>
 			</TableFooter>
 		</Table>

@@ -18,19 +18,20 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 // TYPES
-import { UserStockDetails } from "@/types/UserPortfolio.type";
+import { UserStock } from "@/types/UserPortfolio.type";
 
 const PortfolioAllocationChart = ({
 	portfolio,
+	fxRate,
 }: {
-	portfolio: UserStockDetails[];
+	portfolio: UserStock[];
+	fxRate: number | null;
 }) => {
 	const chartDataMap = portfolio.map(item => ({
 		ticker: item.ticker,
 		value:
-			(item.snapshot.day.c === 0
-				? item.snapshot.prevDay.c
-				: item.snapshot.day.c) * item.quantity,
+			(fxRate ? fxRate * item.snapshot.day.c : item.snapshot.day.c) *
+			item.quantity,
 		fill: `var(--color-${item.ticker})`,
 	}));
 	const chartConfig = portfolio.reduce((acc, item, index) => {

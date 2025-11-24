@@ -14,8 +14,12 @@ import PortfolioChart from "@/components/Portfolio/TimeSeriesChart";
 import PortfolioAllocationChart from "@/components/Portfolio/AllocationChart";
 import BaseAtGlanceChart from "@/components/Portfolio/BaseAtGlanceChart";
 import InvestmentList from "@/components/Portfolio/InvestmentList";
+//STORE
+import { useFxStore } from "@/store/fxRateStore";
 
 const DashboardPage = () => {
+	// Current fx rate
+	const { fxRate } = useFxStore();
 	//TODO: check if the market is open ? establish socket cc and send the user portfolio tickers : fetch and display the latest current price of the holdings
 	const { data, error, isLoading } = usePortfolio();
 	if (isLoading) {
@@ -26,12 +30,7 @@ const DashboardPage = () => {
 	}
 	const stocks: UserStock[] = data?.data ?? [];
 	const currentValue = stocks.reduce(
-		(acc, stock) =>
-			acc +
-			stock.quantity *
-				(stock.snapshot.day.c === 0
-					? stock.snapshot.prevDay.c
-					: stock.snapshot.day.c),
+		(acc, stock) => acc + stock.quantity * stock.snapshot.day.c,
 		0
 	);
 	const baseValue = stocks.reduce(
@@ -42,19 +41,27 @@ const DashboardPage = () => {
 	const capitalGainPct = baseValue === 0 ? 0 : (capitalGains / baseValue) * 100;
 	return (
 		<SectionContainer>
-			<DashboardHeader currentValue={currentValue} />
+			<DashboardHeader fxRate={fxRate} currentValue={currentValue} />
 			<Separator />
 			<PortfolioChart />
 			<InvestmentSummary
+				fxRate={fxRate}
 				capitalGains={capitalGains}
 				capitalGainPct={capitalGainPct}
-				currentValue={currentValue}
 			/>
 			<div className="grid grid-cols-2">
-				<PortfolioAllocationChart portfolio={stocks} />
-				<BaseAtGlanceChart currentValue={currentValue} baseValue={baseValue} />
+				<PortfolioAllocationChart portfolio={stocks} fxRate={fxRate} />
+				<BaseAtGlanceChart
+					fxRate={fxRate}
+					currentValue={currentValue}
+					baseValue={baseValue}
+				/>
 			</div>
-			<InvestmentList currentValue={currentValue} stocks={stocks} />
+			<InvestmentList
+				fxRate={fxRate}
+				currentValue={currentValue}
+				stocks={stocks}
+			/>
 		</SectionContainer>
 	);
 };

@@ -11,7 +11,6 @@ type Action = {
 };
 
 // create store
-
 export const useFxStore = create<State & Action>()(
 	persist(
 		set => ({
@@ -21,18 +20,8 @@ export const useFxStore = create<State & Action>()(
 			fetchFxRate: async () => {
 				try {
 					set({ loading: true, error: null });
-					const res = await fetch(
-						"https://api.fxratesapi.com/latest?base=USD&currencies=GBP&resolution=1m&amount=1&places=6&format=json",
-						{
-							method: "GET",
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `Bearer ${process.env.NEXT_PUBLIC_FX_API_KEY}`,
-							},
-						}
-					);
+					const res = await fetch("/api/fx");
 					const data = await res.json();
-
 					set({
 						fxRate: data.rate,
 						loading: false,

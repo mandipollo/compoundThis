@@ -3,15 +3,24 @@ import { Button } from "../ui/button";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 //COMPONENTS
 import HoldingDialog from "./HoldingDialogue";
-const DashboardHeader = ({ currentValue }: { currentValue: number }) => {
+const DashboardHeader = ({
+	currentValue,
+	fxRate,
+}: {
+	currentValue: number;
+	fxRate: number | null;
+}) => {
 	return (
 		<div className="flex flex-col gap-2 ">
 			<div className="flex flex-row justify-between items-center  ">
 				<span className="text-xl underline underline-offset-2 decoration-green-700">
 					CThis demo
 				</span>
-				<div className="flex flex-col">
-					<p className="text-xl">USD{currentValue.toFixed(2)}</p>
+				<div className="flex flex-col items-end">
+					<p className="text-xl">
+						GBP {fxRate ? (fxRate * currentValue).toFixed(2) : null}
+					</p>
+					<p>USD {currentValue.toFixed(2)}</p>
 					<p className="text-[10px] text-accent-foreground">
 						CURRENT PORTFOLIO VALUE
 					</p>

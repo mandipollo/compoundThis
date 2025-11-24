@@ -20,13 +20,23 @@ type ChartDataKey = "base" | "current";
 const BaseAtGlanceChart = ({
 	currentValue,
 	baseValue,
+	fxRate,
 }: {
 	currentValue: number;
 	baseValue: number;
+	fxRate: number | null;
 }) => {
 	const chartData: { key: ChartDataKey; label: String; value: number }[] = [
-		{ key: "base", label: "Base Value", value: baseValue },
-		{ key: "current", label: "Current value", value: currentValue },
+		{
+			key: "base",
+			label: "Base Value",
+			value: fxRate ? fxRate * baseValue : baseValue,
+		},
+		{
+			key: "current",
+			label: "Current value",
+			value: fxRate ? fxRate * currentValue : currentValue,
+		},
 	];
 
 	const chartConfig = {

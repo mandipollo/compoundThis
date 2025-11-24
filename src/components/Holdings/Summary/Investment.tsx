@@ -5,10 +5,12 @@ const HoldingInvestment = ({
 	currentPrice,
 	quantity,
 	buyPrice,
+	fxRate,
 }: {
 	currentPrice: number;
 	quantity: number;
 	buyPrice: number;
+	fxRate: number | null;
 }) => {
 	return (
 		<div className="flex flex-col gap-2 border rounded-md p-4 shadow-md">
@@ -17,11 +19,11 @@ const HoldingInvestment = ({
 				<span>Current value</span>
 				<div className="flex flex-col  items-end">
 					<span className="font-medium">
-						US${(currentPrice * quantity * 1.35).toFixed(2)}
+						{fxRate
+							? `GBP ${(fxRate * currentPrice * quantity).toFixed(2)}`
+							: `USD ${(currentPrice * quantity).toFixed(2)}`}
 					</span>
-					<span className="font-medium text-muted-foreground">
-						GB£{(currentPrice * quantity).toFixed(2)}
-					</span>
+					<span className="font-medium text-muted-foreground"></span>
 				</div>
 			</div>
 			<Separator />
@@ -33,13 +35,19 @@ const HoldingInvestment = ({
 			<div className="flex flex-row justify-between">
 				<span>Cost base</span>
 				<span className="font-medium">
-					GB£{(quantity * buyPrice).toFixed(2)}
+					{fxRate
+						? `GBP ${(fxRate * currentPrice * quantity).toFixed(2)}`
+						: `USD ${(currentPrice * quantity).toFixed(2)}`}
 				</span>
 			</div>
 			<Separator />
 			<div className="flex flex-row justify-between">
 				<span>Cost base per share</span>
-				<span className="font-medium">GB£{buyPrice.toFixed(2)}</span>
+				<span className="font-medium">
+					{fxRate
+						? `GBP ${(fxRate * buyPrice).toFixed(2)}`
+						: `USD ${buyPrice.toFixed(2)}`}
+				</span>
 			</div>
 		</div>
 	);

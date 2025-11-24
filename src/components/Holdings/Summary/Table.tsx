@@ -12,12 +12,18 @@ import {
 } from "@/components/ui/table";
 const HoldingSummaryTable = ({
 	buyDate,
-	purchasePrice,
-	dailyPrice,
+	percentageReturn,
+	totalReturn,
+	fxRate,
+	localCurrencyPrice,
+	localCurrencyReturn,
 }: {
 	buyDate: string;
-	purchasePrice: number;
-	dailyPrice: number;
+	percentageReturn: number;
+	totalReturn: number;
+	fxRate: number | null;
+	localCurrencyPrice: number | null;
+	localCurrencyReturn: number | null;
 }) => {
 	return (
 		<Table>
@@ -34,27 +40,31 @@ const HoldingSummaryTable = ({
 			<TableBody>
 				<TableRow>
 					<TableCell
-						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} font-semibold `}
+						className={`${percentageReturn ? "text-green-700" : "text-red-700"} font-semibold `}
 					>
-						{(((dailyPrice - purchasePrice) / purchasePrice) * 100).toFixed(2)}%
+						{percentageReturn.toFixed(2)}
 					</TableCell>
 					<TableCell
-						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} font-semibold `}
+						className={`${percentageReturn ? "text-green-700" : "text-red-700"} font-semibold `}
 					>
-						{(((dailyPrice - purchasePrice) / purchasePrice) * 100).toFixed(2)}%
+						{percentageReturn.toFixed(2)}
 					</TableCell>
 					<TableCell className="font-semibold">TBD</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell
-						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} text-xs `}
+						className={`${totalReturn ? "text-green-700" : "text-red-700"} text-xs `}
 					>
-						GB£ {(dailyPrice - purchasePrice).toFixed(2)}
+						{localCurrencyReturn
+							? `£${localCurrencyReturn.toFixed(2)}`
+							: `$${totalReturn.toFixed(2)}`}
 					</TableCell>
 					<TableCell
-						className={`${dailyPrice < purchasePrice ? "text-red-700" : "text-green-700"} text-xs `}
+						className={`${totalReturn ? "text-green-700" : "text-red-700"} text-xs `}
 					>
-						GB£ {(dailyPrice - purchasePrice).toFixed(2)}
+						{localCurrencyReturn
+							? `£${localCurrencyReturn.toFixed(2)}`
+							: `$${totalReturn.toFixed(2)}`}
 					</TableCell>
 					<TableCell className="text-xs">TBD</TableCell>
 				</TableRow>

@@ -12,13 +12,13 @@ import {
 //CONFIGS
 export const description = "A simple area chart";
 const InvestmentSummary = ({
-	currentValue,
 	capitalGainPct,
 	capitalGains,
+	fxRate,
 }: {
-	currentValue: number;
 	capitalGains: number;
 	capitalGainPct: number;
+	fxRate: number | null;
 }) => {
 	return (
 		<Table>
@@ -36,13 +36,17 @@ const InvestmentSummary = ({
 					<TableCell
 						className={capitalGains >= 0 ? "text-green-700" : "text-red-700"}
 					>
-						{capitalGains.toFixed(2)}
+						{fxRate
+							? `GBP ${(capitalGains * fxRate).toFixed(2)}`
+							: `USD ${capitalGains}`}
 					</TableCell>
 					<TableCell>TBD</TableCell>
 					<TableCell
 						className={capitalGains >= 0 ? "text-green-700" : "text-red-700"}
 					>
-						{capitalGains.toFixed(2)}
+						{fxRate
+							? `GBP ${(capitalGains * fxRate).toFixed(2)}`
+							: `USD ${capitalGains}`}
 					</TableCell>
 				</TableRow>
 				<TableRow>
