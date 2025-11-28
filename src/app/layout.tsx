@@ -9,7 +9,7 @@ import Navbar from "@/components/Layout/header/Navbar";
 import Footer from "@/components/Footer/Footer";
 // config
 import ConfigureAmplifyClientSide from "./amplify-cognito-config";
-
+import AuthTokenRefresher from "@/utils/AuthTokenRefresher";
 //👇 Configure our font object
 const archivo = Archivo({
 	subsets: ["latin"],
@@ -29,6 +29,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={archivo.className}>
 			<body className="flex flex-col w-full relative text-sm font-light">
+				<AuthTokenRefresher />
 				<ConfigureAmplifyClientSide />
 				<header className="fixed z-10 top-0 w-full ">
 					<Navbar />

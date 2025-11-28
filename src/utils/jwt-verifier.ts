@@ -19,7 +19,7 @@ export async function verifyJWT(idToken: string | undefined): Promise<{
 			return {
 				payload: null,
 				success: false,
-				error: "idToken missing!",
+				error: "IdToken missing!",
 				message: null,
 			};
 		}
@@ -32,19 +32,19 @@ export async function verifyJWT(idToken: string | undefined): Promise<{
 		const payload = await verifier.verify(idToken);
 
 		return { payload, success: true, message: "Token verified", error: null };
-	} catch (error: any) {
+	} catch (error: unknown) {
 		if (error instanceof Error) {
 			return {
+				error: error.name,
+				message: null,
 				payload: null,
 				success: false,
-				error: error.message,
-				message: null,
 			};
 		}
 		return {
 			payload: null,
 			success: false,
-			error: "Unauthorized token",
+			error: "Invalid token",
 			message: null,
 		};
 	}

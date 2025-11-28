@@ -31,7 +31,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		error: snapshotError,
 		isLoading: snapshotLoading,
 	} = useSnapshot({ ticker });
-	console.log(snapshotData);
+
 	if (isLoading || snapshotLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}

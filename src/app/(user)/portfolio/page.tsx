@@ -16,6 +16,7 @@ import BaseAtGlanceChart from "@/components/Portfolio/BaseAtGlanceChart";
 import InvestmentList from "@/components/Portfolio/InvestmentList";
 //STORE
 import { useFxStore } from "@/store/fxRateStore";
+import Disclaimer from "@/components/Portfolio/Disclaimer";
 
 const DashboardPage = () => {
 	// Current fx rate
@@ -62,6 +63,7 @@ const DashboardPage = () => {
 				currentValue={currentValue}
 				stocks={stocks}
 			/>
+			<Disclaimer />
 		</SectionContainer>
 	);
 };

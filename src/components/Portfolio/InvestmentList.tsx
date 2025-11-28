@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 //TYPES
 import { UserStock } from "@/types/UserPortfolio.type";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import Image from "next/image";
 const InvestmentList = ({
 	stocks,
 	currentValue,
@@ -29,12 +31,27 @@ const InvestmentList = ({
 			<TableHeader>
 				<TableRow className="bg-accent text-xs">
 					<TableHead>TICKER</TableHead>
-					<TableHead>BPRICE</TableHead>
-					<TableHead>PRICE</TableHead>
-					<TableHead>QTY</TableHead>
-					<TableHead>VALUE</TableHead>
-					<TableHead>CAPITAL GAINS</TableHead>
-					<TableHead>RETURN</TableHead>
+					<TableHead className="text-right flex items-center justify-end">
+						<Tooltip>
+							<TooltipTrigger className="flex flex-row gap-2 items-end justify-end">
+								P PRICE{" "}
+								<Image
+									src={"/question.svg"}
+									width={15}
+									height={15}
+									alt="Tooltip"
+								/>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Purchase price</p>
+							</TooltipContent>
+						</Tooltip>
+					</TableHead>
+					<TableHead className="text-right">PRICE</TableHead>
+					<TableHead className="text-right">QTY</TableHead>
+					<TableHead className="text-right">VALUE</TableHead>
+					<TableHead className="text-right">GAIN/LOSS</TableHead>
+					<TableHead className="text-right">RETURN</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -53,20 +70,23 @@ const InvestmentList = ({
 									{stock.ticker}
 								</Link>
 							</TableCell>
-							<TableCell>$ {stock.buyPrice.toFixed(2)}</TableCell>
-							<TableCell>$ {stock.snapshot.close.toFixed(2)}</TableCell>
-							<TableCell>{stock.quantity}</TableCell>
-							<TableCell>$ {value.toFixed(2)}</TableCell>
+							<TableCell className="text-right">
+								{stock.buyPrice.toFixed(2)}
+							</TableCell>
+							<TableCell className="text-right">
+								$ {stock.snapshot.close.toFixed(2)}
+							</TableCell>
+							<TableCell className="text-right">{stock.quantity}</TableCell>
+							<TableCell className="text-right"> {value.toFixed(2)}</TableCell>
 							<TableCell
-								className={
-									capitalGains >= 0 ? "text-green-700" : "text-red-700"
-								}
+								className={`
+									${capitalGains >= 0 ? "text-green-700" : "text-red-700"} text-right`}
 							>
-								$ {capitalGains.toFixed(2)}
+								{capitalGains.toFixed(2)}
 							</TableCell>
 
 							<TableCell
-								className={returnPct >= 0 ? "text-green-700" : "text-red-700"}
+								className={`${returnPct >= 0 ? "text-green-700" : "text-red-700"} text-right`}
 							>
 								{returnPct.toFixed(2)}%
 							</TableCell>
@@ -77,14 +97,16 @@ const InvestmentList = ({
 			<TableFooter className="w-full bg-accent">
 				<TableRow className="">
 					<TableCell colSpan={6}></TableCell>
-					<TableCell className="">$ {currentValue.toFixed(2)}</TableCell>
+					<TableCell className="text-right">
+						$ {currentValue.toFixed(2)}
+					</TableCell>
 				</TableRow>
 				<TableRow className="w-full">
 					<TableCell colSpan={6}>Total</TableCell>
-					<TableCell>
+					<TableCell className="text-right">
 						{fxRate
 							? `£ ${(currentValue * fxRate).toFixed(2)}`
-							: currentValue.toFixed(2)}
+							: `$ ${currentValue.toFixed(2)}`}
 					</TableCell>
 				</TableRow>
 			</TableFooter>
