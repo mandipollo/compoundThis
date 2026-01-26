@@ -34,7 +34,7 @@ const InvestmentList = ({
 					<TableHead className="text-right flex items-center justify-end">
 						<Tooltip>
 							<TooltipTrigger className="flex flex-row gap-2 items-end justify-end">
-								P PRICE{" "}
+								P PRICE
 								<Image
 									src={"/question.svg"}
 									width={15}
@@ -57,12 +57,11 @@ const InvestmentList = ({
 			<TableBody>
 				{stocks.map(stock => {
 					const value = stock.snapshot.close * stock.quantity;
-					const invested = stock.buyPrice * stock.quantity;
+					const invested = stock.avgPurchasePrice * stock.quantity;
 					const capitalGains = value - invested;
 
 					const returnPct =
 						invested === 0 ? 0 : (capitalGains / invested) * 100;
-
 					return (
 						<TableRow key={stock.id}>
 							<TableCell className="font-medium underline underline-offset-2">
@@ -71,7 +70,7 @@ const InvestmentList = ({
 								</Link>
 							</TableCell>
 							<TableCell className="text-right">
-								{stock.buyPrice.toFixed(2)}
+								{stock.avgPurchasePrice.toFixed(2)}
 							</TableCell>
 							<TableCell className="text-right">
 								$ {stock.snapshot.close.toFixed(2)}

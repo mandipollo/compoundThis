@@ -1,5 +1,5 @@
 import { fetcher } from "@/libs/fetcher";
-import { UserStock } from "@/types/UserPortfolio.type";
+import { UserPortfolio } from "@/types/UserPortfolio.type";
 
 import useSWR from "swr";
 
@@ -9,7 +9,7 @@ const usePortfolio = () => {
 		isLoading,
 		error,
 	}: {
-		data: { success: boolean; data: UserStock[] };
+		data: { success: boolean; data: UserPortfolio };
 		isLoading: boolean;
 		error: String | undefined;
 	} = useSWR("/api/portfolio/get", fetcher, {

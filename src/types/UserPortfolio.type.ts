@@ -1,26 +1,32 @@
-import {
-	FormattedSingleTickerSnapshot,
-	TickerSnapshot,
-} from "./TickerSnapshot.type";
+import { FormattedSingleTickerSnapshot } from "./TickerSnapshot.type";
 
-export interface UserStock {
-	buyDate: string;
-	buyPrice: number;
-	companyName: string;
-	currency: string;
+enum TransactionType {
+	"BUY",
+	"SELL",
+}
+export interface Transaction {
 	id: number;
+	date: Date;
+	price: number;
+	transactionType: TransactionType;
+	quantity: number;
+	stockId: number;
+}
+export interface UserStock {
+	id: number;
+	ticker: string;
+	companyName: string;
 	portfolioId: number;
 	quantity: number;
-	ticker: string;
+	avgPurchasePrice: number;
+	transactions: Transaction[];
 	snapshot: FormattedSingleTickerSnapshot;
 }
-
 export interface UserPortfolio {
-	createdAt: string;
-	currency: string;
 	id: number;
-	portfolioHolderId: number;
 	portfolioName: string;
+	curreny: string;
+	portfolioHolderId: number;
 	stocks: UserStock[];
 }
 

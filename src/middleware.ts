@@ -31,18 +31,12 @@ export async function middleware(request: NextRequest) {
 	const idToken = request.cookies?.get("idToken");
 	const idTokenValue = idToken?.value;
 	const { success, payload, error, message } = await verifyJWT(idTokenValue);
-	console.log(error);
-
-	// 4. Fetchauthsession refreshes the access token if its expired
-	if (success === false && error === "Error") {
-		const session = await fetchAuthSession({ forceRefresh: true });
-		console.log(session);
-	}
-	// 5 . Redirect to /login if the user is unauthenticated
+	console.log(payload);
+	// 4. Redirect to /login if the user is unauthenticated
 	if (!idTokenValue && isProtectedRoute) {
 		return NextResponse.redirect(new URL("/login", request.nextUrl));
 	}
-	// 6. Redirect to /dashbaord if the user is authenticated
+	// 5. Redirect to /dashbaord if the user is authenticated
 	if (success && isPublicRoute) {
 		return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
 	}

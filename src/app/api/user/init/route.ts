@@ -11,21 +11,15 @@ export async function GET(req: NextRequest) {
 				{ status: 400 }
 			);
 		}
-
 		const authHeaders = req.headers.get("Authorization");
-
 		if (!authHeaders) {
 			throw new ApiError("Authorization headers missing", 401);
 		}
-
 		const parts = authHeaders.split(" ");
-
 		if (parts[0] !== "Bearer" || parts.length !== 2) {
 			throw new ApiError("Invalid Authorization header format", 401);
 		}
-
 		const cognitoId = parts[1];
-
 		// verify idToken
 		const { payload, success, error } = await verifyJWT(cognitoId);
 		if (!success) {
@@ -34,16 +28,13 @@ export async function GET(req: NextRequest) {
 				{ status: 401 }
 			);
 		}
-
 		const { sub, email, name } = payload;
-
 		//
 		const response = await fetch(`${server}/user/user`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ cognitoId: sub, username: name, email }),
 		});
-
 		if (!response.ok) {
 			return NextResponse.json(
 				{
@@ -53,9 +44,7 @@ export async function GET(req: NextRequest) {
 				{ status: response.status }
 			);
 		}
-
 		const data = await response.json();
-
 		//  Check if the external API's own success flag is false
 		if (!data.success) {
 			return NextResponse.json(
@@ -66,7 +55,6 @@ export async function GET(req: NextRequest) {
 				{ status: 502 }
 			);
 		}
-
 		return NextResponse.json(
 			{ success: true, data: data.data },
 			{ status: 200 }

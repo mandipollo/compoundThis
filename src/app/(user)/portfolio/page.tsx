@@ -17,11 +17,12 @@ import InvestmentList from "@/components/Portfolio/InvestmentList";
 //STORE
 import { useFxStore } from "@/store/fxRateStore";
 import Disclaimer from "@/components/Portfolio/Disclaimer";
+import { log } from "console";
 
 const DashboardPage = () => {
 	// Current fx rate
 	const { fxRate } = useFxStore();
-	//TODO: check if the market is open ? establish socket cc and send the user portfolio tickers : fetch and display the latest current price of the holdings
+	// //TODO: check if the market is open ? establish socket cc and send the user portfolio tickers : fetch and display the latest current price of the holdings
 	const { data, error, isLoading } = usePortfolio();
 	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;
@@ -29,15 +30,17 @@ const DashboardPage = () => {
 	if (error) {
 		return <div>{error}</div>;
 	}
-	const stocks: UserStock[] = data?.data ?? [];
+	const stocks = data?.data.stocks ?? [];
 	const currentValue = stocks.reduce(
 		(acc, stock) => acc + stock.quantity * stock.snapshot.close,
-		0
+		0,
 	);
+
 	const baseValue = stocks.reduce(
-		(acc, item) => acc + item.buyPrice * item.quantity,
-		0
+		(acc, item) => acc + item.avgPurchasePrice * item.quantity,
+		0,
 	);
+
 	const capitalGains = currentValue - baseValue;
 	const capitalGainPct = baseValue === 0 ? 0 : (capitalGains / baseValue) * 100;
 	return (
