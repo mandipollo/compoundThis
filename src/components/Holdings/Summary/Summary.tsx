@@ -20,11 +20,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	}
 	// fxRate
 	const { fxRate } = useFxStore();
-	const {
-		error,
-		data,
-		isLoading,
-	}: { error: string; data: any; isLoading: boolean } = useHolding({ ticker });
+	const { error, data, isLoading } = useHolding({ ticker });
 
 	const {
 		data: snapshotData,
@@ -39,18 +35,15 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 		return <div>{error}</div>;
 	}
 	// details of the stock from portfolfio
-	const {
-		buyDate,
-		buyPrice,
-		quantity,
-	}: { buyDate: string; buyPrice: number; quantity: number } = data.data;
+	const { avgPurchasePrice, quantity } = data.data;
 	// latest holding snapshot
 	const { price, updated } = snapshotData.data;
 	//
-	const percentageReturn = ((price - buyPrice) / buyPrice) * 100;
+	const percentageReturn =
+		((price - avgPurchasePrice) / avgPurchasePrice) * 100;
 	const totalReturn = fxRate
-		? fxRate * (price - buyPrice) * quantity
-		: price - buyPrice * quantity;
+		? fxRate * (price - avgPurchasePrice) * quantity
+		: price - avgPurchasePrice * quantity;
 	const localCurrencyPrice = fxRate && fxRate * price;
 	const localCurrencyReturn = fxRate && fxRate * totalReturn;
 	return (
@@ -60,7 +53,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 					<HoldingSummaryTable
 						localCurrencyPrice={localCurrencyPrice}
 						localCurrencyReturn={localCurrencyReturn}
-						buyDate={buyDate}
 						totalReturn={totalReturn}
 						percentageReturn={percentageReturn}
 						fxRate={fxRate}
@@ -78,16 +70,16 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						percentageReturn={percentageReturn}
 						fxRate={fxRate}
 					/>
-					<HoldingPortfolioAllocation ticker={ticker} />
+					{/* <HoldingPortfolioAllocation ticker={ticker} /> */}
 					<ComparisionChart
 						from={updated}
 						dailyPrice={price}
-						price={buyPrice}
+						price={avgPurchasePrice}
 					/>
 					<HoldingInvestment
 						fxRate={fxRate}
 						currentPrice={price}
-						buyPrice={buyPrice}
+						buyPrice={avgPurchasePrice}
 						quantity={quantity}
 					/>
 				</div>

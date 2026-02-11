@@ -11,14 +11,12 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 const HoldingSummaryTable = ({
-	buyDate,
 	percentageReturn,
 	totalReturn,
 	fxRate,
 	localCurrencyPrice,
 	localCurrencyReturn,
 }: {
-	buyDate: string;
 	percentageReturn: number;
 	totalReturn: number;
 	fxRate: number | null;
@@ -28,7 +26,7 @@ const HoldingSummaryTable = ({
 	return (
 		<Table>
 			<TableCaption className=" caption-top text-left px-2">
-				Summary - first purchase since {format(buyDate, "dd/MM/yyyy")}
+				{/* Summary - first purchase since {format(buyDate, "dd/MM/yyyy")} */}
 			</TableCaption>
 			<TableHeader>
 				<TableRow className="bg-accent">
