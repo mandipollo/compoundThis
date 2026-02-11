@@ -51,7 +51,7 @@ const PortfolioAllocationChart = ({
 			<CardContent className="flex-1 items-center justify-center pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[50rem] pb-0"
+					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[40rem] pb-0"
 				>
 					<PieChart>
 						<ChartTooltip

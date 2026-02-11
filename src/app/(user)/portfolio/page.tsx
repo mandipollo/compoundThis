@@ -19,6 +19,7 @@ import { useFxStore } from "@/store/fxRateStore";
 import Disclaimer from "@/components/Portfolio/Disclaimer";
 import { log } from "console";
 import { PreviewChart } from "@/components/Portfolio/PreviewChart";
+import RecentActivity from "@/components/Portfolio/RecentActivity";
 
 const DashboardPage = () => {
 	// Current fx rate
@@ -55,13 +56,14 @@ const DashboardPage = () => {
 				capitalGains={capitalGains}
 				capitalGainPct={capitalGainPct}
 			/>
-			<div className="grid grid-cols-2">
+			<div className="grid grid-cols-3">
 				<PortfolioAllocationChart portfolio={stocks} fxRate={fxRate} />
 				<BaseAtGlanceChart
 					fxRate={fxRate}
 					currentValue={currentValue}
 					baseValue={baseValue}
 				/>
+				<RecentActivity />
 			</div>
 			<InvestmentList
 				fxRate={fxRate}
