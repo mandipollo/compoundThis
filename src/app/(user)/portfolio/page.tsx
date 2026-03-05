@@ -20,6 +20,7 @@ import Disclaimer from "@/components/Portfolio/Disclaimer";
 import { log } from "console";
 import { PreviewChart } from "@/components/Portfolio/PreviewChart";
 import RecentActivity from "@/components/Portfolio/RecentActivity";
+import WorldMarket from "@/components/Portfolio/WorldMarket";
 
 const DashboardPage = () => {
 	// Current fx rate
@@ -56,14 +57,15 @@ const DashboardPage = () => {
 				capitalGains={capitalGains}
 				capitalGainPct={capitalGainPct}
 			/>
-			<div className="grid grid-cols-3">
-				<PortfolioAllocationChart portfolio={stocks} fxRate={fxRate} />
-				<BaseAtGlanceChart
+			<div className="grid grid-cols-3 p-2">
+				{/* <BaseAtGlanceChart
 					fxRate={fxRate}
 					currentValue={currentValue}
 					baseValue={baseValue}
-				/>
+				/> */}
+				<PortfolioAllocationChart portfolio={stocks} fxRate={fxRate} />
 				<RecentActivity />
+				<WorldMarket />
 			</div>
 			<InvestmentList
 				fxRate={fxRate}

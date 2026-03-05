@@ -14,6 +14,7 @@ import useHolding from "@/hooks/swr/holding/useHolding";
 import useSnapshot from "@/hooks/swr/holding/useSnapshot";
 //STORE
 import { useFxStore } from "@/store/fxRateStore";
+import DemoTimeSeries from "./DemoTimeSeries";
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
 		return;
@@ -57,7 +58,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						percentageReturn={percentageReturn}
 						fxRate={fxRate}
 					/>
-					<HoldingTimeSeriesChart holding={ticker} />
+					<DemoTimeSeries />
 					<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
 						<span className="text-xl">AI feature to be added </span>
 					</div>

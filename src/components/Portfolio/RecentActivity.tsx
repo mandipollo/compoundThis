@@ -1,22 +1,19 @@
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardAction,
 	CardContent,
-	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "../ui/table";
+import { EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
+
 import {
-	Table,
-	TableBody,
-	TableCaption,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "../ui/table";
+	HoverCardTrigger,
+	HoverCardContent,
+	HoverCard,
+} from "../ui/hover-card";
+import { Button } from "../ui/button";
 
 const demoData = [
 	{ activity: "Withdraw", amount: 500 },
@@ -26,16 +23,27 @@ const demoData = [
 ];
 const RecentActivity = () => {
 	return (
-		<Card className=" h-full w-full">
+		<Card className=" h-full w-full relative">
 			<CardHeader>
-				<CardAction>View all</CardAction>
+				<CardAction className="">
+					<HoverCard openDelay={10} closeDelay={100}>
+						<HoverCardTrigger asChild>
+							<EllipsisVerticalIcon className="h-4"></EllipsisVerticalIcon>
+						</HoverCardTrigger>
+						<HoverCardContent className="flex w-28 flex-col gap-0.5">
+							<Button variant="ghost" className="w-20">
+								View all
+							</Button>
+						</HoverCardContent>
+					</HoverCard>
+				</CardAction>
 				<CardTitle>Recent Activity</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<Table>
 					<TableBody>
-						{demoData.map(data => (
-							<TableRow>
+						{demoData.map((data, index) => (
+							<TableRow key={index}>
 								<TableCell>{data.activity}</TableCell>
 								<TableCell align="right">{data.amount}</TableCell>
 							</TableRow>
