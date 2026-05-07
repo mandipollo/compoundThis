@@ -35,6 +35,7 @@ import useSearchSuggestion from "@/hooks/useSearchSuggestion";
 // date needs to be formatted as the same as server and client to resolve hydration issues
 import { format } from "date-fns";
 import Link from "next/link";
+
 const formSchema = z.object({
 	stock: z
 		.string()
@@ -53,7 +54,7 @@ const ManualAddStockForm = () => {
 	const [hideCommandList, setHideCommandList] = useState<boolean>(false);
 	// selected stock
 	const [selectedStock, setSelectedStock] = useState<SearchResultItem | null>(
-		null
+		null,
 	);
 	// Forms
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -82,7 +83,6 @@ const ManualAddStockForm = () => {
 		control: form.control,
 		name: "tradeDate",
 	});
-	console.log(date);
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
@@ -93,11 +93,14 @@ const ManualAddStockForm = () => {
 				buyPrice: values.price,
 				buyDate: values.tradeDate,
 			};
+			console.log(stockData);
+
 			const response = await fetch("/api/holding/add", {
 				method: "POST",
 				body: JSON.stringify(stockData),
 			});
-			await response.json();
+			const data = await response.json();
+			console.log(data);
 			route.push("/dashboard");
 		} catch (error) {
 			console.log(error);
@@ -125,8 +128,8 @@ const ManualAddStockForm = () => {
 										value={field.value}
 										onChange={e => field.onChange(e.target.value)}
 										onBlur={() => setHideCommandList(true)}
-										className=" outline-none shadow-md rounded-t-md focus:rounded-b-none "
-										placeholder="Search stocks, ETFs and much more..."
+										className=" outline-none rounded-t-md focus:rounded-b-none "
+										placeholder="Enter instrument name or ticker symbol"
 									></Input>
 								</FormControl>
 								<FormMessage />
@@ -145,7 +148,10 @@ const ManualAddStockForm = () => {
 						</Command>
 					)}
 				</div>
-				<SelectedStockDisplay date={date} selectedStock={selectedStock} />
+				{selectedStock && (
+					<SelectedStockDisplay date={date} selectedStock={selectedStock} />
+				)}
+
 				{selectedStock && <Separator />}
 
 				<FormField
@@ -214,6 +220,8 @@ const ManualAddStockForm = () => {
 							<FormLabel>Unit/share price</FormLabel>
 							<FormControl>
 								<Input
+									step="any"
+									min={1}
 									value={field.value}
 									type="number"
 									onChange={e => field.onChange(Number(e.target.value))}

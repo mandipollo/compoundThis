@@ -1,16 +1,5 @@
 import React from "react";
-import { Card } from "../ui/card";
-
-import {
-	Table,
-	TableCaption,
-	TableHeader,
-	TableRow,
-	TableHead,
-	TableBody,
-	TableCell,
-	TableFooter,
-} from "../ui/table";
+import { Table, TableRow, TableBody, TableCell } from "../ui/table";
 
 const worldMarket = [
 	{

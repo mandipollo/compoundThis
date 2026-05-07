@@ -9,10 +9,9 @@ export async function POST(req: NextRequest) {
 		if (!server) {
 			return NextResponse.json(
 				{ success: false, error: "Server error" },
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
-
 		// get idToken from cookie store  and check the validity of the idToken
 		const cookieStore = await cookies();
 		const idToken = cookieStore.get("idToken");
@@ -24,14 +23,11 @@ export async function POST(req: NextRequest) {
 					success: false,
 					error: error,
 				},
-				{ status: 401 }
+				{ status: 401 },
 			);
 		}
-
 		const { sub } = payload;
-
 		const body = await req.json();
-
 		const response = await fetch(`${server}/holding/holding`, {
 			method: "POST",
 			headers: {
@@ -40,22 +36,19 @@ export async function POST(req: NextRequest) {
 			},
 			body: JSON.stringify(body),
 		});
-
 		if (!response.ok) {
 			throw new ApiError("Internal server error", 401);
 		}
-
 		const data = await response.json();
-
 		return NextResponse.json(
 			{ success: true, data: data.data },
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error: unknown) {
 		if (error instanceof ApiError) {
 			return NextResponse.json(
 				{ success: false, error: error.message },
-				{ status: error.statusCode }
+				{ status: error.statusCode },
 			);
 		}
 		return NextResponse.json({

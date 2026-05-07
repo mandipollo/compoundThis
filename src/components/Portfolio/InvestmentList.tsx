@@ -30,11 +30,11 @@ const InvestmentList = ({
 			</TableCaption>
 			<TableHeader>
 				<TableRow className="bg-accent text-xs">
-					<TableHead>TICKER</TableHead>
+					<TableHead>INVESTMENT</TableHead>
 					<TableHead className="text-right flex items-center justify-end">
 						<Tooltip>
 							<TooltipTrigger className="flex flex-row gap-2 items-end justify-end">
-								P PRICE
+								AVG PRICE
 								<Image
 									src={"/question.svg"}
 									width={15}
@@ -43,7 +43,7 @@ const InvestmentList = ({
 								/>
 							</TooltipTrigger>
 							<TooltipContent>
-								<p>Purchase price</p>
+								<p>Average cost of investment</p>
 							</TooltipContent>
 						</Tooltip>
 					</TableHead>
@@ -64,9 +64,21 @@ const InvestmentList = ({
 						invested === 0 ? 0 : (capitalGains / invested) * 100;
 					return (
 						<TableRow key={stock.id}>
-							<TableCell className="font-medium underline underline-offset-2">
-								<Link href={{ pathname: `/portfolio/${stock.ticker}` }}>
-									{stock.ticker}
+							<TableCell className="font-medium flex gap-2">
+								<figure className="border rounded-md p-2">
+									<Image
+										src={`https://img.logo.dev/ticker/${stock.ticker}?token=pk_CTlNJAdmQ4qhIgDoS0G-cg`}
+										alt="demo"
+										width={20}
+										height={20}
+									></Image>
+								</figure>
+								<Link
+									className="flex flex-col"
+									href={{ pathname: `/portfolio/${stock.ticker}` }}
+								>
+									<p> {stock.companyName}</p>
+									<p className="font-light text-xs">{stock.ticker}</p>
 								</Link>
 							</TableCell>
 							<TableCell className="text-right">

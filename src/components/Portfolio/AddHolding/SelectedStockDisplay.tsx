@@ -8,15 +8,15 @@ const SelectedStockDisplay = ({
 	selectedStock,
 	date,
 }: {
-	selectedStock: SearchResultItem | null;
+	selectedStock: SearchResultItem;
 	date: Date;
 }) => {
 	// fetch latest price of the stock
+
 	const { isLoading, error, data } = useDailySummary({
-		ticker: selectedStock?.ticker ?? null,
+		ticker: selectedStock?.ticker,
 		date: date,
 	});
-
 	if (!selectedStock) return null;
 	if (error) {
 		return <div>Error</div>;
@@ -27,9 +27,6 @@ const SelectedStockDisplay = ({
 	if (!data) {
 		return <div>Ohoo</div>;
 	}
-
-	console.log(data);
-
 	return (
 		<div className="grid grid-cols-2">
 			<div className="flex flex-col gap-2">
@@ -42,7 +39,7 @@ const SelectedStockDisplay = ({
 				<span>{selectedStock.name}</span>
 			</div>
 			<div className="flex justify-end items-end flex-col gap-2">
-				<span>${data?.data?.close || 0}</span>
+				<span>USD{data?.data?.close || data?.data?.open}</span>
 				<span>on {format(new Date(data.data.from), "do LLL yyyy")}</span>
 			</div>
 		</div>

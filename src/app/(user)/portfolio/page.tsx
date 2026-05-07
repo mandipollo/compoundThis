@@ -34,6 +34,8 @@ const DashboardPage = () => {
 		return <div>{error}</div>;
 	}
 	const stocks = data?.data.stocks ?? [];
+	console.log(stocks);
+
 	const currentValue = stocks.reduce(
 		(acc, stock) => acc + stock.quantity * stock.snapshot.close,
 		0,
