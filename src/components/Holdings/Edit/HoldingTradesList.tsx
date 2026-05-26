@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 //UI
 import {
@@ -9,13 +11,25 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import useTransaction from "@/hooks/swr/holding/useTransaction";
+import { format } from "date-fns";
 
 const HoldingTradesList = ({ ticker }: { ticker: string }) => {
+	const { data, isLoading, error } = useTransaction({ ticker: ticker });
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+	if (error) {
+		console.log(error);
+		return <div>Error</div>;
+	}
+	const transactionData = data.data;
+	console.log(transactionData);
 	return (
 		<div>
 			<Table>
 				<TableCaption className="caption-top text-left text-xl text-foreground">
-					All trades
+					All transactions
 				</TableCaption>
 				<TableHeader>
 					<TableRow className="bg-accent">
@@ -29,17 +43,18 @@ const HoldingTradesList = ({ ticker }: { ticker: string }) => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					<TableRow>
-						<TableCell className="font-medium">20 Sep 2025</TableCell>
-						<TableCell>Buy</TableCell>
-						<TableCell>12</TableCell>
-						<TableCell>GB£3.21</TableCell>
-						<TableCell>GB£32.21</TableCell>
-						<TableCell>Confirmed</TableCell>
-						<TableCell className="text-blue-700 underline underline-offset-2">
-							Edit
-						</TableCell>
-					</TableRow>
+					{transactionData.map(t => (
+						<TableRow key={t.id}>
+							<TableCell>{format(t.date, "MM/dd/yyyy")}</TableCell>
+							<TableCell>{t.transactionType}</TableCell>
+							<TableCell>{t.quantity}</TableCell>
+							<TableCell>{t.price}</TableCell>
+							<TableCell>{t.price * t.quantity}</TableCell>
+							<TableCell className="text-blue-700 underline underline-offset-2">
+								Edit
+							</TableCell>
+						</TableRow>
+					))}
 				</TableBody>
 			</Table>
 		</div>

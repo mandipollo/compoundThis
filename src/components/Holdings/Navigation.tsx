@@ -65,7 +65,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 								exact
 								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
 							>
-								Edit holding
+								Transactions
 							</NavigationLink>
 						</NavigationMenuLink>
 					</NavigationMenuItem>
