@@ -1,10 +1,8 @@
 "use server";
 
-import ApiError from "@/utils/ApiError";
 import { verifyJWT } from "@/utils/jwt-verifier";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-
 export async function DELETE(req: NextRequest) {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
@@ -29,44 +27,45 @@ export async function DELETE(req: NextRequest) {
 			);
 		}
 		const { sub } = payload;
-		// Ticker
+		//
 		const { searchParams } = new URL(req.url);
 		const ticker = searchParams.get("ticker");
 		if (!ticker) {
 			throw new Error("Ticker required");
 		}
-		const noteId = searchParams.get("noteId");
-		if (!noteId) {
-			throw new Error("Note id required!");
-		}
-		const response = await fetch(
-			`${server}/holding/notes?ticker=${ticker}&noteId=${noteId}`,
-			{
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${sub}`,
-					"Content-Type": "application/json",
-				},
+		console.log(ticker);
+
+		const response = await fetch(`${server}/holding/delete?ticker=${ticker}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${sub}`,
+				"Content-Type": "application/json",
 			},
-		);
+		});
 		if (!response.ok) {
-			throw new ApiError("Internal server error", 401);
+			throw new Error(`Failed request : ${response.statusText}`);
 		}
 		const data = await response.json();
-		return NextResponse.json(
-			{ success: true, data: data.data },
-			{ status: 200 },
-		);
-	} catch (error: unknown) {
-		if (error instanceof ApiError) {
+		//  Check if the external API's own success flag is false
+		if (!data.success) {
 			return NextResponse.json(
-				{ success: false, error: error.message },
-				{ status: error.statusCode },
+				{
+					success: false,
+					error: data.error,
+				},
+				{ status: 502 },
 			);
 		}
-		return NextResponse.json({
-			success: false,
-			error: "Unexpected error. Please try again",
-		});
+		return NextResponse.json({ success: true, data: data.data });
+	} catch (error: unknown) {
+		let message =
+			error instanceof Error
+				? error.message
+				: "Unexpected error. Please try again";
+
+		return NextResponse.json(
+			{ success: false, error: message },
+			{ status: 500 },
+		);
 	}
 }

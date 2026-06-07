@@ -12,7 +12,7 @@ import NavigationLink from "./NavigationLink";
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 	return (
 		<div className="flex w-full py-4">
-			<NavigationMenu>
+			<NavigationMenu className="bg-accent rounded-md">
 				<NavigationMenuList>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>

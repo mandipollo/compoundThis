@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJWT } from "./utils/jwt-verifier";
 import { fetchAuthSession } from "aws-amplify/auth";
-
 // 1. Specify protected and public routes
 const protectedRoutes = [
 	"/dashboard",
@@ -19,19 +18,17 @@ const publicRoutes = [
 	"/forgotPassword",
 	"/newPassword",
 ];
-
 export async function middleware(request: NextRequest) {
 	// 2. Check if the current route is protected or public
 	const path = request.nextUrl.pathname;
 	const isProtectedRoute = protectedRoutes.some(route =>
-		path.startsWith(route)
+		path.startsWith(route),
 	);
 	const isPublicRoute = publicRoutes.includes(path);
 	// 3. Verfiy the id token by calling util jwt-verify
 	const idToken = request.cookies?.get("idToken");
 	const idTokenValue = idToken?.value;
 	const { success, payload, error, message } = await verifyJWT(idTokenValue);
-	console.log(payload);
 	// 4. Redirect to /login if the user is unauthenticated
 	if (!idTokenValue && isProtectedRoute) {
 		return NextResponse.redirect(new URL("/login", request.nextUrl));
@@ -42,7 +39,6 @@ export async function middleware(request: NextRequest) {
 	}
 	return NextResponse.next();
 }
-
 // Routes Middleware should not run on
 export const config = {
 	matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
