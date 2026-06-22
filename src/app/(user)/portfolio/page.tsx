@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 //TYPES
-import { UserStock } from "@/types/UserPortfolio.type";
+
 //UI
 import { Loader2Icon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -12,15 +12,13 @@ import DashboardHeader from "@/components/Portfolio/Header";
 import InvestmentSummary from "@/components/Portfolio/InvestmentSummary";
 import PortfolioChart from "@/components/Portfolio/TimeSeriesChart";
 import PortfolioAllocationChart from "@/components/Portfolio/AllocationChart";
-import BaseAtGlanceChart from "@/components/Portfolio/BaseAtGlanceChart";
 import InvestmentList from "@/components/Portfolio/InvestmentList";
-//STORE
-import { useFxStore } from "@/store/fxRateStore";
 import Disclaimer from "@/components/Portfolio/Disclaimer";
-import { log } from "console";
 import { PreviewChart } from "@/components/Portfolio/PreviewChart";
 import RecentActivity from "@/components/Portfolio/RecentActivity";
 import WorldMarket from "@/components/Portfolio/WorldMarket";
+//STORE
+import { useFxStore } from "@/store/fxRateStore";
 
 const DashboardPage = () => {
 	// Current fx rate
@@ -34,18 +32,14 @@ const DashboardPage = () => {
 		return <div>{error}</div>;
 	}
 	const stocks = data?.data.stocks ?? [];
-	console.log(stocks);
-
 	const currentValue = stocks.reduce(
 		(acc, stock) => acc + stock.quantity * stock.snapshot.close,
 		0,
 	);
-
 	const baseValue = stocks.reduce(
 		(acc, item) => acc + item.avgPurchasePrice * item.quantity,
 		0,
 	);
-
 	const capitalGains = currentValue - baseValue;
 	const capitalGainPct = baseValue === 0 ? 0 : (capitalGains / baseValue) * 100;
 	return (
@@ -60,11 +54,6 @@ const DashboardPage = () => {
 				capitalGainPct={capitalGainPct}
 			/>
 			<div className="grid grid-cols-3 p-2">
-				{/* <BaseAtGlanceChart
-					fxRate={fxRate}
-					currentValue={currentValue}
-					baseValue={baseValue}
-				/> */}
 				<PortfolioAllocationChart portfolio={stocks} fxRate={fxRate} />
 				<RecentActivity />
 				<WorldMarket />

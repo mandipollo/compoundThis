@@ -2,7 +2,13 @@
 
 //UI
 import { Pie, PieChart } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	ChartConfig,
 	ChartContainer,
@@ -38,17 +44,25 @@ const PortfolioAllocationChart = ({
 
 	return (
 		<Card className="flex flex-col max-w-full w-full">
+			<CardHeader className="items-center pb-0">
+				<CardTitle>Portfolio breakdown</CardTitle>
+			</CardHeader>
 			<CardContent className="flex-1 items-center justify-center pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[50rem] pb-0"
+					className="mx-auto aspect-square max-h-[250px]"
 				>
 					<PieChart>
 						<ChartTooltip
 							cursor={false}
 							content={<ChartTooltipContent hideLabel />}
 						/>
-						<Pie data={chartDataMap} dataKey="value" nameKey="ticker" />
+						<Pie
+							data={chartDataMap}
+							dataKey="value"
+							nameKey="ticker"
+							innerRadius={40}
+						/>
 						<ChartLegend
 							content={
 								<ChartLegendContent nameKey="ticker" payload={undefined} />

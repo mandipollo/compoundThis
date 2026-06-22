@@ -3,42 +3,43 @@ import React from "react";
 // UI
 import { Loader2Icon } from "lucide-react";
 // COMPONENTS
-import ComparisionChart from "./ComparisionChart";
 import HoldingSummaryTable from "./Table";
 import HoldingCurrentValue from "./CurrentValue";
-import HoldingInvestment from "./Investment";
-import HoldingPortfolioAllocation from "./Allocation";
-import HoldingTimeSeriesChart from "./TimeSeriesChart";
 // HOOKS
 import useHolding from "@/hooks/swr/holding/useHolding";
 import useSnapshot from "@/hooks/swr/holding/useSnapshot";
 //STORE
 import { useFxStore } from "@/store/fxRateStore";
 import DemoTimeSeries from "./DemoTimeSeries";
+import Overview from "./Overview";
+import Analyst from "./Analyst";
+import Events from "./Events";
+import useRatios from "@/hooks/swr/holding/useRatios";
+import useSummary from "@/hooks/swr/holding/useSummary";
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
 		return;
 	}
 	// fxRate
 	const { fxRate } = useFxStore();
-	const { error, data, isLoading } = useHolding({ ticker });
+	// hooks
+	const { error, data, isLoading } = useSummary({ ticker });
 
-	const {
-		data: snapshotData,
-		error: snapshotError,
-		isLoading: snapshotLoading,
-	} = useSnapshot({ ticker });
-
-	if (isLoading || snapshotLoading) {
+	if (isLoading) {
 		return <Loader2Icon className="animate-spin" />;
 	}
-	if (error || snapshotError) {
+	if (error) {
 		return <div>{error}</div>;
 	}
 	// details of the stock from portfolfio
-	const { avgPurchasePrice, quantity } = data.data;
-	// latest holding snapshot
-	const { price, updated } = snapshotData.data;
+	const { holding, ratios, snapshot, yearOHLC } = data.data;
+	const { avgPurchasePrice, quantity } = holding;
+
+	// latest price
+	const dayClose = snapshot.day.c ?? 0;
+	const prevClose = snapshot.prevDay.c ?? 0;
+	const price = dayClose === 0 ? prevClose : dayClose;
+	console.log(data);
 	//
 	const percentageReturn =
 		((price - avgPurchasePrice) / avgPurchasePrice) * 100;
@@ -49,8 +50,8 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	const localCurrencyReturn = fxRate && fxRate * totalReturn;
 	return (
 		<div className="flex flex-col w-full gap-2 h-full ">
-			<div className="grid w-full gap-2 grid-cols-[2fr_1fr]">
-				<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-2">
+				<div className="flex flex-row gap-4">
 					<HoldingSummaryTable
 						localCurrencyPrice={localCurrencyPrice}
 						localCurrencyReturn={localCurrencyReturn}
@@ -58,12 +59,6 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						percentageReturn={percentageReturn}
 						fxRate={fxRate}
 					/>
-					<DemoTimeSeries />
-					<div className="flex flex-1 items-center justify-center rounded-md border shadow-md ">
-						<span className="text-xl">AI feature to be added </span>
-					</div>
-				</div>
-				<div className="flex flex-col gap-2">
 					<HoldingCurrentValue
 						price={price}
 						quantity={quantity}
@@ -71,18 +66,12 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 						percentageReturn={percentageReturn}
 						fxRate={fxRate}
 					/>
-					{/* <HoldingPortfolioAllocation ticker={ticker} /> */}
-					<ComparisionChart
-						from={updated}
-						dailyPrice={price}
-						price={avgPurchasePrice}
-					/>
-					<HoldingInvestment
-						fxRate={fxRate}
-						currentPrice={price}
-						buyPrice={avgPurchasePrice}
-						quantity={quantity}
-					/>
+				</div>
+				<DemoTimeSeries />
+				<Overview snapshot={snapshot} ratios={ratios} />
+				<div className="grid grid-cols-2 gap-2">
+					<Analyst />
+					<Events />
 				</div>
 			</div>
 		</div>

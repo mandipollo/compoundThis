@@ -1,25 +1,21 @@
 import { fetcher } from "@/libs/fetcher";
-import { DailyTickerSummary } from "@/types/DailyTickerSummary.type";
+import { Summary } from "@/types/Summary.type";
 import useSWR from "swr";
 
-const useDailySummary = ({ ticker, date }: { ticker: string; date: Date }) => {
+const useSummary = ({ ticker }: { ticker: string }) => {
 	const {
 		data,
 		error,
 		isLoading,
 	}: {
-		data: { success: boolean; data: DailyTickerSummary };
+		data: { success: boolean; data: Summary };
 		error: string | undefined;
 		isLoading: boolean;
-	} = useSWR(
-		ticker ? `/api/holding/summary?ticker=${ticker}&date=${date}` : null,
-		fetcher,
-		{
-			revalidateOnFocus: false,
-			revalidateOnReconnect: false,
-			refreshInterval: 0,
-		},
-	);
+	} = useSWR(ticker ? `/api/holding/summary?ticker=${ticker}` : null, fetcher, {
+		revalidateOnFocus: false,
+		revalidateOnReconnect: false,
+		refreshInterval: 0,
+	});
 	return {
 		data,
 		isLoading,
@@ -27,4 +23,4 @@ const useDailySummary = ({ ticker, date }: { ticker: string; date: Date }) => {
 	};
 };
 
-export default useDailySummary;
+export default useSummary;

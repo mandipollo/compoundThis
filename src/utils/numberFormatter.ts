@@ -2,6 +2,6 @@ const numberFormatter = Intl.NumberFormat("en", {
 	notation: "compact",
 });
 
-const numberToDispaly = (number: number) => numberFormatter.format(number);
+const numberToDisplay = (number: number) => numberFormatter.format(number);
 
-export default numberToDispaly;
+export default numberToDisplay;

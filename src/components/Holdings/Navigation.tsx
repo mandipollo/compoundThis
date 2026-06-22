@@ -12,14 +12,14 @@ import NavigationLink from "./NavigationLink";
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 	return (
 		<div className="flex w-full py-4">
-			<NavigationMenu className="bg-accent rounded-md">
+			<NavigationMenu className="bg-accent rounded-md p-1">
 				<NavigationMenuList>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>
 							<NavigationLink
 								href={`/portfolio/${ticker}`}
 								exact
-								className="inline-flex rounded-full px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white"
+								className="inline-flex rounded-full px-3 py-1 [&.active]:bg-white [&.active]:text-black [&.active]:shadow-md"
 							>
 								Summary
 							</NavigationLink>
@@ -30,7 +30,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 							<NavigationLink
 								href={`/portfolio/${ticker}/financial`}
 								exact
-								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
+								className="inline-flex rounded-full px-3 py-1 [&.active]:bg-white [&.active]:text-black [&.active]:shadow-md"
 							>
 								Financial statements
 							</NavigationLink>
@@ -41,7 +41,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 							<NavigationLink
 								href={`/portfolio/${ticker}/notes`}
 								exact
-								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
+								className="inline-flex rounded-full px-3 py-1 [&.active]:bg-white [&.active]:text-black [&.active]:shadow-md"
 							>
 								Notes
 							</NavigationLink>
@@ -52,7 +52,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 							<NavigationLink
 								href={`/portfolio/${ticker}/news`}
 								exact
-								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
+								className="inline-flex rounded-full px-3 py-1 [&.active]:bg-white [&.active]:text-black [&.active]:shadow-md"
 							>
 								News
 							</NavigationLink>
@@ -63,7 +63,7 @@ const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 							<NavigationLink
 								href={`/portfolio/${ticker}/editHolding`}
 								exact
-								className="inline-flex rounded-md px-3 py-1.5 [&.active]:bg-primary [&.active]:text-white "
+								className="inline-flex rounded-full px-3 py-1 [&.active]:bg-white [&.active]:text-black [&.active]:shadow-md"
 							>
 								Transactions
 							</NavigationLink>

@@ -1,13 +1,11 @@
 "use server";
 import { ApiResponse } from "@/types/ApiResponse.type";
-import { Summary } from "@/types/Summary.type";
-import { verifyJWT } from "@/utils/jwt-verifier";
-import { cookies } from "next/headers";
+import { DailyTickerSummary } from "@/types/DailyTickerSummary.type";
 import { NextRequest, NextResponse } from "next/server";
 //
 export async function GET(
 	request: NextRequest,
-): Promise<NextResponse<ApiResponse<Summary>>> {
+): Promise<NextResponse<ApiResponse<DailyTickerSummary>>> {
 	try {
 		const server = process.env.NEXT_PUBLIC_LOCAL_BASE_SERVER;
 		if (!server) {
@@ -19,22 +17,6 @@ export async function GET(
 				{ status: 400 },
 			);
 		}
-		// get idToken from cookie store  and check the validity of the idToken
-		const cookieStore = await cookies();
-		const idToken = cookieStore.get("idToken");
-		const idTokenValue = idToken?.value;
-		const { success, payload, error } = await verifyJWT(idTokenValue);
-		if (!success) {
-			return NextResponse.json<ApiResponse<never>>(
-				{
-					success: false,
-					error: "Failed to verify",
-				},
-				{ status: 401 },
-			);
-		}
-		const { sub } = payload;
-		//
 		const { searchParams } = new URL(request.url);
 		const ticker = searchParams.get("ticker");
 		if (!ticker || typeof ticker !== "string") {
@@ -46,13 +28,23 @@ export async function GET(
 				{ status: 400 },
 			);
 		}
-		const response = await fetch(`${server}/holding/summary?ticker=${ticker}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${sub}`,
+		const date = searchParams.get("date");
+		if (!date) {
+			return NextResponse.json<ApiResponse<never>>(
+				{
+					success: false,
+					error: "Date is required",
+				},
+				{ status: 400 },
+			);
+		}
+		const response = await fetch(
+			`${server}/holding/daily-summary?ticker=${ticker}&date=${date}`,
+			{
+				method: "GET",
+				headers: { "Content-Type": "application/json" },
 			},
-		});
+		);
 		const data = await response.json();
 		//  Check if the external API's own success flag is false
 		if (data.success === "false") {
@@ -61,7 +53,7 @@ export async function GET(
 				error: data,
 			});
 		}
-		return NextResponse.json<ApiResponse<Summary>>({
+		return NextResponse.json<ApiResponse<DailyTickerSummary>>({
 			success: true,
 			data: data.data,
 		});

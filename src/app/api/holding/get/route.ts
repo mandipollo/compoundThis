@@ -8,48 +8,38 @@ export async function GET(req: NextRequest) {
 		if (!server) {
 			return NextResponse.json(
 				{ success: false, error: "Server error" },
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
-
 		// get idToken from cookie store  and check the validity of the idToken
 		const cookieStore = await cookies();
 		const idToken = cookieStore.get("idToken");
 		const idTokenValue = idToken?.value;
-
 		const { success, payload, error } = await verifyJWT(idTokenValue);
-
 		if (!success) {
 			return NextResponse.json(
 				{
 					success: false,
 					error: error,
 				},
-				{ status: 401 }
+				{ status: 401 },
 			);
 		}
-
 		const { sub } = payload;
-
 		//
 		const { searchParams } = new URL(req.url);
-
 		const ticker = searchParams.get("ticker");
 		if (!ticker) {
 			throw new Error("Ticker required");
 		}
-
 		const response = await fetch(`${server}/holding/holding?ticker=${ticker}`, {
 			method: "GET",
 			headers: { Authorization: `Bearer ${sub}` },
 		});
-
 		if (!response.ok) {
 			throw new Error(`Failed request : ${response.statusText}`);
 		}
-
 		const data = await response.json();
-
 		//  Check if the external API's own success flag is false
 		if (!data.success) {
 			return NextResponse.json(
@@ -57,7 +47,7 @@ export async function GET(req: NextRequest) {
 					success: false,
 					error: data.error,
 				},
-				{ status: 502 }
+				{ status: 502 },
 			);
 		}
 		return NextResponse.json({ success: true, data: data.data });
@@ -69,7 +59,7 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json(
 			{ success: false, error: message },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }
