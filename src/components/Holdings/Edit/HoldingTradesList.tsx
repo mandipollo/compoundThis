@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
 //UI
 import { MoreHorizontalIcon } from "lucide-react";
@@ -22,17 +22,60 @@ import {
 import { Button } from "@/components/ui/button";
 import HoldingDestructionButton from "./HoldingDestructionButton";
 //Hooks
-import useTransaction from "@/hooks/swr/holding/useTransaction";
+import TransactionDeleteButton from "./TransactionDeleteButton";
+import useTransactions from "@/hooks/swr/holding/useTransaction";
 
 const HoldingTradesList = ({ ticker }: { ticker: string }) => {
-	const { data, isLoading, error } = useTransaction({ ticker });
+	// state
+	const [isOpenTransactionDeleteDialog, setIsOpenTransactionDeleteDialog] =
+		useState<boolean>(false);
+
+	const [selectedTransactionId, setTransactionId] = useState<number | null>(
+		null,
+	);
+	// hooks
+	const { data, isLoading, error, mutate } = useTransactions({ ticker });
 	if (isLoading) {
 		return <div>Loading...</div>;
 	}
 	if (error) {
 		return <div>Error</div>;
 	}
+	if (!data) {
+		return;
+	}
 	const transactionData = data.data;
+	const handleTransactionDialogAndId = (id: number) => {
+		setTransactionId(id);
+		setIsOpenTransactionDeleteDialog(true);
+	};
+	const handleTransactionDelete = async (id: number | null) => {
+		if (id == null) return;
+		// optimistic remove transaction from UI
+		mutate(
+			current =>
+				current && { ...current, data: current.data.filter(t => t.id !== id) },
+			false,
+		);
+		console.log(id);
+		try {
+			const response = await fetch(
+				`/api/holding/deleteTransaction?transactionId=${id}&ticker=${ticker}`,
+				{
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
+				},
+			);
+			const data = await response.json();
+			console.log(data);
+			console.log("api called");
+			mutate();
+		} catch (e) {
+			mutate();
+			console.log(e);
+		}
+		setIsOpenTransactionDeleteDialog(false);
+	};
 	return (
 		<div>
 			<div className="flex w-full items-end justify-end">
@@ -63,7 +106,7 @@ const HoldingTradesList = ({ ticker }: { ticker: string }) => {
 							<TableCell>{t.quantity}</TableCell>
 							<TableCell>{t.price}</TableCell>
 							<TableCell></TableCell>
-							<TableCell>{(t.price * t.quantity).toFixed(2)}</TableCell>
+							<TableCell>{Number(t.price * t.quantity).toFixed(2)}</TableCell>
 							<TableCell className="text-right">
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
@@ -73,9 +116,14 @@ const HoldingTradesList = ({ ticker }: { ticker: string }) => {
 										</Button>
 									</DropdownMenuTrigger>
 									<DropdownMenuContent align="end">
-										<DropdownMenuItem>Edit</DropdownMenuItem>
+										<DropdownMenuItem className="text-center">
+											Edit
+										</DropdownMenuItem>
 										<DropdownMenuSeparator />
-										<DropdownMenuItem variant="destructive">
+										<DropdownMenuItem
+											onClick={() => handleTransactionDialogAndId(t.id)}
+											variant="destructive"
+										>
 											Delete
 										</DropdownMenuItem>
 									</DropdownMenuContent>
@@ -85,6 +133,12 @@ const HoldingTradesList = ({ ticker }: { ticker: string }) => {
 					))}
 				</TableBody>
 			</Table>
+			<TransactionDeleteButton
+				transactionId={selectedTransactionId}
+				handleTransactionDelete={handleTransactionDelete}
+				isOpen={isOpenTransactionDeleteDialog}
+				onOpenChange={setIsOpenTransactionDeleteDialog}
+			/>
 		</div>
 	);
 };

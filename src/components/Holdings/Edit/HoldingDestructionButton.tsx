@@ -15,7 +15,6 @@ import React from "react";
 
 const HoldingDestructionButton = ({ ticker }: { ticker: string }) => {
 	const route = useRouter();
-	console.log(ticker);
 	const deleteHoldingTransactionHandler = async () => {
 		try {
 			const response = await fetch(`/api/holding/delete?ticker=${ticker}`, {

@@ -3,7 +3,7 @@ import { format } from "date-fns";
 //TYPES
 import { SearchResultItem } from "@/types/Search.type";
 //HOOKS
-import useDailySummary from "@/hooks/swr/holding/useSummary";
+import useDailySummary from "@/hooks/swr/holding/useDailySummary";
 const SelectedStockDisplay = ({
 	selectedStock,
 	date,
@@ -27,6 +27,7 @@ const SelectedStockDisplay = ({
 	if (!data) {
 		return <div>Ohoo</div>;
 	}
+
 	return (
 		<div className="grid grid-cols-2">
 			<div className="flex flex-col gap-2">

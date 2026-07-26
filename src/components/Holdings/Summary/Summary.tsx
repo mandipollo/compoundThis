@@ -5,17 +5,15 @@ import { Loader2Icon } from "lucide-react";
 // COMPONENTS
 import HoldingSummaryTable from "./Table";
 import HoldingCurrentValue from "./CurrentValue";
-// HOOKS
-import useHolding from "@/hooks/swr/holding/useHolding";
-import useSnapshot from "@/hooks/swr/holding/useSnapshot";
-//STORE
-import { useFxStore } from "@/store/fxRateStore";
 import DemoTimeSeries from "./DemoTimeSeries";
 import Overview from "./Overview";
 import Analyst from "./Analyst";
 import Events from "./Events";
-import useRatios from "@/hooks/swr/holding/useRatios";
+// HOOKS
 import useSummary from "@/hooks/swr/holding/useSummary";
+//STORE
+import { useFxStore } from "@/store/fxRateStore";
+
 const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (!ticker) {
 		return;
@@ -31,15 +29,12 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 	if (error) {
 		return <div>{error}</div>;
 	}
-	// details of the stock from portfolfio
 	const { holding, ratios, snapshot, yearOHLC } = data.data;
 	const { avgPurchasePrice, quantity } = holding;
-
 	// latest price
 	const dayClose = snapshot.day.c ?? 0;
 	const prevClose = snapshot.prevDay.c ?? 0;
 	const price = dayClose === 0 ? prevClose : dayClose;
-	console.log(data);
 	//
 	const percentageReturn =
 		((price - avgPurchasePrice) / avgPurchasePrice) * 100;
@@ -68,7 +63,7 @@ const HoldingsSummary = ({ ticker }: { ticker: string }) => {
 					/>
 				</div>
 				<DemoTimeSeries />
-				<Overview snapshot={snapshot} ratios={ratios} />
+				<Overview snapshot={snapshot} ratios={ratios} yearOHLC={yearOHLC} />
 				<div className="grid grid-cols-2 gap-2">
 					<Analyst />
 					<Events />

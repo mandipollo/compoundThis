@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 			throw new Error("Ticker required");
 		}
 		const response = await fetch(
-			`${server}/holding/transaction?ticker=${ticker}`,
+			`${server}/holding/transactions?ticker=${ticker}`,
 			{
 				method: "GET",
 				headers: { Authorization: `Bearer ${sub}` },

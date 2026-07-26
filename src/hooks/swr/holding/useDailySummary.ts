@@ -12,7 +12,7 @@ const useDailySummary = ({ ticker, date }: { ticker: string; date: Date }) => {
 		error: string | undefined;
 		isLoading: boolean;
 	} = useSWR(
-		ticker ? `/api/holding/summary?ticker=${ticker}&date=${date}` : null,
+		ticker ? `/api/holding/dailySummary?ticker=${ticker}&date=${date}` : null,
 		fetcher,
 		{
 			revalidateOnFocus: false,
