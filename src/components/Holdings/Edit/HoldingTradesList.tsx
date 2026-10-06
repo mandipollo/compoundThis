@@ -24,8 +24,10 @@ import HoldingDestructionButton from "./HoldingDestructionButton";
 //Hooks
 import TransactionDeleteButton from "./TransactionDeleteButton";
 import useTransactions from "@/hooks/swr/holding/useTransaction";
+import { useRouter } from "next/navigation";
 
 const HoldingTradesList = ({ ticker }: { ticker: string }) => {
+	const router = useRouter();
 	// state
 	const [isOpenTransactionDeleteDialog, setIsOpenTransactionDeleteDialog] =
 		useState<boolean>(false);
@@ -66,9 +68,14 @@ const HoldingTradesList = ({ ticker }: { ticker: string }) => {
 					headers: { "Content-Type": "application/json" },
 				},
 			);
-			const data = await response.json();
-			console.log(data);
-			console.log("api called");
+			const data: {
+				data: { message: string; count: number };
+				success: boolean;
+			} = await response.json();
+
+			if (data.success && data.data.count <= 0) {
+				router.push("/portfolio");
+			}
 			mutate();
 		} catch (e) {
 			mutate();

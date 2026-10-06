@@ -11,8 +11,8 @@ import {
 import NavigationLink from "./NavigationLink";
 const HoldingNavigation = ({ ticker }: { ticker: string }) => {
 	return (
-		<div className="flex w-full py-4">
-			<NavigationMenu className="bg-accent rounded-md p-1">
+		<div className="flex w-full py-4 text-white">
+			<NavigationMenu className="bg-secondaryGreen rounded-md p-1">
 				<NavigationMenuList>
 					<NavigationMenuItem className="hover:cursor-pointer">
 						<NavigationMenuLink asChild>

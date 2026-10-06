@@ -27,6 +27,7 @@ const SelectedStockDisplay = ({
 	if (!data) {
 		return <div>Ohoo</div>;
 	}
+	console.log(data);
 
 	return (
 		<div className="grid grid-cols-2">
